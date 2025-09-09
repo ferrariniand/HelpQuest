@@ -61,12 +61,20 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
+
+                implementation(projects.core.domain)
+                implementation(projects.core.database)
+                implementation(projects.quests.domain)
             }
         }
 
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.assertk)
+                implementation(libs.turbine)
             }
         }
 

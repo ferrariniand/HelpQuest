@@ -61,12 +61,20 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(libs.kermit)
+
+                implementation(projects.core.domain)
+                implementation(projects.core.presentation.ui)
+                implementation(projects.home.domain)
+
             }
         }
 
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.assertk)
+                implementation(libs.turbine)
             }
         }
 
@@ -75,6 +83,8 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+                implementation(libs.coil.compose)
+                implementation(libs.androidx.activity.compose)
             }
         }
 
