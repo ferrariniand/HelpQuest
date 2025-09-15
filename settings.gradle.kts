@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "HelpExchange"
+rootProject.name = "HelpQuest"
 include(":androidApp")
 include(":auth:domain")
 include(":auth:data")

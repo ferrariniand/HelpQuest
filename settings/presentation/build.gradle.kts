@@ -10,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.helpexchange.settings.presentation"
+        namespace = "com.helpquest.settings.presentation"
         compileSdk = 36
         minSdk = 30
 

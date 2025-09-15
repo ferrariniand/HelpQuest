@@ -42,7 +42,7 @@ rules = "1.6.1"
 
 
 # Project versions
-projectApplicationId = "com.helpexchange"
+projectApplicationId = "com.helpquest"
 projectVersionName = "1.0"
 projectMinSdkVersion = "30"
 projectTargetSdkVersion = "36"

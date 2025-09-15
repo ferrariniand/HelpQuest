@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.helpexchange"
+    namespace = "com.helpquest"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.helpexchange"
+        applicationId = "com.helpquest"
         minSdk = 30
         targetSdk = 36
         versionCode = 1
