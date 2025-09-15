@@ -61,17 +61,12 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
-                implementation(libs.org.mongodb.bson)
-
-                implementation(projects.core.domain)
             }
         }
 
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
-                implementation(libs.assertk)
-                implementation(libs.turbine)
             }
         }
 
@@ -86,7 +81,7 @@ kotlin {
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
+                implementation(libs.androidx.test.core)
                 implementation(libs.androidx.junit)
             }
         }

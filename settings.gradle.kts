@@ -33,12 +33,12 @@ plugins {
 }
 
 include(":composeApp")
+include(":core:domain")
+include(":core:database")
+include(":core:data")
+include(":core:designsystem")
+include(":core:presentation")
 //TODO add modules
-//include(":core:domain")
-//include(":core:data")
-//include(":core:database")
-//include(":core:presentation:designsystem")
-//include(":core:presentation:ui")
 //include(":auth:domain")
 //include(":auth:data")
 //include(":auth:presentation")

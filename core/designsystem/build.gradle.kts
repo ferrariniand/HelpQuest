@@ -10,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.helpquest.core.domain"
+        namespace = "com.helpquest.core.designsystem"
         compileSdk = 36
         minSdk = 30
 
@@ -31,7 +31,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "core:domainKit"
+    val xcfName = "core:designsystemKit"
 
     iosX64 {
         binaries.framework {
@@ -61,8 +61,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
-
-                implementation(libs.kotlinx.coroutines.core)
 
             }
         }
