@@ -83,6 +83,7 @@ kotlin {
 
                 implementation(projects.core.domain)
                 implementation(projects.core.presentation)
+                implementation(projects.core.designsystem)
                 implementation(projects.home.domain)
 
             }

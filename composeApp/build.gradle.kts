@@ -36,14 +36,14 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-            // Coil
-            implementation(libs.coil.compose)
-
             // Core
             implementation(libs.androidx.core.ktx)
 
             // Crypto
             implementation(libs.androidx.security.crypto.ktx)
+
+            // Splash screen
+            implementation(libs.core.splashscreen)
 
             //api command is like implementation command, but extends the usage of the lib to the modules that depends on this module
             api(libs.play.feature.delivery)
@@ -54,9 +54,6 @@ kotlin {
             api(libs.play.app.update.ktx)
             api(libs.play.asset.delivery)
             api(libs.play.asset.delivery.ktx)
-
-            // Splash screen
-            implementation(libs.core.splashscreen)
 
         }
         commonMain.dependencies {
@@ -69,32 +66,37 @@ kotlin {
             implementation(libs.jetbrains.compose.viewmodel)
             implementation(libs.jetbrains.lifecycle.compose)
 
+            // Coil
+            implementation(libs.coil.compose)
+
+            // Core Modules
             implementation(projects.core.domain)
             implementation(projects.core.database)
             implementation(projects.core.data)
             implementation(projects.core.designsystem)
             implementation(projects.core.presentation)
-
+            // Auth Modules
             implementation(projects.auth.domain)
             implementation(projects.auth.data)
             implementation(projects.auth.presentation)
-
+            // Profile Modules
             implementation(projects.profile.domain)
             implementation(projects.profile.data)
             implementation(projects.profile.presentation)
-
+            // Quests Modules
             implementation(projects.quests.domain)
             implementation(projects.quests.data)
             implementation(projects.quests.presentation)
-
-            implementation(projects.messaging.domain)
-            implementation(projects.messaging.data)
-            implementation(projects.messaging.presentation)
-
+            // Chat Modules
+            implementation(projects.chat.domain)
+            implementation(projects.chat.data)
+            implementation(projects.chat.database)
+            implementation(projects.chat.presentation)
+            // Settings Modules
             implementation(projects.settings.domain)
             implementation(projects.settings.data)
             implementation(projects.settings.presentation)
-
+            // Home Modules
             implementation(projects.home.domain)
             implementation(projects.home.presentation)
         }

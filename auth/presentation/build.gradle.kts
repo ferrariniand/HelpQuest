@@ -81,6 +81,8 @@ kotlin {
                 // Add KMP dependencies here
 
                 implementation(projects.core.domain)
+                implementation(projects.core.designsystem)
+                implementation(projects.core.presentation)
                 implementation(projects.auth.domain)
             }
         }
