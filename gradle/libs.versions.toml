@@ -209,6 +209,8 @@ test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
 
 
 [plugins]
+convention-android-application = { id = "com.helpquest.convention.android.application", version = "unspecified" }
+
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
