@@ -64,7 +64,7 @@ kotlin {
                 implementation(libs.kermit)
 
                 implementation(projects.core.domain)
-                implementation(projects.core.presentation.ui)
+                implementation(projects.core.presentation)
                 implementation(projects.home.domain)
 
             }
@@ -83,15 +83,14 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
-                implementation(libs.coil.compose)
-                implementation(libs.androidx.activity.compose)
+
             }
         }
 
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
+                implementation(libs.androidx.test.core)
                 implementation(libs.androidx.junit)
             }
         }
