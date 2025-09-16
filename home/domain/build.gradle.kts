@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
@@ -5,6 +7,22 @@ plugins {
 }
 
 kotlin {
+    tasks.register("testClasses")
+
+    jvm {
+        compilations.getting {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    // Set up the Kotlin compiler options for the 'main' compilation:
+                    jvmTarget.set(JvmTarget.JVM_21)
+                }
+            }
+
+            output // get the main compilation output
+        }
+
+        compilations["test"].runtimeDependencyFiles // get the test runtime classpath
+    }
 
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.

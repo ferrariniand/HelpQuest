@@ -14,7 +14,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
     
@@ -69,34 +69,34 @@ kotlin {
             implementation(libs.jetbrains.compose.viewmodel)
             implementation(libs.jetbrains.lifecycle.compose)
 
-//            implementation(projects.core.domain)
-//            implementation(projects.core.database)
-//            implementation(projects.core.data)
-//            implementation(projects.core.designsystem)
-//            implementation(projects.core.presentation)
-//
-//            implementation(projects.auth.domain)
-//            implementation(projects.auth.data)
-//            implementation(projects.auth.presentation)
-//
-//            implementation(projects.profile.domain)
-//            implementation(projects.profile.data)
-//            implementation(projects.profile.presentation)
-//
-//            implementation(projects.quests.domain)
-//            implementation(projects.quests.data)
-//            implementation(projects.quests.presentation)
-//
-//            implementation(projects.messaging.domain)
-//            implementation(projects.messaging.data)
-//            implementation(projects.messaging.presentation)
-//
-//            implementation(projects.settings.domain)
-//            implementation(projects.settings.data)
-//            implementation(projects.settings.presentation)
-//
-//            implementation(projects.home.domain)
-//            implementation(projects.home.presentation)
+            implementation(projects.core.domain)
+            implementation(projects.core.database)
+            implementation(projects.core.data)
+            implementation(projects.core.designsystem)
+            implementation(projects.core.presentation)
+
+            implementation(projects.auth.domain)
+            implementation(projects.auth.data)
+            implementation(projects.auth.presentation)
+
+            implementation(projects.profile.domain)
+            implementation(projects.profile.data)
+            implementation(projects.profile.presentation)
+
+            implementation(projects.quests.domain)
+            implementation(projects.quests.data)
+            implementation(projects.quests.presentation)
+
+            implementation(projects.messaging.domain)
+            implementation(projects.messaging.data)
+            implementation(projects.messaging.presentation)
+
+            implementation(projects.settings.domain)
+            implementation(projects.settings.data)
+            implementation(projects.settings.presentation)
+
+            implementation(projects.home.domain)
+            implementation(projects.home.presentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -130,8 +130,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
