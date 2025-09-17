@@ -58,12 +58,13 @@ projectVersionCode = "1"
 # Desktop Version
 desktopPackageName = "HelpQuest"
 desktopPackageVersion = "1.0.0"
+runner = "1.7.0"
+junitVersion = "1.3.0"
+uiDesktop = "1.7.0"
 
 #TODO Are Necessary?
 junit = "4.13.2"
-junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-runner = "1.7.0"
 playCore = "1.10.3"
 playFeatureDelivery = "2.1.0"
 playReview = "2.0.2"
@@ -153,6 +154,9 @@ moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "mok
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
 moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko" }
 
+# Desktop
+androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
+
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
@@ -211,6 +215,8 @@ test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
 [plugins]
 convention-android-application = { id = "com.helpquest.convention.android.application", version = "unspecified" }
 convention-android-application-compose = { id = "com.helpquest.convention.android.application.compose", version = "unspecified" }
+convention-cmp-application = { id = "com.helpquest.convention.cmp.application", version = "unspecified" }
+
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
