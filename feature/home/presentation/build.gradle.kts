@@ -1,6 +1,6 @@
 
 plugins {
-    alias(libs.plugins.convention.cmp.library)
+    alias(libs.plugins.convention.cmp.feature)
 }
 
 kotlin {
@@ -15,9 +15,12 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(libs.kermit)
 
                 implementation(projects.core.domain)
+                implementation(projects.core.presentation)
                 implementation(projects.core.designsystem)
+                implementation(projects.feature.home.domain)
 
             }
         }
@@ -35,6 +38,7 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+
             }
         }
 

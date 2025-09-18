@@ -1,6 +1,6 @@
 
 plugins {
-    alias(libs.plugins.convention.cmp.library)
+    alias(libs.plugins.convention.kmp.library)
 }
 
 kotlin {
@@ -15,10 +15,12 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
 
                 implementation(projects.core.domain)
-                implementation(projects.core.designsystem)
-
+                implementation(projects.core.database)
+                implementation(projects.feature.quests.domain)
             }
         }
 

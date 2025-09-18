@@ -52,29 +52,29 @@ kotlin {
             implementation(projects.core.designsystem)
             implementation(projects.core.presentation)
             // Auth Modules
-            implementation(projects.auth.domain)
-            implementation(projects.auth.data)
-            implementation(projects.auth.presentation)
+            implementation(projects.feature.auth.domain)
+            implementation(projects.feature.auth.data)
+            implementation(projects.feature.auth.presentation)
             // Profile Modules
-            implementation(projects.profile.domain)
-            implementation(projects.profile.data)
-            implementation(projects.profile.presentation)
+            implementation(projects.feature.profile.domain)
+            implementation(projects.feature.profile.data)
+            implementation(projects.feature.profile.presentation)
             // Quests Modules
-            implementation(projects.quests.domain)
-            implementation(projects.quests.data)
-            implementation(projects.quests.presentation)
+            implementation(projects.feature.quests.domain)
+            implementation(projects.feature.quests.data)
+            implementation(projects.feature.quests.presentation)
             // Chat Modules
-            implementation(projects.chat.domain)
-            implementation(projects.chat.data)
-            implementation(projects.chat.database)
-            implementation(projects.chat.presentation)
+            implementation(projects.feature.chat.domain)
+            implementation(projects.feature.chat.data)
+            implementation(projects.feature.chat.database)
+            implementation(projects.feature.chat.presentation)
             // Settings Modules
-            implementation(projects.settings.domain)
-            implementation(projects.settings.data)
-            implementation(projects.settings.presentation)
+            implementation(projects.feature.settings.domain)
+            implementation(projects.feature.settings.data)
+            implementation(projects.feature.settings.presentation)
             // Home Modules
-            implementation(projects.home.domain)
-            implementation(projects.home.presentation)
+            implementation(projects.feature.home.domain)
+            implementation(projects.feature.home.presentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
