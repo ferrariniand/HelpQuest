@@ -119,6 +119,7 @@ jetbrains-compose-material-icons-core = { module = "org.jetbrains.compose.materi
 jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons"}
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref="compose-jetbrains"}
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref="compose-jetbrains"}
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref="compose-jetbrains"}
 
 # Material3 Adaptive
 material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
