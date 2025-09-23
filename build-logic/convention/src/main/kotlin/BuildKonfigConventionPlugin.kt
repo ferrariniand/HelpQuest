@@ -17,7 +17,7 @@ class BuildKonfigConventionPlugin: Plugin<Project> {
             extensions.configure<BuildKonfigExtension> {
                 packageName = target.pathToPackageName()
                 defaultConfigs {
-                    //TODO DEFINE API KEY and other BUILD CONFIG
+                    //TODO: DEFINE API KEY and other BUILD CONFIG
 //                    val apiKey = gradleLocalProperties(rootDir, rootProject.providers)
 //                        .getProperty("API_KEY")
 //                        ?: throw IllegalStateException(
