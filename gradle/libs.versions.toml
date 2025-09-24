@@ -185,6 +185,10 @@ buildkonfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildko
 #Logging
 touchlab-kermit= {module="co.touchlab:kermit", version.ref = "kermit" }
 
+# Debug
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -194,8 +198,6 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertK" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
