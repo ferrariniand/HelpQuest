@@ -17,13 +17,13 @@ class BuildKonfigConventionPlugin: Plugin<Project> {
             extensions.configure<BuildKonfigExtension> {
                 packageName = target.pathToPackageName()
                 defaultConfigs {
-                    //TODO: DEFINE API KEY and other BUILD CONFIG
-//                    val apiKey = gradleLocalProperties(rootDir, rootProject.providers)
-//                        .getProperty("API_KEY")
-//                        ?: throw IllegalStateException(
-//                            "Missing API_KEY property in local.properties"
-//                        )
-//                    buildConfigField(FieldSpec.Type.STRING, "API_KEY", apiKey)
+                    //TODO: DEFINE API KEY and other BUILD CONFIGS
+                    val apiKey = gradleLocalProperties(rootDir, rootProject.providers)
+                        .getProperty("API_KEY")
+                        ?: throw IllegalStateException(
+                            "Missing API_KEY property in local.properties"
+                        )
+                    buildConfigField(FieldSpec.Type.STRING, "API_KEY", apiKey)
                 }
             }
         }

@@ -47,6 +47,8 @@ coil = "3.3.0"
 coil-network = "3.3.0"
 moko = "0.19.1"
 buildkonfig = "0.17.1"
+kermit="2.0.8"
+
 
 # Project versions
 projectApplicationId = "com.helpquest"
@@ -75,7 +77,6 @@ ktorServerCallLogging = "2.3.7"
 securityCryptoKtx = "1.1.0-alpha06"
 bson = "4.11.1"
 annotation = "1.7.1"
-kermit="2.0.4"
 assertK = "0.28.1"
 turbine = "1.2.1"
 rules = "1.6.1"
@@ -181,6 +182,9 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 buildkonfig-gradlePlugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
 buildkonfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-compiler", version.ref = "buildkonfig" }
 
+#Logging
+touchlab-kermit= {module="co.touchlab:kermit", version.ref = "kermit" }
+
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -214,8 +218,6 @@ ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", versio
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 org-mongodb-bson = { module = "org.mongodb:bson", version.ref = "bson" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
-kermit= {module="co.touchlab:kermit", version.ref = "kermit" }
-
 
 [plugins]
 convention-android-application = { id = "com.helpquest.convention.android.application", version = "unspecified" }

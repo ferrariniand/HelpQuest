@@ -16,7 +16,7 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
                 implementation(libs.bundles.ktor.common)
-                implementation(libs.kermit)
+                implementation(libs.touchlab.kermit)
 
                 implementation(projects.core.domain)
                 implementation(projects.core.database)
