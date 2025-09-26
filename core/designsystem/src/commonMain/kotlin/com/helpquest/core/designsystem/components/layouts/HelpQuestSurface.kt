@@ -5,8 +5,9 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,10 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
-import helpquest.core.designsystem.generated.resources.Res
-import helpquest.core.designsystem.generated.resources.compose_multiplatform
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -49,6 +48,8 @@ fun HelpQuestSurface(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     content()
                 }
@@ -67,10 +68,7 @@ fun HelpQuestSurfaceLightPreview() {
             modifier = Modifier
                 .fillMaxSize(),
             header = {
-                Icon(
-                    imageVector = vectorResource(Res.drawable.compose_multiplatform),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                HelpQuestBrandLogo(
                     modifier = Modifier
                         .padding(vertical = 32.dp)
                 )
@@ -101,10 +99,7 @@ fun HelpQuestSurfaceDarkPreview() {
             modifier = Modifier
                 .fillMaxSize(),
             header = {
-                Icon(
-                    imageVector = vectorResource(Res.drawable.compose_multiplatform),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                HelpQuestBrandLogo(
                     modifier = Modifier
                         .padding(vertical = 32.dp)
                 )

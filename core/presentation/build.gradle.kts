@@ -19,8 +19,6 @@ kotlin {
 
 
                 implementation(projects.core.domain)
-                implementation(projects.core.designsystem)
-
             }
         }
 
