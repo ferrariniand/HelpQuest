@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,39 +73,35 @@ fun HelpQuestAdaptiveFormLayout(
         }
 
         DeviceConfiguration.MOBILE_LANDSCAPE -> {
-            Surface(
-                color = MaterialTheme.colorScheme.background,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .consumeWindowInsets(WindowInsets.displayCutout)
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                    )
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = modifier
-                        .fillMaxSize()
-                        .consumeWindowInsets(WindowInsets.displayCutout)
-                        .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp,
-                        )
+                Column(
+                    modifier = Modifier
+                        .weight(1f),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(24.dp)
-                    ) {
-                        logo()
-                        AuthHeaderSection(
-                            headerText = headerText,
-                            headerColor = headerColor,
-                            errorText = errorText
-                        )
-                    }
-                    HelpQuestSurface(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        formContent()
-                    }
+                    logo()
+                    Spacer(modifier = Modifier.height(24.dp))
+                    AuthHeaderSection(
+                        headerText = headerText,
+                        headerColor = headerColor,
+                        errorText = errorText
+                    )
+                }
+                HelpQuestSurface(
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    formContent()
                 }
             }
         }
@@ -130,7 +125,6 @@ fun HelpQuestAdaptiveFormLayout(
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 24.dp, vertical = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AuthHeaderSection(
@@ -139,6 +133,7 @@ fun HelpQuestAdaptiveFormLayout(
                         errorText = errorText,
                         textAlign = TextAlign.Center
                     )
+                    Spacer(modifier = Modifier.height(24.dp))
                     formContent()
                 }
             }
@@ -169,7 +164,8 @@ fun ColumnScope.AuthHeaderSection(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(vertical = 5.dp),
                 textAlign = textAlign
             )
         }

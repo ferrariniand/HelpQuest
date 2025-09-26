@@ -12,7 +12,7 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 @Composable
 @PreviewLightDark
 @PreviewScreenSizes
-fun HelpQuestAdaptiveFormLayoutLightPreview() {
+fun HelpQuestAdaptiveFormLayoutPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveFormLayout(
             headerText = "Welcome to Help Quest!",
