@@ -15,7 +15,8 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 fun HelpQuestAdaptiveFormLayoutPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveFormLayout(
-            headerText = "Welcome to Help Quest!",
+            headerText = "Welcome to",
+            brandText = "Help Quest!",
             errorText = "Login failed!",
             logo = { HelpQuestBrandLogo() },
             formContent = {

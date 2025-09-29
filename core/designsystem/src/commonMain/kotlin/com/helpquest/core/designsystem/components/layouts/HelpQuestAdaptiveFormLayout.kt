@@ -36,10 +36,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun HelpQuestAdaptiveFormLayout(
     headerText: String,
+    brandText: String,
     errorText: String? = null,
     logo: @Composable () -> Unit,
-    formContent: @Composable ColumnScope.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    formContent: @Composable ColumnScope.() -> Unit
 ) {
     val configuration = currentDeviceConfiguration()
     val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
@@ -55,20 +56,22 @@ fun HelpQuestAdaptiveFormLayout(
                     .consumeWindowInsets(WindowInsets.navigationBars)
                     .consumeWindowInsets(WindowInsets.displayCutout),
                 header = {
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
                     logo()
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 AuthHeaderSection(
                     headerText = headerText,
+                    brandText = brandText,
                     headerColor = headerColor,
                     errorText = errorText,
-                    textAlign = TextAlign.Center
+                    headerTextAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 formContent()
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
 
@@ -82,17 +85,18 @@ fun HelpQuestAdaptiveFormLayout(
                     .padding(
                         top = 16.dp,
                         start = 16.dp,
-                        end = 16.dp,
+                        end = 64.dp,
                     )
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(0.8f),
                 ) {
                     logo()
                     Spacer(modifier = Modifier.height(24.dp))
                     AuthHeaderSection(
                         headerText = headerText,
+                        brandText = brandText,
                         headerColor = headerColor,
                         errorText = errorText
                     )
@@ -101,7 +105,9 @@ fun HelpQuestAdaptiveFormLayout(
                     modifier = Modifier
                         .weight(1f)
                 ) {
+                    Spacer(modifier = Modifier.height(24.dp))
                     formContent()
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
@@ -129,12 +135,14 @@ fun HelpQuestAdaptiveFormLayout(
                 ) {
                     AuthHeaderSection(
                         headerText = headerText,
+                        brandText = brandText,
                         headerColor = headerColor,
                         errorText = errorText,
-                        textAlign = TextAlign.Center
+                        headerTextAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     formContent()
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
@@ -144,15 +152,23 @@ fun HelpQuestAdaptiveFormLayout(
 @Composable
 fun ColumnScope.AuthHeaderSection(
     headerText: String,
+    brandText: String,
     headerColor: Color,
     errorText: String? = null,
-    textAlign: TextAlign = TextAlign.Start
+    headerTextAlign: TextAlign = TextAlign.Start
 ) {
     Text(
         text = headerText,
+        style = MaterialTheme.typography.titleMedium,
+        color = headerColor,
+        textAlign = headerTextAlign,
+        modifier = Modifier.fillMaxWidth()
+    )
+    Text(
+        text = brandText,
         style = MaterialTheme.typography.titleLarge,
         color = headerColor,
-        textAlign = textAlign,
+        textAlign = headerTextAlign,
         modifier = Modifier.fillMaxWidth()
     )
     AnimatedVisibility(
@@ -166,7 +182,7 @@ fun ColumnScope.AuthHeaderSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 5.dp),
-                textAlign = textAlign
+                textAlign = headerTextAlign
             )
         }
     }
@@ -179,7 +195,8 @@ fun ColumnScope.AuthHeaderSection(
 fun HelpQuestAdaptiveFormLayoutLightPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveFormLayout(
-            headerText = "Welcome to Help Quest!",
+            headerText = "Welcome to",
+            brandText = "Help Quest!",
             errorText = "Login failed!",
             logo = { HelpQuestBrandLogo() },
             formContent = {
@@ -208,7 +225,8 @@ fun HelpQuestAdaptiveFormLayoutDarkPreview() {
         darkTheme = true
     ) {
         HelpQuestAdaptiveFormLayout(
-            headerText = "Welcome to Help Quest!",
+            headerText = "Welcome to",
+            brandText = "Help Quest!",
             errorText = "Login failed!",
             logo = { HelpQuestBrandLogo() },
             formContent = {
