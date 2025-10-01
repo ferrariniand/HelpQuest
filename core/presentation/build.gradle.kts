@@ -17,6 +17,8 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(compose.components.resources)
                 implementation(libs.material3.adaptive)
+                implementation(libs.jetbrains.lifecycle.compose)
+                implementation(libs.bundles.koin.common)
 
 
                 implementation(projects.core.domain)

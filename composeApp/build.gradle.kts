@@ -85,6 +85,8 @@ kotlin {
             implementation(libs.kotlin.stdlib)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.jsystemthemedetector)
+
 
             implementation(projects.core.presentation)
         }
