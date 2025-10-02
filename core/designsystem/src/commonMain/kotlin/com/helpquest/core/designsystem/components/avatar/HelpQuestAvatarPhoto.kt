@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import helpquest.core.designsystem.generated.resources.Res
+import helpquest.core.designsystem.generated.resources.error_content_unavailable
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 enum class AvatarSize(val dp: Dp) {
@@ -38,7 +41,6 @@ fun HelpQuestAvatarPhoto(
     displayText: String? = null,
     size: AvatarSize = AvatarSize.SMALL,
     imageUrl: String? = null,
-    errorContentDescription: String? = null,
     onClick: (() -> Unit)? = null,
     textColor: Color = MaterialTheme.colorScheme.extended.textPlaceholder
 ) {
@@ -75,7 +77,7 @@ fun HelpQuestAvatarPhoto(
                 .padding(10.dp),
             error = {
                 if (displayText == null) {
-                    //used to simulate the preview
+                    //LocalInspectionMode.current is used to simulate the Composable Preview
                     if (LocalInspectionMode.current) {
                         Icon(
                             imageVector = Icons.Filled.Person,
@@ -84,7 +86,7 @@ fun HelpQuestAvatarPhoto(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = errorContentDescription,
+                            contentDescription = stringResource(Res.string.error_content_unavailable),
                             tint = MaterialTheme.colorScheme.extended.cakeRed,
                         )
                     }
