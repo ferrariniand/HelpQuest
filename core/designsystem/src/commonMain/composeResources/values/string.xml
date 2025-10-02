@@ -3,5 +3,6 @@
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
     <string name="you">You</string>
+    <string name="dismiss_dialog">Dismiss dialog</string>
     <string name="error_content_unavailable">Content unavailable</string>
 </resources>
