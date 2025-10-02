@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.convention.kmp.library)
     alias(libs.plugins.convention.buildkonfig)
@@ -17,6 +16,7 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(libs.bundles.ktor.common)
                 implementation(libs.touchlab.kermit)
+                implementation(libs.koin.core)
 
                 implementation(projects.core.domain)
                 implementation(projects.core.database)
@@ -38,7 +38,7 @@ kotlin {
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
                 implementation(libs.ktor.client.okhttp)
-
+                implementation(libs.koin.android)
             }
         }
 
@@ -51,6 +51,12 @@ kotlin {
                 // KMP dependencies declared in commonMain.
                 implementation(libs.ktor.client.darwin)
 
+            }
+        }
+
+        desktopMain {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
             }
         }
     }

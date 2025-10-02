@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -21,6 +21,9 @@ kotlin {
             // Splash screen
             implementation(libs.core.splashscreen)
 
+            //Koin
+            implementation(libs.koin.android)
+
             //api command is like implementation command, but extends the usage of the lib to the modules that depends on this module
             api(libs.play.feature.delivery)
             api(libs.play.feature.delivery.ktx)
@@ -33,6 +36,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            //Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -41,9 +45,13 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.jetbrains.compose.viewmodel)
             implementation(libs.jetbrains.lifecycle.compose)
+            implementation(libs.jetbrains.compose.navigation)
 
             // Coil
             implementation(libs.coil.compose)
+
+            //Koin
+            implementation(libs.bundles.koin.common)
 
             // Core Modules
             implementation(projects.core.domain)
