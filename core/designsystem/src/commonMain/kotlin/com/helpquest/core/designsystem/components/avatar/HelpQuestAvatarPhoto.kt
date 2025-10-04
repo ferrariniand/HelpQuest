@@ -27,6 +27,7 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import helpquest.core.designsystem.generated.resources.Res
 import helpquest.core.designsystem.generated.resources.error_content_unavailable
+import helpquest.core.designsystem.generated.resources.error_user_image_unavailable
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -40,7 +41,9 @@ fun HelpQuestAvatarPhoto(
     modifier: Modifier = Modifier,
     displayText: String? = null,
     size: AvatarSize = AvatarSize.SMALL,
-    imageUrl: String? = null,
+    userImageUrl: String? = null,
+    classImageUrl: String? = null,
+    showUserIdentity: Boolean = false,
     onClick: (() -> Unit)? = null,
     textColor: Color = MaterialTheme.colorScheme.extended.textPlaceholder
 ) {
@@ -68,7 +71,7 @@ fun HelpQuestAvatarPhoto(
             )
         }
         SubcomposeAsyncImage(
-            model = imageUrl,
+            model = if (showUserIdentity) userImageUrl else classImageUrl,
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier
@@ -86,7 +89,11 @@ fun HelpQuestAvatarPhoto(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = stringResource(Res.string.error_content_unavailable),
+                            contentDescription = if (showUserIdentity && userImageUrl == null) {
+                                stringResource(Res.string.error_user_image_unavailable)
+                            } else {
+                                stringResource(Res.string.error_content_unavailable)
+                            },
                             tint = MaterialTheme.colorScheme.extended.cakeRed,
                         )
                     }
@@ -146,7 +153,7 @@ fun HelpQuestAvatarPhotoSmallDarkPreview() {
         darkTheme = true
     ) {
         HelpQuestAvatarPhoto(
-            imageUrl = "https://picsum.photos/200"
+            userImageUrl = "https://picsum.photos/200"
         )
     }
 }

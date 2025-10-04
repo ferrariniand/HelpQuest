@@ -5,4 +5,5 @@
     <string name="you">You</string>
     <string name="dismiss_dialog">Dismiss dialog</string>
     <string name="error_content_unavailable">Content unavailable</string>
+    <string name="error_user_image_unavailable">User image unavailable</string>
 </resources>

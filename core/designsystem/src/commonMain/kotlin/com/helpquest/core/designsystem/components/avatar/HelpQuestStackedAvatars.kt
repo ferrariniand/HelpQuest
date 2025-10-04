@@ -31,7 +31,7 @@ fun HelpQuestStackedAvatars(
             HelpQuestAvatarPhoto(
                 displayText = avatarUi.initials,
                 size = size,
-                imageUrl = avatarUi.imageUrl
+                userImageUrl = avatarUi.imageUrl
             )
         }
 
