@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
@@ -24,62 +22,50 @@ import coil3.compose.SubcomposeAsyncImage
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import helpquest.core.designsystem.generated.resources.Res
-import helpquest.core.designsystem.generated.resources.error_user_image_unavailable
+import helpquest.core.designsystem.generated.resources.default_class
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 @Composable
-fun HelpQuestAvatarPhoto(
-    displayText: String,
-    size: AvatarSize,
+fun HelpQuestClassMark(
+    sizeAvatarPhoto: AvatarSize,
     modifier: Modifier = Modifier,
-    userImageUrl: String? = null,
-    showUserIdentity: Boolean = false,
-    textColor: Color = MaterialTheme.colorScheme.extended.textPlaceholder
+    classImageUrl: String? = null, //TODO maybe resource or drawable
 ) {
+    val sizeClassMark = sizeAvatarPhoto.dp.div(3)
     Box(
         modifier = modifier
-            .size(size.dp)
+            .size(sizeClassMark)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.extended.secondaryFill)
             .border(
-                width = 2.dp,
+                width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
     ) {
-        if (!showUserIdentity || userImageUrl == null) {
-            Text(
-                text = displayText.uppercase(),
-                style = MaterialTheme.typography.titleMedium,
-                color = textColor
-            )
-        }
         SubcomposeAsyncImage(
-            model = userImageUrl,
+            model = classImageUrl,
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier
                 .clip(CircleShape)
                 .matchParentSize()
-                .padding(10.dp),
+                .padding(2.dp),
             error = {
-                if (showUserIdentity && userImageUrl != null) {
-                    //LocalInspectionMode.current is used to simulate the Composable Preview
-                    if (LocalInspectionMode.current) {
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = null,
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.Warning,
-                            contentDescription = stringResource(Res.string.error_user_image_unavailable),
-                            tint = MaterialTheme.colorScheme.extended.cakeRed,
-                        )
-                    }
+                //LocalInspectionMode.current is used to simulate the Composable Preview
+                if (LocalInspectionMode.current) {
+                    Icon(
+                        imageVector = Icons.Filled.Build,
+                        contentDescription = null,
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Person, //TODO define default icon
+                        contentDescription = stringResource(Res.string.default_class),
+                        tint = MaterialTheme.colorScheme.extended.cakeRed,
+                    )
                 }
             }
         )
@@ -90,11 +76,11 @@ fun HelpQuestAvatarPhoto(
 @Preview(
     showBackground = true
 )
-fun HelpQuestAvatarPhotoLargeLightPreview() {
+fun HelpQuestClassMarkLargeLightPreview() {
     HelpQuestTheme {
-        HelpQuestAvatarPhoto(
-            displayText = "AF",
-            size = AvatarSize.LARGE
+        HelpQuestClassMark(
+            sizeAvatarPhoto = AvatarSize.LARGE,
+            classImageUrl = "test",
         )
     }
 }
@@ -104,13 +90,13 @@ fun HelpQuestAvatarPhotoLargeLightPreview() {
     showBackground = true,
     backgroundColor = 1
 )
-fun HelpQuestAvatarPhotoLargeDarkPreview() {
+fun HelpQuestClassMarkLargeDarkPreview() {
     HelpQuestTheme(
         darkTheme = true
     ) {
-        HelpQuestAvatarPhoto(
-            displayText = "AF",
-            size = AvatarSize.LARGE
+        HelpQuestClassMark(
+            sizeAvatarPhoto = AvatarSize.LARGE,
+            classImageUrl = "test",
         )
     }
 }
@@ -119,13 +105,11 @@ fun HelpQuestAvatarPhotoLargeDarkPreview() {
 @Preview(
     showBackground = true
 )
-fun HelpQuestAvatarPhotoSmallLightPreview() {
+fun HelpQuestClassMarkSmallLightPreview() {
     HelpQuestTheme {
-        HelpQuestAvatarPhoto(
-            displayText = "AF",
-            size = AvatarSize.SMALL,
-            userImageUrl = "test",
-            showUserIdentity = true
+        HelpQuestClassMark(
+            sizeAvatarPhoto = AvatarSize.SMALL,
+            classImageUrl = "test",
         )
     }
 }
@@ -135,15 +119,13 @@ fun HelpQuestAvatarPhotoSmallLightPreview() {
     showBackground = true,
     backgroundColor = 1
 )
-fun HelpQuestAvatarPhotoSmallDarkPreview() {
+fun HelpQuestClassMarkSmallDarkPreview() {
     HelpQuestTheme(
         darkTheme = true
     ) {
-        HelpQuestAvatarPhoto(
-            displayText = "AF",
-            size = AvatarSize.SMALL,
-            userImageUrl = "test",
-            showUserIdentity = true
+        HelpQuestClassMark(
+            sizeAvatarPhoto = AvatarSize.SMALL,
+            classImageUrl = "test",
         )
     }
 }
