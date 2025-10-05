@@ -15,6 +15,9 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.bundles.koin.common)
 
                 implementation(projects.core.domain)
                 implementation(projects.core.designsystem)
