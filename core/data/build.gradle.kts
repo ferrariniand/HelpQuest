@@ -22,14 +22,6 @@ kotlin {
             }
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.assertk)
-                implementation(libs.turbine)
-            }
-        }
-
         androidMain {
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on

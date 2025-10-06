@@ -4,7 +4,6 @@ import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 internal fun Project.configureKotlinMultiplatform() {
     extensions.configure<LibraryExtension> {
@@ -25,10 +24,6 @@ internal fun Project.configureKotlinMultiplatform() {
                 baseName = this@configureKotlinMultiplatform.pathToFrameworkName()
             }
         }
-
-        kotlinExtension.sourceSets.findByName("androidDeviceTest")
-        tasks.register("testClasses")
-
 
         compilerOptions {
             freeCompilerArgs.add("-Xexpect-actual-classes")

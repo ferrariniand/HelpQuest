@@ -111,6 +111,9 @@ kotlin {
 
             implementation(projects.core.presentation)
         }
+        desktopTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
     }
 }
 

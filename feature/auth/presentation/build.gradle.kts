@@ -51,6 +51,9 @@ kotlin {
                 // KMP dependencies declared in commonMain.
             }
         }
+        desktopTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
     }
 
 }

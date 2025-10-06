@@ -214,6 +214,7 @@ assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assert
 test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockkCommon" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
