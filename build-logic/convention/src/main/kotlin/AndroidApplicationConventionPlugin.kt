@@ -22,6 +22,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                     targetSdk = libs.findVersion("projectTargetSdkVersion").get().toString().toInt()
                     versionCode = libs.findVersion("projectVersionCode").get().toString().toInt()
                     versionName = libs.findVersion("projectVersionName").get().toString()
+
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
                 packaging {
                     resources {

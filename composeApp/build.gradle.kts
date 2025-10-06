@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -86,6 +89,10 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.assertk)
+            implementation(libs.turbine)
+            implementation(kotlin("test-annotations-common"))
+            implementation(compose.uiTest)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

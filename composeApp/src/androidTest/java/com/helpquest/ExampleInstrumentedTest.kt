@@ -1,12 +1,14 @@
 package com.helpquest
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,5 +22,12 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.helpquest", appContext.packageName)
+    }
+
+    @Test
+    fun testPackageName() {
+        // Context of the app under test.
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        assertThat(context.packageName).isEqualTo("com.helpquest")
     }
 }
