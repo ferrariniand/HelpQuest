@@ -14,20 +14,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
 
                 implementation(projects.core.domain)
                 implementation(projects.core.data)
                 implementation(projects.feature.auth.domain)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.assertk)
-                implementation(libs.turbine)
             }
         }
 

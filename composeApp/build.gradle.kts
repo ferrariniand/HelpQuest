@@ -37,6 +37,9 @@ kotlin {
             api(libs.play.asset.delivery)
             api(libs.play.asset.delivery.ktx)
 
+            //Test
+            implementation(libs.mockk)
+
         }
         commonMain.dependencies {
             //Compose
@@ -89,10 +92,13 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlin.test.annotations.common)
+            implementation(libs.kotlinx.coroutines.test)
             implementation(libs.assertk)
-            implementation(libs.turbine)
-            implementation(kotlin("test-annotations-common"))
+            implementation(libs.mockk.common)
+
             implementation(compose.uiTest)
+            implementation(libs.turbine)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

@@ -74,6 +74,8 @@ turbine = "1.2.1"
 kotlinxCoroutinesTest = "1.10.2"
 testCoreKtx = "1.7.0"
 composeTest = "1.9.2"
+mockk = "1.13.5"
+mockkCommon = "1.12.5"
 
 
 #TODO: Are Necessary?
@@ -94,7 +96,6 @@ androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = 
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "compose-lifecycle" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
 androidx-ui = { module = "androidx.compose.ui:ui" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 
 # AndroidX Core
@@ -204,14 +205,18 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-annotations-common = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeTest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeTest" }
-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertK" }
-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertK" }
+test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockkCommon" }
+core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 
 

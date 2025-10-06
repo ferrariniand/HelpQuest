@@ -13,7 +13,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
@@ -23,14 +22,6 @@ kotlin {
                 implementation(libs.coil.network.ktor)
 
                 implementation(projects.core.presentation)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.assertk)
-                implementation(libs.turbine)
             }
         }
 

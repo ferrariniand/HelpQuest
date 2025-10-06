@@ -6,7 +6,7 @@ import com.helpquest.convention.pathToResourcePrefix
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KmpLibraryConventionPlugin : Plugin<Project> {
 
@@ -31,13 +31,35 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
-                "commonTestImplementation"(libs.findLibrary("kotlin-test").get())
-                "androidTestImplementation"(libs.findLibrary("androidx-runner").get())
-                "androidTestImplementation"(libs.findLibrary("androidx-test-core").get())
-                "androidTestImplementation"(libs.findLibrary("androidx-junit").get())
+            extensions.configure<KotlinMultiplatformExtension> {
+                sourceSets.getByName("commonMain") {
+                    dependencies {
+                        implementation(libs.findLibrary("kotlin-stdlib").get())
+                        implementation(libs.findLibrary("kotlinx-serialization-json").get())
+                        implementation(libs.findLibrary("touchlab-kermit").get())
+
+                    }
+                }
+                sourceSets.getByName("commonTest") {
+                    dependencies {
+                        implementation(libs.findLibrary("kotlin-test").get())
+                        implementation(libs.findLibrary("kotlin-test-annotations-common").get())
+                        implementation(libs.findLibrary("kotlinx-coroutines-test").get())
+                        implementation(libs.findLibrary("assertk").get())
+                        implementation(libs.findLibrary("turbine").get())
+                        implementation(libs.findLibrary("mockk-common").get())
+                    }
+                }
+                sourceSets.getByName("androidMain") {
+                    dependencies {
+                        implementation(libs.findLibrary("mockk").get())
+                        implementation(libs.findLibrary("androidx-runner").get())
+                        implementation(libs.findLibrary("androidx-test-core").get())
+                        implementation(libs.findLibrary("androidx-junit").get())
+                    }
+                }
             }
+
         }
     }
 }

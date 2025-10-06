@@ -12,10 +12,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
                 implementation(libs.bundles.ktor.common)
-                implementation(libs.touchlab.kermit)
                 implementation(libs.koin.core)
 
                 implementation(projects.core.domain)

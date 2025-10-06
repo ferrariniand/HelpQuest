@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     alias(libs.plugins.convention.cmp.feature)
@@ -13,9 +16,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
-                implementation(libs.touchlab.kermit)
 
                 implementation(projects.core.domain)
                 implementation(projects.core.presentation)
@@ -27,9 +28,7 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.assertk)
-                implementation(libs.turbine)
+                implementation(compose.uiTest)
             }
         }
 
