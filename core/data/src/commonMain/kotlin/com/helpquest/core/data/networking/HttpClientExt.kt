@@ -123,10 +123,17 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
     }
 }
 
-fun constructRoute(route: String): String {
+fun constructRoute(
+    route: String,
+    baseUrl: String = UrlConstants.BASE_URL_HTTP
+): String {
+    val routeNoWhitespace = route
+        .replace(Regex("\\s"), "")
+        .replace("//", "/")
     return when {
-        route.contains(UrlConstants.BASE_URL_HTTP) -> route
-        route.startsWith("/") -> "${UrlConstants.BASE_URL_HTTP}$route"
-        else -> "${UrlConstants.BASE_URL_HTTP}/$route"
+        routeNoWhitespace.isBlank() -> baseUrl
+        routeNoWhitespace.contains(baseUrl) -> routeNoWhitespace
+        routeNoWhitespace.startsWith("/") -> "${baseUrl}$routeNoWhitespace"
+        else -> "${baseUrl}/$routeNoWhitespace"
     }
 }
