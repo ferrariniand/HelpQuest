@@ -9,6 +9,7 @@ plugins {
 }
 
 kotlin {
+    //TODO add Kover for code coveradge (at the moment added only to core/data module
 
     sourceSets {
         androidMain.dependencies {
@@ -96,6 +97,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.assertk)
             implementation(libs.mockk.common)
+            implementation(libs.koin.test)
 
             implementation(compose.uiTest)
             implementation(libs.turbine)

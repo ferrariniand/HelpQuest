@@ -74,8 +74,9 @@ turbine = "1.2.1"
 kotlinxCoroutinesTest = "1.10.2"
 testCoreKtx = "1.7.0"
 composeTest = "1.9.2"
-mockk = "1.13.5"
+mockk = "1.14.6"
 mockkCommon = "1.12.5"
+kover = "0.9.2"
 
 
 #TODO: Are Necessary?
@@ -215,6 +216,7 @@ test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockkCommon" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
@@ -272,6 +274,9 @@ room = { id = "androidx.room", version.ref = "room" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+
+#Test Coveradge
+test-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 
 #TODO: Are Necessary?
 android-lint = { id = "com.android.lint", version.ref = "agp" }

@@ -4,6 +4,25 @@ plugins {
 }
 
 kotlin {
+    kover {
+        reports {
+            filters {
+                excludes {
+                    annotatedBy("androidx.compose.runtime.Composable")
+                    classes(
+                        "com.helpquestcore.data.networking.UrlConstants",
+                        "com.helpquestcore.data.networking.HttpClientFactory",
+                    )
+                    packages(
+                        "com.helpquestcore.data.logging",
+                        "com.helpquestcore.data.di",
+                        "com.helpquestcore.data.dto",
+                    )
+                }
+            }
+        }
+    }
+
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
     // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is

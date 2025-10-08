@@ -17,6 +17,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.multiplatform")
                 apply("org.jetbrains.kotlin.plugin.serialization")
+                apply("org.jetbrains.kotlinx.kover")
             }
 
             configureKotlinMultiplatform()
@@ -72,6 +73,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                         implementation(libs.findLibrary("assertk").get())
                         implementation(libs.findLibrary("turbine").get())
                         implementation(libs.findLibrary("mockk-common").get())
+                        implementation(libs.findLibrary("koin-test").get())
                     }
                 }
                 sourceSets.getByName("androidMain") {
