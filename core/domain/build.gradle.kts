@@ -4,7 +4,19 @@ plugins {
 }
 
 kotlin {
-
+    kover {
+        reports {
+            filters {
+                excludes {
+                    packages(
+                        "com.helpquestcore.core.domain.auth",
+                        "com.helpquestcore.core.domain.logging",
+                        "com.helpquestcore.core.domain.util",
+                    )
+                }
+            }
+        }
+    }
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
     // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is

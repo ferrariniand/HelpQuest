@@ -10,13 +10,13 @@ kotlin {
                 excludes {
                     annotatedBy("androidx.compose.runtime.Composable")
                     classes(
-                        "com.helpquestcore.data.networking.UrlConstants",
-                        "com.helpquestcore.data.networking.HttpClientFactory",
+                        "com.helpquestcore.core.data.networking.UrlConstants",
+                        "com.helpquestcore.core.data.networking.HttpClientFactory",
                     )
                     packages(
-                        "com.helpquestcore.data.logging",
-                        "com.helpquestcore.data.di",
-                        "com.helpquestcore.data.dto",
+                        "com.helpquestcore.core.data.logging",
+                        "com.helpquestcore.core.data.di",
+                        "com.helpquestcore.core.data.dto",
                     )
                 }
             }
