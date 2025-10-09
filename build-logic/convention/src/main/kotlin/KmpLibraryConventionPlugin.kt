@@ -72,7 +72,6 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                         implementation(libs.findLibrary("kotlinx-coroutines-test").get())
                         implementation(libs.findLibrary("assertk").get())
                         implementation(libs.findLibrary("turbine").get())
-                        implementation(libs.findLibrary("mockk-common").get())
                         implementation(libs.findLibrary("koin-test").get())
                     }
                 }

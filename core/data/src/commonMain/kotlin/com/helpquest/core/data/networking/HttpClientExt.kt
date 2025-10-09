@@ -106,6 +106,8 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
                 Result.Success(response.body<T>())
             } catch (e: NoTransformationFoundException) {
                 Result.Failure(DataError.Remote.SERIALIZATION)
+            } catch (e: Exception) {
+                Result.Failure(DataError.Remote.UNKNOWN)
             }
         }
 
