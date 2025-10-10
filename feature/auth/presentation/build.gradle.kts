@@ -18,7 +18,8 @@ kotlin {
                         "com.helpquest.auth.presentation.*.*State",
                     )
                     packages(
-                        "com.helpquest.auth.data.di",
+                        "com.helpquest.auth.presentation.di",
+                        "com.helpquest.auth.presentation.navigation",
                     )
                 }
             }

@@ -1,6 +1,6 @@
+import com.helpquest.convention.configureAndroidTarget
 import com.helpquest.convention.configureDesktopTarget
 import com.helpquest.convention.configureIosTargets
-import com.helpquest.convention.configureAndroidTarget
 import com.helpquest.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,6 +15,8 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.multiplatform")
                 apply("org.jetbrains.compose")
                 apply("org.jetbrains.kotlin.plugin.compose")
+                apply("org.jetbrains.kotlin.plugin.serialization")
+                apply("org.jetbrains.kotlinx.kover")
             }
 
             configureAndroidTarget()

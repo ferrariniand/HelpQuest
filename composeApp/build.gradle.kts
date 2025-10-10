@@ -9,7 +9,19 @@ plugins {
 }
 
 kotlin {
-    //TODO add Kover for code coveradge (at the moment added only to core/data module
+    kover {
+        reports {
+            filters {
+                excludes {
+                    annotatedBy("androidx.compose.runtime.Composable")
+                    packages(
+                        "com.helpquest.di",
+                        "com.helpquest.navigation",
+                    )
+                }
+            }
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {
