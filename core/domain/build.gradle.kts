@@ -9,9 +9,9 @@ kotlin {
             filters {
                 excludes {
                     packages(
-                        "com.helpquestcore.core.domain.auth",
-                        "com.helpquestcore.core.domain.logging",
-                        "com.helpquestcore.core.domain.util",
+                        "com.helpquest.core.domain.auth",
+                        "com.helpquest.core.domain.logging",
+                        "com.helpquest.core.domain.util",
                     )
                 }
             }

@@ -7,6 +7,23 @@ plugins {
 }
 
 kotlin {
+    kover {
+        reports {
+            filters {
+                excludes {
+                    annotatedBy("androidx.compose.runtime.Composable")
+                    classes(
+                        "com.helpquest.auth.presentation.*.*Action",
+                        "com.helpquest.auth.presentation.*.*Event",
+                        "com.helpquest.auth.presentation.*.*State",
+                    )
+                    packages(
+                        "com.helpquest.auth.data.di",
+                    )
+                }
+            }
+        }
+    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the

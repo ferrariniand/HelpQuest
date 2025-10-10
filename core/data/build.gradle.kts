@@ -8,15 +8,14 @@ kotlin {
         reports {
             filters {
                 excludes {
-                    annotatedBy("androidx.compose.runtime.Composable")
                     classes(
-                        "com.helpquestcore.core.data.networking.UrlConstants",
-                        "com.helpquestcore.core.data.networking.HttpClientFactory",
+                        "com.helpquest.core.data.networking.UrlConstants",
+                        "com.helpquest.core.data.networking.HttpClientFactory",
                     )
                     packages(
-                        "com.helpquestcore.core.data.logging",
-                        "com.helpquestcore.core.data.di",
-                        "com.helpquestcore.core.data.dto",
+                        "com.helpquest.core.data.logging",
+                        "com.helpquest.core.data.di",
+                        "com.helpquest.core.data.dto",
                     )
                 }
             }

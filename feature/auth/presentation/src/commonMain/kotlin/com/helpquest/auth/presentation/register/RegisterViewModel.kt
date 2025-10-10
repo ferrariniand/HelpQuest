@@ -30,14 +30,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val authService: AuthService
+    private val authService: AuthService,
+    initialState: RegisterState = RegisterState()
 ) : ViewModel() {
     private val eventChannel = Channel<RegisterEvent>()
     val events = eventChannel.receiveAsFlow()
 
     private var hasLoadedInitialData = false
 
-    private val _state = MutableStateFlow(RegisterState())
+    private val _state = MutableStateFlow(initialState)
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
