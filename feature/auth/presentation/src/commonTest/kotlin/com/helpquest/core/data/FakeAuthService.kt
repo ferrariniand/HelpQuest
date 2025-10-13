@@ -7,6 +7,7 @@ import com.helpquest.core.domain.util.Result
 
 class FakeAuthService : AuthService {
     var registerResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
+    var resendVerificationResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
 
     override suspend fun register(
         email: String,
@@ -14,5 +15,9 @@ class FakeAuthService : AuthService {
         password: String
     ): EmptyResult<DataError.Remote> {
         return registerResult
+    }
+
+    override suspend fun resendVerificationEmail(email: String): EmptyResult<DataError.Remote> {
+        return resendVerificationResult
     }
 }

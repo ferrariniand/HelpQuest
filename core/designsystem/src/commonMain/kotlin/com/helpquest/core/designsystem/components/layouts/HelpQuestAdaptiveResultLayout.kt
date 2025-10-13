@@ -4,7 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,29 +33,76 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestAdaptiveResultLayout(
+    brandLogo: @Composable () -> Unit = { HelpQuestBrandLogo() },
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val configuration = currentDeviceConfiguration()
+    //TODO next improvement
+//    val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
+//        MaterialTheme.colorScheme.onBackground
+//    } else {
+//        MaterialTheme.colorScheme.extended.textPrimary
+//    }
 
-    Scaffold(
-        modifier = modifier
-    ) { innerPadding ->
-        if (configuration == DeviceConfiguration.MOBILE_PORTRAIT) {
+    when (configuration) {
+        DeviceConfiguration.MOBILE_PORTRAIT -> {
             HelpQuestSurface(
-                modifier = Modifier
-                    .padding(innerPadding),
+                modifier = modifier,
                 header = {
                     Spacer(modifier = Modifier.height(32.dp))
-                    HelpQuestBrandLogo()
+                    brandLogo()
                     Spacer(modifier = Modifier.height(32.dp))
                 },
                 content = content
             )
-        } else {
+        }
+
+        DeviceConfiguration.MOBILE_LANDSCAPE -> {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .consumeWindowInsets(WindowInsets.displayCutout)
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 64.dp,
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.8f),
+                ) {
+                    brandLogo()
+                    Spacer(modifier = Modifier.height(24.dp))
+                    //TODO next improvement
+//                    HeaderSection(
+//                        headerText = headerText,
+//                        headerColor = headerColor,
+//                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(32.dp))
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(horizontal = 24.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    content()
+                }
+            }
+        }
+
+        DeviceConfiguration.TABLET_PORTRAIT,
+        DeviceConfiguration.TABLET_LANDSCAPE,
+        DeviceConfiguration.DESKTOP -> {
             Column(
-                modifier = Modifier
-                    .padding(innerPadding)
+                modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(top = 32.dp),

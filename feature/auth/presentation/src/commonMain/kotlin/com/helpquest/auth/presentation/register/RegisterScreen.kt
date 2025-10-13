@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
@@ -71,8 +70,7 @@ fun RegisterScreen(
         HelpQuestAdaptiveFormLayout(
             headerText = stringResource(Res.string.welcome_to),
             brandText = stringResource(Res.string.help_quest),
-            errorText = state.registrationError?.asString(),
-            logo = { HelpQuestBrandLogo() }
+            errorText = state.registrationError?.asString()
         ) {
             HelpQuestTextField(
                 state = state.usernameTextState,

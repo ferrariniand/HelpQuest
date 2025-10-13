@@ -10,4 +10,5 @@ val authPresentationModule = module {
     single<RegisterState> { RegisterState() }
 
     viewModelOf(::RegisterViewModel)
+    viewModelOf(::RegisterSuccessViewModel)
 }

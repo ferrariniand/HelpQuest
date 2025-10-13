@@ -1,6 +1,5 @@
 package com.helpquest.core.designsystem.components.layouts
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
@@ -38,7 +36,7 @@ fun HelpQuestAdaptiveFormLayout(
     headerText: String,
     brandText: String,
     errorText: String? = null,
-    logo: @Composable () -> Unit,
+    logo: @Composable () -> Unit = { HelpQuestBrandLogo() },
     modifier: Modifier = Modifier,
     formContent: @Composable ColumnScope.() -> Unit
 ) {
@@ -62,7 +60,7 @@ fun HelpQuestAdaptiveFormLayout(
                 }
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
-                AuthHeaderSection(
+                HeaderSection(
                     headerText = headerText,
                     brandText = brandText,
                     headerColor = headerColor,
@@ -94,7 +92,7 @@ fun HelpQuestAdaptiveFormLayout(
                 ) {
                     logo()
                     Spacer(modifier = Modifier.height(24.dp))
-                    AuthHeaderSection(
+                    HeaderSection(
                         headerText = headerText,
                         brandText = brandText,
                         headerColor = headerColor,
@@ -133,7 +131,7 @@ fun HelpQuestAdaptiveFormLayout(
                         .padding(horizontal = 24.dp, vertical = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AuthHeaderSection(
+                    HeaderSection(
                         headerText = headerText,
                         brandText = brandText,
                         headerColor = headerColor,
@@ -145,45 +143,6 @@ fun HelpQuestAdaptiveFormLayout(
                     Spacer(modifier = Modifier.height(24.dp))
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ColumnScope.AuthHeaderSection(
-    headerText: String,
-    brandText: String,
-    headerColor: Color,
-    errorText: String? = null,
-    headerTextAlign: TextAlign = TextAlign.Start
-) {
-    Text(
-        text = headerText,
-        style = MaterialTheme.typography.titleMedium,
-        color = headerColor,
-        textAlign = headerTextAlign,
-        modifier = Modifier.fillMaxWidth()
-    )
-    Text(
-        text = brandText,
-        style = MaterialTheme.typography.titleLarge,
-        color = headerColor,
-        textAlign = headerTextAlign,
-        modifier = Modifier.fillMaxWidth()
-    )
-    AnimatedVisibility(
-        visible = errorText != null
-    ) {
-        if (errorText != null) {
-            Text(
-                text = errorText,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp),
-                textAlign = headerTextAlign
-            )
         }
     }
 }

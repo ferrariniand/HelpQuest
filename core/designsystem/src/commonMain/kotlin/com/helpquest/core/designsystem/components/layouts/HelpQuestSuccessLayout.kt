@@ -1,5 +1,6 @@
 package com.helpquest.core.designsystem.components.layouts
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,27 +19,44 @@ import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.util.DeviceConfiguration
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestSuccessLayout(
     title: String,
     description: String,
-    icon: @Composable () -> Unit = { HelpQuestSuccessIcon() },
     primaryButton: @Composable () -> Unit,
     secondaryButton: @Composable (() -> Unit)? = null,
+    secondaryError: String? = null,
     modifier: Modifier = Modifier
 ) {
+    val configuration = currentDeviceConfiguration()
+    val iconModifier = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
+        Modifier.offset(y = -(25).dp)
+    } else {
+        Modifier
+    }
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        icon()
+        HelpQuestSuccessIcon(
+            modifier = iconModifier
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = -(25).dp),
+                .offset(
+                    y = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
+                        -(75).dp
+                    } else {
+                        -(25).dp
+                    }
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -61,6 +79,21 @@ fun HelpQuestSuccessLayout(
             if (secondaryButton != null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 secondaryButton()
+                AnimatedVisibility(
+                    visible = secondaryError != null
+                ) {
+                    if (secondaryError != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = secondaryError,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -127,6 +160,71 @@ fun HelpQuestSuccessLayoutDarkPreview() {
                         .fillMaxWidth()
                 )
             }
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+fun HelpQuestSuccessLayoutErrorLightPreview() {
+    HelpQuestTheme {
+        HelpQuestSuccessLayout(
+            title = "Hello world!",
+            description = "Test description",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error"
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+fun HelpQuestSuccessLayoutErrorDarkPreview() {
+    HelpQuestTheme(
+        darkTheme = true
+    ) {
+        HelpQuestSuccessLayout(
+            title = "Hello world!",
+            description = "Test description",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error"
         )
     }
 }
