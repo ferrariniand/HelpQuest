@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +27,7 @@ import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
+import com.helpquest.core.designsystem.components.icons.HelpQuestLoadingIndicator
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
@@ -38,13 +37,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestAdaptiveResultLayout(
-    title: String,
+    title: String? = null,
     description: String,
-    primaryButton: @Composable () -> Unit,
+    primaryButton: (@Composable () -> Unit)? = null,
     secondaryButton: @Composable (() -> Unit)? = null,
     secondaryError: String? = null,
     brandLogo: @Composable () -> Unit = { HelpQuestBrandLogo() },
     resultLogo: @Composable ColumnScope.() -> Unit,
+    isLoadings: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val configuration = currentDeviceConfiguration()
@@ -64,16 +64,21 @@ fun HelpQuestAdaptiveResultLayout(
                     Spacer(modifier = Modifier.height(32.dp))
                 },
                 content = {
+                    if (isLoadings) {
+                        Spacer(modifier = Modifier.height(64.dp))
+                    }
                     resultLogo()
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.extended.textPrimary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    if (title != null) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.extended.textPrimary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                     HelpQuestResultBodyLayout(
                         description = description,
                         primaryButton = primaryButton,
@@ -90,11 +95,10 @@ fun HelpQuestAdaptiveResultLayout(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .consumeWindowInsets(WindowInsets.displayCutout)
                     .padding(
                         top = 16.dp,
-                        start = 16.dp,
-                        end = 64.dp,
+                        start = 50.dp,
+                        end = 55.dp,
                     )
             ) {
                 Column(
@@ -102,12 +106,14 @@ fun HelpQuestAdaptiveResultLayout(
                         .weight(0.8f),
                 ) {
                     brandLogo()
-                    Spacer(modifier = Modifier.height(24.dp))
-                    HeaderSection(
-                        headerText = title,
-                        headerColor = headerColor,
-                        errorText = secondaryError
-                    )
+                    if (title != null) {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        HeaderSection(
+                            headerText = title,
+                            headerColor = headerColor,
+                            errorText = secondaryError
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier
@@ -115,8 +121,10 @@ fun HelpQuestAdaptiveResultLayout(
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 16.dp)
+                        .heightIn(min = 200.dp)
                         .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = if (isLoadings) Arrangement.Center else Arrangement.Top
                 ) {
                     resultLogo()
                     HelpQuestResultBodyLayout(
@@ -139,11 +147,12 @@ fun HelpQuestAdaptiveResultLayout(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
-                HelpQuestBrandLogo()
+                brandLogo()
                 Spacer(modifier = Modifier.height(32.dp))
                 Column(
                     modifier = Modifier
                         .widthIn(max = 480.dp)
+                        .heightIn(min = 200.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
@@ -152,13 +161,15 @@ fun HelpQuestAdaptiveResultLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     resultLogo()
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.extended.textPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    if (title != null) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.extended.textPrimary,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                     HelpQuestResultBodyLayout(
                         description = description,
                         primaryButton = primaryButton,
@@ -460,6 +471,43 @@ fun HelpQuestAdaptiveResultFailureWithErrorLayoutDarkPreview() {
             secondaryError = "This is an error",
             resultLogo = {
                 HelpQuestFailureIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+fun HelpQuestAdaptiveResultLoadingLayoutLightPreview() {
+    HelpQuestTheme {
+        HelpQuestAdaptiveResultLayout(
+            description = "Test description disposed on more than one line and showing loading message",
+            resultLogo = {
+                HelpQuestLoadingIndicator()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+fun HelpQuestAdaptiveResultLoadingLayoutDarkPreview() {
+    HelpQuestTheme(
+        darkTheme = true
+    ) {
+        HelpQuestAdaptiveResultLayout(
+            description = "Test description disposed on more than one line and showing loading message",
+            resultLogo = {
+                HelpQuestLoadingIndicator()
             },
             modifier = Modifier
                 .fillMaxSize(),

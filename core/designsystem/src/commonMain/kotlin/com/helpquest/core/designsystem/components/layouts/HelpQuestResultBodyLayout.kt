@@ -16,7 +16,7 @@ import com.helpquest.core.designsystem.theme.extended
 @Composable
 fun ColumnScope.HelpQuestResultBodyLayout(
     description: String,
-    primaryButton: @Composable () -> Unit,
+    primaryButton: (@Composable () -> Unit)? = null,
     secondaryButton: @Composable (() -> Unit)? = null,
     secondaryError: String? = null,
 ) {
@@ -24,11 +24,14 @@ fun ColumnScope.HelpQuestResultBodyLayout(
         text = description,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.extended.textSecondary,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxWidth()
     )
-    Spacer(modifier = Modifier.height(24.dp))
-
-    primaryButton()
+    if (primaryButton != null) {
+        Spacer(modifier = Modifier.height(24.dp))
+        primaryButton()
+    }
 
     if (secondaryButton != null) {
         Spacer(modifier = Modifier.height(8.dp))

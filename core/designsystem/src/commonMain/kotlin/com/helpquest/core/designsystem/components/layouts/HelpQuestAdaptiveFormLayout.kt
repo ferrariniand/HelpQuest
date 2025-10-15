@@ -82,8 +82,8 @@ fun HelpQuestAdaptiveFormLayout(
                     .consumeWindowInsets(WindowInsets.displayCutout)
                     .padding(
                         top = 16.dp,
-                        start = 16.dp,
-                        end = 64.dp,
+                        start = 50.dp,
+                        end = 55.dp,
                     )
             ) {
                 Column(
