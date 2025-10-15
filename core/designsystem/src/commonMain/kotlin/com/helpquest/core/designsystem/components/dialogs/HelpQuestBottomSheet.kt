@@ -10,6 +10,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun HelpQuestBottomSheet(
@@ -29,7 +30,7 @@ fun HelpQuestBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null, //TODO: maybe will be used in a different BottomSheet
-        contentWindowInsets = { WindowInsets() },
+        contentWindowInsets = { WindowInsets(0.dp) },
         modifier = modifier.statusBarsPadding()
     ) {
         content()

@@ -29,7 +29,7 @@ fun SnackbarScaffold(
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier
-                    .padding(bottom = 24.dp)
+                    .padding(bottom = 34.dp)
             )
         }
     ) { innerPadding ->
