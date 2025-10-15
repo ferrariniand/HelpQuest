@@ -26,24 +26,33 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
+import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
+import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestAdaptiveResultLayout(
+    title: String,
+    description: String,
+    primaryButton: @Composable () -> Unit,
+    secondaryButton: @Composable (() -> Unit)? = null,
+    secondaryError: String? = null,
     brandLogo: @Composable () -> Unit = { HelpQuestBrandLogo() },
+    resultLogo: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
 ) {
     val configuration = currentDeviceConfiguration()
-    //TODO next improvement
-//    val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
-//        MaterialTheme.colorScheme.onBackground
-//    } else {
-//        MaterialTheme.colorScheme.extended.textPrimary
-//    }
+    val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
+        MaterialTheme.colorScheme.onBackground
+    } else {
+        MaterialTheme.colorScheme.extended.textPrimary
+    }
 
     when (configuration) {
         DeviceConfiguration.MOBILE_PORTRAIT -> {
@@ -54,7 +63,24 @@ fun HelpQuestAdaptiveResultLayout(
                     brandLogo()
                     Spacer(modifier = Modifier.height(32.dp))
                 },
-                content = content
+                content = {
+                    resultLogo()
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.extended.textPrimary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    HelpQuestResultBodyLayout(
+                        description = description,
+                        primaryButton = primaryButton,
+                        secondaryButton = secondaryButton,
+                        secondaryError = secondaryError
+                    )
+                }
             )
         }
 
@@ -77,23 +103,27 @@ fun HelpQuestAdaptiveResultLayout(
                 ) {
                     brandLogo()
                     Spacer(modifier = Modifier.height(24.dp))
-                    //TODO next improvement
-//                    HeaderSection(
-//                        headerText = headerText,
-//                        headerColor = headerColor,
-//                    )
+                    HeaderSection(
+                        headerText = title,
+                        headerColor = headerColor,
+                        errorText = secondaryError
+                    )
                 }
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    content()
+                    resultLogo()
+                    HelpQuestResultBodyLayout(
+                        description = description,
+                        primaryButton = primaryButton,
+                        secondaryButton = secondaryButton
+                    )
                 }
             }
         }
@@ -107,11 +137,10 @@ fun HelpQuestAdaptiveResultLayout(
                     .background(MaterialTheme.colorScheme.background)
                     .padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                if (configuration != DeviceConfiguration.MOBILE_LANDSCAPE) {
-                    HelpQuestBrandLogo()
-                }
+                Spacer(modifier = Modifier.height(32.dp))
+                HelpQuestBrandLogo()
+                Spacer(modifier = Modifier.height(32.dp))
                 Column(
                     modifier = Modifier
                         .widthIn(max = 480.dp)
@@ -120,10 +149,22 @@ fun HelpQuestAdaptiveResultLayout(
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 24.dp)
                         .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    content()
+                    resultLogo()
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.extended.textPrimary,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    HelpQuestResultBodyLayout(
+                        description = description,
+                        primaryButton = primaryButton,
+                        secondaryButton = secondaryButton,
+                        secondaryError = secondaryError
+                    )
                 }
             }
         }
@@ -134,22 +175,33 @@ fun HelpQuestAdaptiveResultLayout(
 @Preview(
     showBackground = true
 )
-fun HelpQuestAdaptiveResultLayoutLightPreview() {
+fun HelpQuestAdaptiveResultSuccessLayoutLightPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveResultLayout(
+            title = "Registration successful!",
+            description = "Test description disposed on more than one line and showing success message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            resultLogo = {
+                HelpQuestSuccessIcon()
+            },
             modifier = Modifier
                 .fillMaxSize(),
-            content = {
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    text = "Registration successful!",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-            }
         )
     }
 }
@@ -159,24 +211,258 @@ fun HelpQuestAdaptiveResultLayoutLightPreview() {
     showBackground = true,
     backgroundColor = 1
 )
-fun HelpQuestAdaptiveResultLayoutDarkPreview() {
+fun HelpQuestAdaptiveResultSuccessLayoutDarkPreview() {
     HelpQuestTheme(
         darkTheme = true
     ) {
         HelpQuestAdaptiveResultLayout(
+            title = "Registration successful!",
+            description = "Test description disposed on more than one line and showing success message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            resultLogo = {
+                HelpQuestSuccessIcon()
+            },
             modifier = Modifier
                 .fillMaxSize(),
-            content = {
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    text = "Registration successful!",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+fun HelpQuestAdaptiveResultSuccessWithErrorLayoutLightPreview() {
+    HelpQuestTheme {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration successful!",
+            description = "Test description disposed on more than one line and showing success message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error",
+            resultLogo = {
+                HelpQuestSuccessIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+fun HelpQuestAdaptiveResultSuccessWithErrorLayoutDarkPreview() {
+    HelpQuestTheme(
+        darkTheme = true
+    ) {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration successful!",
+            description = "Test description disposed on more than one line and showing success message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error",
+            resultLogo = {
+                HelpQuestSuccessIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+fun HelpQuestAdaptiveResultFailureLayoutLightPreview() {
+    HelpQuestTheme {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration Failure!",
+            description = "Test description disposed on more than one line and showing failure message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            resultLogo = {
+                HelpQuestFailureIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+fun HelpQuestAdaptiveResultFailureLayoutDarkPreview() {
+    HelpQuestTheme(
+        darkTheme = true
+    ) {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration Failure!",
+            description = "Test description disposed on more than one line and showing failure message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            resultLogo = {
+                HelpQuestFailureIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+fun HelpQuestAdaptiveResultFailureWithErrorLayoutLightPreview() {
+    HelpQuestTheme {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration Failure!",
+            description = "Test description disposed on more than one line and showing failure message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error",
+            resultLogo = {
+                HelpQuestFailureIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+fun HelpQuestAdaptiveResultFailureWithErrorLayoutDarkPreview() {
+    HelpQuestTheme(
+        darkTheme = true
+    ) {
+        HelpQuestAdaptiveResultLayout(
+            title = "Registration Failure!",
+            description = "Test description disposed on more than one line and showing failure message",
+            primaryButton = {
+                HelpQuestButton(
+                    text = "Log In",
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = "Resend verification email",
+                    onClick = {},
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryError = "This is an error",
+            resultLogo = {
+                HelpQuestFailureIcon()
+            },
+            modifier = Modifier
+                .fillMaxSize(),
         )
     }
 }

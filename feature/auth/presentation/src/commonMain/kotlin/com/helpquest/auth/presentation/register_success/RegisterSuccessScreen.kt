@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveResultLayout
-import com.helpquest.core.designsystem.components.layouts.HelpQuestSuccessLayout
 import com.helpquest.core.designsystem.components.layouts.SnackbarScaffold
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
@@ -62,39 +62,40 @@ fun RegisterSuccessScreen(
     SnackbarScaffold(
         snackbarHostState = snackbarHostState
     ) {
-        HelpQuestAdaptiveResultLayout {
-            HelpQuestSuccessLayout(
-                title = stringResource(Res.string.account_successfully_created),
-                description = stringResource(
-                    Res.string.verification_email_sent_to_x,
-                    state.registeredEmail
-                ),
-                primaryButton = {
-                    HelpQuestButton(
-                        text = stringResource(Res.string.login),
-                        onClick = {
-                            onAction(RegisterSuccessAction.OnLoginClick)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                },
-                secondaryButton = {
-                    HelpQuestButton(
-                        text = stringResource(Res.string.resend_verification_email),
-                        onClick = {
-                            onAction(RegisterSuccessAction.OnResendVerificationEmailClick)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        enabled = !state.isResendingVerificationEmail,
-                        isLoading = state.isResendingVerificationEmail,
-                        style = HelpQuestButtonStyle.SECONDARY
-                    )
-                },
-                secondaryError = state.resendVerificationError?.asString()
-            )
-        }
+        HelpQuestAdaptiveResultLayout(
+            title = stringResource(Res.string.account_successfully_created),
+            description = stringResource(
+                Res.string.verification_email_sent_to_x,
+                state.registeredEmail
+            ),
+            primaryButton = {
+                HelpQuestButton(
+                    text = stringResource(Res.string.login),
+                    onClick = {
+                        onAction(RegisterSuccessAction.OnLoginClick)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            secondaryButton = {
+                HelpQuestButton(
+                    text = stringResource(Res.string.resend_verification_email),
+                    onClick = {
+                        onAction(RegisterSuccessAction.OnResendVerificationEmailClick)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    enabled = !state.isResendingVerificationEmail,
+                    isLoading = state.isResendingVerificationEmail,
+                    style = HelpQuestButtonStyle.SECONDARY
+                )
+            },
+            secondaryError = state.resendVerificationError?.asString(),
+            resultLogo = {
+                HelpQuestSuccessIcon()
+            },
+        )
     }
 }
 
