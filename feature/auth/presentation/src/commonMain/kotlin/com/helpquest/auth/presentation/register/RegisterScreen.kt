@@ -81,7 +81,10 @@ fun RegisterScreen(
                 isError = state.usernameError != null,
                 onFocusChanged = { isFocused ->
                     onAction(RegisterAction.OnInputTextFocusGain)
-                }
+                },
+                onDebouncedValueChange = {
+                    onAction(RegisterAction.OnInputTextFocusGain)
+                },
             )
             Spacer(modifier = Modifier.height(24.dp))
             HelpQuestTextField(
@@ -92,7 +95,10 @@ fun RegisterScreen(
                 isError = state.emailError != null,
                 onFocusChanged = { isFocused ->
                     onAction(RegisterAction.OnInputTextFocusGain)
-                }
+                },
+                onDebouncedValueChange = {
+                    onAction(RegisterAction.OnInputTextFocusGain)
+                },
             )
             Spacer(modifier = Modifier.height(24.dp))
             HelpQuestPasswordTextField(
@@ -103,6 +109,9 @@ fun RegisterScreen(
                     ?: stringResource(Res.string.password_hint),
                 isError = state.passwordError != null,
                 onFocusChanged = { isFocused ->
+                    onAction(RegisterAction.OnInputTextFocusGain)
+                },
+                onDebouncedValueChange = {
                     onAction(RegisterAction.OnInputTextFocusGain)
                 },
                 onToggleVisibilityClick = {

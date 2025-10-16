@@ -98,7 +98,11 @@ class RegisterViewModel(
                 }
             }
 
-            else -> Unit
+            RegisterAction.OnInputTextFocusGain -> {
+                validateFormInputs(
+                    acceptEmpty = true
+                )
+            }
         }
     }
 
@@ -159,7 +163,7 @@ class RegisterViewModel(
         }
     }
 
-    private fun validateFormInputs(): Boolean {
+    private fun validateFormInputs(acceptEmpty: Boolean = false): Boolean {
         clearAllTextFieldErrors()
 
         val currentState = state.value
@@ -167,9 +171,12 @@ class RegisterViewModel(
         val username = currentState.usernameTextState.text.toString()
         val password = currentState.passwordTextState.text.toString()
 
-        val isEmailValid = EmailValidator.validate(email)
+        val isEmailValid = (acceptEmpty && email.isBlank()) || EmailValidator.validate(email)
         val passwordValidationState = PasswordValidator.validate(password)
-        val isUsernameValid = username.length in 3..20 //TODO: maybe extract to a dedicated class?
+        val isPasswordValid =
+            (acceptEmpty && password.isBlank()) || passwordValidationState.isValidPassword
+        val isUsernameValid =
+            (acceptEmpty && username.isBlank()) || (username.length in 3..20) //TODO: maybe extract to a dedicated class?
 
         val emailError = if (!isEmailValid) {
             UiText.Resource(Res.string.error_invalid_email)
@@ -177,7 +184,7 @@ class RegisterViewModel(
         val usernameError = if (!isUsernameValid) {
             UiText.Resource(Res.string.error_invalid_username)
         } else null
-        val passwordError = if (!passwordValidationState.isValidPassword) {
+        val passwordError = if (!isPasswordValid) {
             UiText.Resource(Res.string.error_invalid_password)
         } else null
 

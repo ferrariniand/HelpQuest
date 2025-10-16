@@ -1,5 +1,8 @@
+@file:OptIn(FlowPreview::class)
+
 package com.helpquest.core.designsystem.components.textfields
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,6 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.extended
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun HelpQuestTextFieldLayout(
@@ -27,6 +34,8 @@ fun HelpQuestTextFieldLayout(
     isError: Boolean = false,
     enabled: Boolean = true,
     onFocusChanged: (Boolean) -> Unit = {},
+    currentValue: String,
+    onDebouncedValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     textField: @Composable (Modifier, MutableInteractionSource) -> Unit
 ) {
@@ -35,6 +44,14 @@ fun HelpQuestTextFieldLayout(
     }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
+    LaunchedEffect(currentValue) {
+        MutableStateFlow(currentValue)
+            .debounce(300L) // Wait for 300ms of inactivity
+            .distinctUntilChanged() // Only emit if the value has actually changed
+            .collect { debouncedValue ->
+                onDebouncedValueChange(debouncedValue)
+            }
+    }
     LaunchedEffect(isFocused) {
         onFocusChanged(isFocused)
     }
@@ -77,17 +94,25 @@ fun HelpQuestTextFieldLayout(
 
         textField(textFieldStyleModifier, interactionSource)
 
-        if (supportingText != null) {
+        if (supportingText != null && (isError || isFocused)) {
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = supportingText,
-                color = if (isError) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.extended.textTertiary
-                },
-                style = MaterialTheme.typography.bodySmall
-            )
+        }
+        AnimatedVisibility(
+            visible = supportingText != null && (isError || isFocused)
+        ) {
+            if (supportingText != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = supportingText,
+                    color = if (isError) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.extended.textTertiary
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+
+                    )
+            }
         }
     }
 }

@@ -46,6 +46,7 @@ fun HelpQuestPasswordTextField(
     isError: Boolean = false,
     enabled: Boolean = true,
     onFocusChanged: (Boolean) -> Unit = {},
+    onDebouncedValueChange: (String) -> Unit = {},
 ) {
     HelpQuestTextFieldLayout(
         title = title,
@@ -53,20 +54,22 @@ fun HelpQuestPasswordTextField(
         isError = isError,
         enabled = enabled,
         onFocusChanged = onFocusChanged,
-        modifier = modifier
+        currentValue = state.text as String,
+        onDebouncedValueChange = onDebouncedValueChange,
+        modifier = modifier,
     ) { styleModifier, interactionSource ->
         BasicSecureTextField(
             state = state,
             modifier = styleModifier,
             enabled = enabled,
-            textObfuscationMode = if(isPasswordVisible) {
+            textObfuscationMode = if (isPasswordVisible) {
                 TextObfuscationMode.Visible
             } else TextObfuscationMode.Hidden,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password
             ),
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = if(enabled) {
+                color = if (enabled) {
                     MaterialTheme.colorScheme.onSurface
                 } else {
                     MaterialTheme.colorScheme.extended.textPlaceholder
@@ -85,7 +88,7 @@ fun HelpQuestPasswordTextField(
                             .weight(1f),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if(state.text.isEmpty() && placeholder != null) {
+                        if (state.text.isEmpty() && placeholder != null) {
                             Text(
                                 text = placeholder,
                                 color = MaterialTheme.colorScheme.extended.textPlaceholder,
@@ -96,12 +99,12 @@ fun HelpQuestPasswordTextField(
                     }
 
                     Icon(
-                        imageVector = if(isPasswordVisible) {
+                        imageVector = if (isPasswordVisible) {
                             vectorResource(Res.drawable.eye_off_icon)
                         } else {
                             vectorResource(Res.drawable.eye_icon)
                         },
-                        contentDescription = if(isPasswordVisible) {
+                        contentDescription = if (isPasswordVisible) {
                             stringResource(Res.string.hide_password)
                         } else {
                             stringResource(Res.string.show_password)

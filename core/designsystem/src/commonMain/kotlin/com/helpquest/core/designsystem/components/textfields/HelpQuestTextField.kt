@@ -32,6 +32,7 @@ fun HelpQuestTextField(
     enabled: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text,
     onFocusChanged: (Boolean) -> Unit = {},
+    onDebouncedValueChange: (String) -> Unit = {},
 ) {
     HelpQuestTextFieldLayout(
         title = title,
@@ -39,6 +40,8 @@ fun HelpQuestTextField(
         supportingText = supportingText,
         enabled = enabled,
         onFocusChanged = onFocusChanged,
+        currentValue = state.text as String,
+        onDebouncedValueChange = onDebouncedValueChange,
         modifier = modifier
     ) { styleModifier, interactionSource ->
         BasicTextField(
