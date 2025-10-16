@@ -25,6 +25,6 @@ fun HelpQuestFailureIcon(
         tint = MaterialTheme.colorScheme.error,
         modifier = modifier
     )
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(10.dp))
 
 }

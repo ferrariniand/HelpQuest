@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -83,7 +84,8 @@ fun HelpQuestAdaptiveResultLayout(
                         description = description,
                         primaryButton = primaryButton,
                         secondaryButton = secondaryButton,
-                        secondaryError = secondaryError
+                        secondaryError = secondaryError,
+                        isMobileAndNotLoading = true
                     )
                 }
             )
@@ -93,21 +95,19 @@ fun HelpQuestAdaptiveResultLayout(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier
-                    .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(
-                        top = 16.dp,
-                        start = 50.dp,
-                        end = 55.dp,
-                    )
+                    .fillMaxSize()
+                    .navigationBarsPadding()
+                    .padding(16.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .weight(0.8f),
                 ) {
+                    Spacer(modifier = Modifier.height(16.dp))
                     brandLogo()
                     if (title != null) {
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         HeaderSection(
                             headerText = title,
                             headerColor = headerColor,
@@ -121,7 +121,7 @@ fun HelpQuestAdaptiveResultLayout(
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 16.dp)
-                        .heightIn(min = 200.dp)
+                        .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = if (isLoadings) Arrangement.Center else Arrangement.Top
@@ -130,7 +130,8 @@ fun HelpQuestAdaptiveResultLayout(
                     HelpQuestResultBodyLayout(
                         description = description,
                         primaryButton = primaryButton,
-                        secondaryButton = secondaryButton
+                        secondaryButton = secondaryButton,
+                        isMobileAndNotLoading = !isLoadings
                     )
                 }
             }
@@ -143,6 +144,7 @@ fun HelpQuestAdaptiveResultLayout(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
+                    .navigationBarsPadding()
                     .padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -152,13 +154,15 @@ fun HelpQuestAdaptiveResultLayout(
                 Column(
                     modifier = Modifier
                         .widthIn(max = 480.dp)
-                        .heightIn(min = 200.dp)
+                        .heightIn(min = 300.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(32.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(horizontal = 24.dp)
                         .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = if (isLoadings) Arrangement.Center else Arrangement.Top
+
                 ) {
                     resultLogo()
                     if (title != null) {

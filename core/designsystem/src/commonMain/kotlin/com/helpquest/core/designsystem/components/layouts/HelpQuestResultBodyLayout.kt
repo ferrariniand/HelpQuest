@@ -19,6 +19,7 @@ fun ColumnScope.HelpQuestResultBodyLayout(
     primaryButton: (@Composable () -> Unit)? = null,
     secondaryButton: @Composable (() -> Unit)? = null,
     secondaryError: String? = null,
+    isMobileAndNotLoading: Boolean = false
 ) {
     Text(
         text = description,
@@ -28,8 +29,11 @@ fun ColumnScope.HelpQuestResultBodyLayout(
         modifier = Modifier
             .fillMaxWidth()
     )
+    if (isMobileAndNotLoading) {
+        Spacer(modifier = Modifier.weight(1f))
+    }
     if (primaryButton != null) {
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         primaryButton()
     }
 

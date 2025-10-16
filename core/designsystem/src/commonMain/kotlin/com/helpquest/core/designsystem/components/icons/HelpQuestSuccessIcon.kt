@@ -26,5 +26,5 @@ fun HelpQuestSuccessIcon(
         tint = MaterialTheme.colorScheme.extended.success,
         modifier = modifier
     )
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(10.dp))
 }

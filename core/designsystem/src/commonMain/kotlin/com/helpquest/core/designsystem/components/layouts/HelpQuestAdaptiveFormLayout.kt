@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,7 +53,8 @@ fun HelpQuestAdaptiveFormLayout(
             HelpQuestSurface(
                 modifier = modifier
                     .consumeWindowInsets(WindowInsets.navigationBars)
-                    .consumeWindowInsets(WindowInsets.displayCutout),
+                    .consumeWindowInsets(WindowInsets.displayCutout)
+                    .navigationBarsPadding(),
                 header = {
                     Spacer(modifier = Modifier.height(24.dp))
                     logo()
@@ -80,18 +82,20 @@ fun HelpQuestAdaptiveFormLayout(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .consumeWindowInsets(WindowInsets.displayCutout)
+                    .navigationBarsPadding()
                     .padding(
                         top = 16.dp,
-                        start = 50.dp,
-                        end = 55.dp,
+                        start = 16.dp,
+                        end = 16.dp,
                     )
             ) {
                 Column(
                     modifier = Modifier
                         .weight(0.8f),
                 ) {
+                    Spacer(modifier = Modifier.height(16.dp))
                     logo()
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     HeaderSection(
                         headerText = headerText,
                         brandText = brandText,
