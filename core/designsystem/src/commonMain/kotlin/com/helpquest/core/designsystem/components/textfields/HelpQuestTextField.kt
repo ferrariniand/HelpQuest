@@ -28,7 +28,7 @@ fun HelpQuestTextField(
     title: String? = null,
     supportingText: String? = null,
     isError: Boolean = false,
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     enabled: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text,
     onFocusChanged: (Boolean) -> Unit = {},

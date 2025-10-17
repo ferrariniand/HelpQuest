@@ -30,7 +30,8 @@ fun HelpQuestAdaptiveFormLayoutPreview() {
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-            }
+            },
+            buttonsContent = {}
         )
     }
 }

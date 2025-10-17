@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
@@ -24,17 +25,19 @@ fun SnackbarScaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.statusBars
             .union(WindowInsets.displayCutout)
-            .union(WindowInsets.ime),
+            .union(WindowInsets.ime)
+            .union(WindowInsets.navigationBars),
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier
-                    .padding(bottom = 34.dp)
+                    .padding(bottom = 24.dp)
             )
         }
     ) { innerPadding ->
         Box(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
         ) {
             content()
         }

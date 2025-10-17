@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
@@ -37,6 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RegisterRoot(
     onRegisterSuccess: (String) -> Unit,
+    onLoginClick: () -> Unit,
     viewModel: RegisterViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -53,7 +55,13 @@ fun RegisterRoot(
 
     RegisterScreen(
         state = state,
-        onAction = viewModel::onAction,
+        onAction = { action ->
+            when (action) {
+                is RegisterAction.OnLoginClick -> onLoginClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        },
         snackbarHostState = snackbarHostState
     )
 }
@@ -70,78 +78,80 @@ fun RegisterScreen(
         HelpQuestAdaptiveFormLayout(
             headerText = stringResource(Res.string.welcome_to),
             brandText = stringResource(Res.string.help_quest),
-            errorText = state.registrationError?.asString()
-        ) {
-            HelpQuestTextField(
-                state = state.usernameTextState,
-                placeholder = stringResource(Res.string.username_placeholder),
-                title = stringResource(Res.string.username),
-                supportingText = state.usernameError?.asString()
-                    ?: stringResource(Res.string.username_hint),
-                isError = state.usernameError != null,
-                onFocusChanged = { isFocused ->
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-                onDebouncedValueChange = {
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            HelpQuestTextField(
-                state = state.emailTextState,
-                placeholder = stringResource(Res.string.email_placeholder),
-                title = stringResource(Res.string.email),
-                supportingText = state.emailError?.asString(),
-                isError = state.emailError != null,
-                onFocusChanged = { isFocused ->
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-                onDebouncedValueChange = {
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            HelpQuestPasswordTextField(
-                state = state.passwordTextState,
-                placeholder = stringResource(Res.string.password),
-                title = stringResource(Res.string.password),
-                supportingText = state.passwordError?.asString()
-                    ?: stringResource(Res.string.password_hint),
-                isError = state.passwordError != null,
-                onFocusChanged = { isFocused ->
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-                onDebouncedValueChange = {
-                    onAction(RegisterAction.OnInputTextFocusGain)
-                },
-                onToggleVisibilityClick = {
-                    onAction(RegisterAction.OnTogglePasswordVisibilityClick)
-                },
-                isPasswordVisible = state.isPasswordVisible
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-
-            HelpQuestButton(
-                text = stringResource(Res.string.register),
-                onClick = {
-                    onAction(RegisterAction.OnRegisterClick)
-                },
-                enabled = state.canRegister,
-                isLoading = state.isRegistering,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            HelpQuestButton(
-                text = stringResource(Res.string.login),
-                onClick = {
-                    onAction(RegisterAction.OnLoginClick)
-                },
-                style = HelpQuestButtonStyle.SECONDARY,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
+            errorText = state.registrationError?.asString(),
+            formContent = {
+                HelpQuestTextField(
+                    state = state.usernameTextState,
+                    placeholder = stringResource(Res.string.username_placeholder),
+                    title = stringResource(Res.string.username),
+                    supportingText = state.usernameError?.asString()
+                        ?: stringResource(Res.string.username_hint),
+                    isError = state.usernameError != null,
+                    onFocusChanged = { isFocused ->
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                    onDebouncedValueChange = {
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                HelpQuestTextField(
+                    state = state.emailTextState,
+                    placeholder = stringResource(Res.string.email_placeholder),
+                    title = stringResource(Res.string.email),
+                    supportingText = state.emailError?.asString(),
+                    isError = state.emailError != null,
+                    keyboardType = KeyboardType.Email,
+                    onFocusChanged = { isFocused ->
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                    onDebouncedValueChange = {
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                HelpQuestPasswordTextField(
+                    state = state.passwordTextState,
+                    placeholder = stringResource(Res.string.password),
+                    title = stringResource(Res.string.password),
+                    supportingText = state.passwordError?.asString()
+                        ?: stringResource(Res.string.password_hint),
+                    isError = state.passwordError != null,
+                    onFocusChanged = { isFocused ->
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                    onDebouncedValueChange = {
+                        onAction(RegisterAction.OnInputTextFocusGain)
+                    },
+                    onToggleVisibilityClick = {
+                        onAction(RegisterAction.OnTogglePasswordVisibilityClick)
+                    },
+                    isPasswordVisible = state.isPasswordVisible
+                )
+            },
+            buttonsContent = {
+                HelpQuestButton(
+                    text = stringResource(Res.string.register),
+                    onClick = {
+                        onAction(RegisterAction.OnRegisterClick)
+                    },
+                    enabled = state.canRegister,
+                    isLoading = state.isRegistering,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                HelpQuestButton(
+                    text = stringResource(Res.string.login),
+                    onClick = {
+                        onAction(RegisterAction.OnLoginClick)
+                    },
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        )
     }
 }
 

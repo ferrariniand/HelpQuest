@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,11 +12,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.presentation.util.isKeyboardOpen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -26,6 +27,8 @@ fun HelpQuestSurface(
     header: @Composable ColumnScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val isKeyboardOpen by isKeyboardOpen()
+
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = modifier
@@ -35,7 +38,9 @@ fun HelpQuestSurface(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            header()
+            if (!isKeyboardOpen) {
+                header()
+            }
             Surface(
                 color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier
@@ -49,7 +54,6 @@ fun HelpQuestSurface(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .navigationBarsPadding()
                         .padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
