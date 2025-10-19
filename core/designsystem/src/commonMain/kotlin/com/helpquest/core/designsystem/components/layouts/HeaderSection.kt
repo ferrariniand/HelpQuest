@@ -16,28 +16,28 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ColumnScope.HeaderSection(
+    topHeaderText: String? = null,
     headerText: String,
     headerColor: Color,
-    brandText: String? = null,
     errorText: String? = null,
     headerTextAlign: TextAlign = TextAlign.Companion.Start
 ) {
-    Text(
-        text = headerText,
-        style = MaterialTheme.typography.titleMedium,
-        color = headerColor,
-        textAlign = headerTextAlign,
-        modifier = Modifier.Companion.fillMaxWidth()
-    )
-    if (brandText != null) {
+    if (topHeaderText != null) {
         Text(
-            text = brandText,
-            style = MaterialTheme.typography.titleLarge,
+            text = topHeaderText,
+            style = MaterialTheme.typography.titleMedium,
             color = headerColor,
             textAlign = headerTextAlign,
             modifier = Modifier.Companion.fillMaxWidth()
         )
     }
+    Text(
+        text = headerText,
+        style = MaterialTheme.typography.titleLarge,
+        color = headerColor,
+        textAlign = headerTextAlign,
+        modifier = Modifier.Companion.fillMaxWidth()
+    )
     if (errorText != null) {
         Spacer(modifier = Modifier.height(8.dp))
     }

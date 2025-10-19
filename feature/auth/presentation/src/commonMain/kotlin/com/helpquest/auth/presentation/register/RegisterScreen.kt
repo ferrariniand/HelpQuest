@@ -76,8 +76,8 @@ fun RegisterScreen(
         snackbarHostState = snackbarHostState
     ) {
         HelpQuestAdaptiveFormLayout(
-            headerText = stringResource(Res.string.welcome_to),
-            brandText = stringResource(Res.string.help_quest),
+            topHeaderText = stringResource(Res.string.welcome_to),
+            headerText = stringResource(Res.string.help_quest),
             errorText = state.registrationError?.asString(),
             formContent = {
                 HelpQuestTextField(

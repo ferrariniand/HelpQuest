@@ -36,8 +36,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestAdaptiveFormLayout(
+    topHeaderText: String? = null,
     headerText: String,
-    brandText: String,
     errorText: String? = null,
     logo: @Composable () -> Unit = { HelpQuestBrandLogo() },
     modifier: Modifier = Modifier,
@@ -67,8 +67,8 @@ fun HelpQuestAdaptiveFormLayout(
                 if (!isKeyboardOpen) {
                     Spacer(modifier = Modifier.height(16.dp))
                     HeaderSection(
+                        topHeaderText = topHeaderText,
                         headerText = headerText,
-                        brandText = brandText,
                         headerColor = headerColor,
                         errorText = errorText,
                         headerTextAlign = TextAlign.Center
@@ -98,8 +98,8 @@ fun HelpQuestAdaptiveFormLayout(
                     logo()
                     Spacer(modifier = Modifier.height(16.dp))
                     HeaderSection(
+                        topHeaderText = topHeaderText,
                         headerText = headerText,
-                        brandText = brandText,
                         headerColor = headerColor,
                         errorText = errorText
                     )
@@ -140,8 +140,8 @@ fun HelpQuestAdaptiveFormLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     HeaderSection(
+                        topHeaderText = topHeaderText,
                         headerText = headerText,
-                        brandText = brandText,
                         headerColor = headerColor,
                         errorText = errorText,
                         headerTextAlign = TextAlign.Center
@@ -164,8 +164,8 @@ fun HelpQuestAdaptiveFormLayout(
 fun HelpQuestAdaptiveFormLayoutLightPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveFormLayout(
-            headerText = "Welcome to",
-            brandText = "Help Quest!",
+            topHeaderText = "Welcome to",
+            headerText = "Help Quest!",
             errorText = "Login failed!",
             logo = { HelpQuestBrandLogo() },
             formContent = {
@@ -195,8 +195,8 @@ fun HelpQuestAdaptiveFormLayoutDarkPreview() {
         darkTheme = true
     ) {
         HelpQuestAdaptiveFormLayout(
-            headerText = "Welcome to",
-            brandText = "Help Quest!",
+            topHeaderText = "Welcome to",
+            headerText = "Help Quest!",
             errorText = "Login failed!",
             logo = { HelpQuestBrandLogo() },
             formContent = {
