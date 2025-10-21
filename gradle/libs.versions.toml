@@ -87,7 +87,6 @@ playAppUpdate = "2.1.0"
 playAssetDelivery = "2.3.0"
 materialIconsExtended = "1.6.3"
 ktorServerCallLogging = "2.3.7"
-securityCryptoKtx = "1.1.0-alpha06"
 bson = "4.11.1"
 annotation = "1.7.1"
 
@@ -224,7 +223,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 
 #TODO: Are Necessary?
-androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version.ref = "securityCryptoKtx" }
 play-feature-delivery = { module = "com.google.android.play:feature-delivery", version.ref = "playFeatureDelivery" }
 play-feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "playFeatureDelivery" }
 play-review = { module = "com.google.android.play:review", version.ref = "playReview" }
@@ -249,7 +247,6 @@ convention-cmp-library = { id = "com.helpquest.convention.cmp.library", version 
 convention-cmp-feature = { id = "com.helpquest.convention.cmp.feature", version = "unspecified" }
 convention-buildkonfig = { id = "com.helpquest.convention.buildkonfig", version = "unspecified" }
 convention-room = { id = "com.helpquest.convention.room", version = "unspecified" }
-
 
 
 # Android

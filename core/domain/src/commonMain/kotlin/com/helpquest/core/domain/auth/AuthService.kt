@@ -2,8 +2,15 @@ package com.helpquest.core.domain.auth
 
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.Result
 
 interface AuthService {
+
+    suspend fun login(
+        email: String,
+        password: String
+    ): Result<AuthInfo, DataError.Remote>
+
     suspend fun register(
         email: String,
         username: String,

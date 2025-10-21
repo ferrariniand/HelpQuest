@@ -1,17 +1,38 @@
 package com.helpquest.core.data.auth
 
+import com.helpquest.core.data.dto.AuthInfoDto
 import com.helpquest.core.data.dto.request.EmailRequest
+import com.helpquest.core.data.dto.request.LoginRequest
 import com.helpquest.core.data.dto.request.RegisterRequestDto
+import com.helpquest.core.data.mappers.toAuthInfo
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.data.networking.post
+import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.map
 import io.ktor.client.HttpClient
 
 class KtorAuthService(
     private val httpClient: HttpClient
 ) : AuthService {
+
+    override suspend fun login(
+        email: String,
+        password: String
+    ): Result<AuthInfo, DataError.Remote> {
+        return httpClient.post<LoginRequest, AuthInfoDto>(
+            route = "/auth/login",
+            body = LoginRequest(
+                email = email,
+                password = password
+            )
+        ).map { authInfoDto ->
+            authInfoDto.toAuthInfo()
+        }
+    }
 
     override suspend fun register(
         email: String,
