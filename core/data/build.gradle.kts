@@ -33,6 +33,8 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(libs.bundles.ktor.common)
                 implementation(libs.koin.core)
+                implementation(libs.datastore)
+                implementation(libs.datastore.preferences)
 
                 implementation(projects.core.domain)
                 implementation(projects.core.database)

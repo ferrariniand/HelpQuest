@@ -31,9 +31,6 @@ kotlin {
             // Core
             implementation(libs.androidx.core.ktx)
 
-            // Crypto
-            implementation(libs.androidx.security.crypto.ktx)
-
             // Splash screen
             implementation(libs.core.splashscreen)
 
