@@ -16,11 +16,11 @@ import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.register.RegisterAction
 import com.helpquest.auth.presentation.register.RegisterState
 import com.helpquest.auth.presentation.register.RegisterViewModel
-import com.helpquest.core.data.FakeAuthService
-import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
+import com.helpquest.core.test.auth.FakeAuthService
+import com.helpquest.core.test.di.coreTestModule
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.error_account_exists
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +31,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.koin.core.context.startKoin
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
 import org.koin.mp.KoinPlatform.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
@@ -44,11 +41,6 @@ import kotlin.test.Test
 
 class RegisterViewModelTest : KoinTest {
 
-
-    private val overrideModule = module {
-        singleOf(::FakeAuthService) bind AuthService::class
-
-    }
     private val fakeAuthService by inject<FakeAuthService>()
 
     private lateinit var viewModel: RegisterViewModel
@@ -57,8 +49,8 @@ class RegisterViewModelTest : KoinTest {
     fun setup() {
         startKoin {
             modules(
+                coreTestModule,
                 authPresentationModule,
-                overrideModule
             )
         }
         Dispatchers.setMain(UnconfinedTestDispatcher())

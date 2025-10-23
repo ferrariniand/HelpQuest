@@ -1,4 +1,4 @@
-package com.helpquest.core.data
+package com.helpquest.core.test.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.AuthService

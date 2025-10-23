@@ -1,9 +1,5 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
-    alias(libs.plugins.convention.cmp.feature)
+    alias(libs.plugins.convention.kmp.library)
 }
 
 kotlin {
@@ -11,15 +7,8 @@ kotlin {
         reports {
             filters {
                 excludes {
-                    annotatedBy("androidx.compose.runtime.Composable")
-                    classes(
-                        "com.helpquest.auth.presentation.*.*Action",
-                        "com.helpquest.auth.presentation.*.*Event",
-                        "com.helpquest.auth.presentation.*.*State",
-                    )
                     packages(
-                        "com.helpquest.auth.presentation.di",
-                        "com.helpquest.auth.presentation.navigation",
+                        "com.helpquest.core.test",
                     )
                 }
             }
@@ -35,23 +24,9 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.bundles.koin.common)
+                implementation(libs.koin.core)
 
                 implementation(projects.core.domain)
-                implementation(projects.core.designsystem)
-                implementation(projects.core.presentation)
-                implementation(projects.feature.auth.domain)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(compose.uiTest)
-
-                // Core Test Module
-                implementation(projects.core.test)
             }
         }
 
@@ -72,8 +47,10 @@ kotlin {
                 // KMP dependencies declared in commonMain.
             }
         }
-        desktopTest.dependencies {
-            implementation(compose.desktop.currentOs)
+
+        desktopMain {
+            dependencies {
+            }
         }
     }
 

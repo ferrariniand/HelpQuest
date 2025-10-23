@@ -16,15 +16,13 @@ import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.login.LoginAction
 import com.helpquest.auth.presentation.login.LoginState
 import com.helpquest.auth.presentation.login.LoginViewModel
-import com.helpquest.core.data.FakeAuthService
-import com.helpquest.core.data.FakeSessionStorage
-import com.helpquest.core.domain.auth.AuthInfo
-import com.helpquest.core.domain.auth.AuthService
-import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.auth.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
+import com.helpquest.core.test.auth.FakeAuthService
+import com.helpquest.core.test.auth.FakeSessionStorage
+import com.helpquest.core.test.di.coreTestModule
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.error_email_not_verified
 import helpquest.feature.auth.presentation.generated.resources.error_invalid_credentials
@@ -36,9 +34,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.koin.core.context.startKoin
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
 import org.koin.mp.KoinPlatform.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
@@ -49,11 +44,6 @@ import kotlin.test.Test
 
 class LoginViewModelTest : KoinTest {
 
-    private val overrideModule = module {
-        singleOf(::FakeAuthService) bind AuthService::class
-        singleOf(::FakeSessionStorage) bind SessionStorage::class
-
-    }
     private val fakeAuthService by inject<FakeAuthService>()
     private val fakeSessionStorage by inject<FakeSessionStorage>()
 
@@ -63,8 +53,8 @@ class LoginViewModelTest : KoinTest {
     fun setup() {
         startKoin {
             modules(
+                coreTestModule,
                 authPresentationModule,
-                overrideModule
             )
         }
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -163,9 +153,7 @@ class LoginViewModelTest : KoinTest {
             fakeSessionStorage,
             validLoginState
         )
-        val result = AuthInfo(
-            accessToken = "accessToken",
-            refreshToken = "refreshToken",
+        val result = fakeSessionStorage.fakeAuthInfo.copy(
             user = User(
                 id = "id",
                 email = "email",

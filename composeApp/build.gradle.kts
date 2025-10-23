@@ -110,6 +110,9 @@ kotlin {
 
             implementation(compose.uiTest)
             implementation(libs.turbine)
+
+            // Core Test Module
+            implementation(projects.core.test)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
