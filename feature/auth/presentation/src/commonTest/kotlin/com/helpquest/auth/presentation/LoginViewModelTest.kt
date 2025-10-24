@@ -137,7 +137,7 @@ class LoginViewModelTest : KoinTest {
 
     @Test
     fun `login success`() = runBlocking {
-        fakeSessionStorage.set(null)
+        fakeSessionStorage.setAuthInfo(null)
         val validLoginState = LoginState(
             emailTextState = TextFieldState(
                 initialText = "test@test.com"
@@ -172,14 +172,14 @@ class LoginViewModelTest : KoinTest {
             assertThat(successState.canLogin).isTrue()
             assertThat(successState.isLoggingIn).isFalse()
             assertThat(successState.error).isNull()
-            assertThat(fakeSessionStorage.resultAuthInfo).isEqualTo(result)
+            assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isEqualTo(result)
         }
 
     }
 
     @Test
     fun `login error INVALID CREDENTIALS`() = runBlocking {
-        fakeSessionStorage.set(null)
+        fakeSessionStorage.setAuthInfo(null)
         val validLoginState = LoginState(
             emailTextState = TextFieldState(
                 initialText = "test@test.com"
@@ -215,14 +215,14 @@ class LoginViewModelTest : KoinTest {
             assertThat(
                 (errorResult as UiText.Resource).id
             ).isEqualTo(Res.string.error_invalid_credentials)
-            assertThat(fakeSessionStorage.resultAuthInfo).isNull()
+            assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isNull()
             cancelAndConsumeRemainingEvents()
         }
     }
 
     @Test
     fun `login error EMAIL NOT VERIFIED`() = runBlocking {
-        fakeSessionStorage.set(null)
+        fakeSessionStorage.setAuthInfo(null)
         val validLoginState = LoginState(
             emailTextState = TextFieldState(
                 initialText = "test@test.com"
@@ -258,14 +258,14 @@ class LoginViewModelTest : KoinTest {
             assertThat(
                 (errorResult as UiText.Resource).id
             ).isEqualTo(Res.string.error_email_not_verified)
-            assertThat(fakeSessionStorage.resultAuthInfo).isNull()
+            assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isNull()
             cancelAndConsumeRemainingEvents()
         }
     }
 
     @Test
     fun `login error generic`() = runBlocking {
-        fakeSessionStorage.set(null)
+        fakeSessionStorage.setAuthInfo(null)
         val validLoginState = LoginState(
             emailTextState = TextFieldState(
                 initialText = "test@test.com"
@@ -302,7 +302,7 @@ class LoginViewModelTest : KoinTest {
             assertThat(
                 errorResult.id
             ).isNotEqualTo(Res.string.error_invalid_credentials)
-            assertThat(fakeSessionStorage.resultAuthInfo).isNull()
+            assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isNull()
             cancelAndConsumeRemainingEvents()
         }
     }

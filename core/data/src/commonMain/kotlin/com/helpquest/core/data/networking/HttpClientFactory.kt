@@ -82,7 +82,7 @@ class HttpClientFactory(
 
                         val authInfo = sessionStorage.observeAuthInfo().firstOrNull()
                         if (authInfo?.refreshToken.isNullOrBlank()) {
-                            sessionStorage.set(null)
+                            sessionStorage.setAuthInfo(null)
                             return@refreshTokens null
                         }
 
@@ -96,13 +96,13 @@ class HttpClientFactory(
                                 markAsRefreshTokenRequest()
                             }
                         ).onSuccess { newAuthInfo ->
-                            sessionStorage.set(newAuthInfo.toAuthInfo())
+                            sessionStorage.setAuthInfo(newAuthInfo.toAuthInfo())
                             bearerTokens = BearerTokens(
                                 accessToken = newAuthInfo.accessToken,
                                 refreshToken = newAuthInfo.refreshToken
                             )
                         }.onFailure { error ->
-                            sessionStorage.set(null)
+                            sessionStorage.setAuthInfo(null)
                         }
 
                         bearerTokens

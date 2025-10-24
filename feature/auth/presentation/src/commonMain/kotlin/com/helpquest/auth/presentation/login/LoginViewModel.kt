@@ -117,7 +117,7 @@ class LoginViewModel(
                     password = password
                 )
                 .onSuccess { authInfo ->
-                    sessionStorage.set(authInfo)
+                    sessionStorage.setAuthInfo(authInfo)
                     _state.update {
                         it.copy(
                             isLoggingIn = false

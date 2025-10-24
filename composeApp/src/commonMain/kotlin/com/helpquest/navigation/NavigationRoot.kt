@@ -10,10 +10,13 @@ import com.helpquest.home.presentation.HomepageRoot
 import com.helpquest.home.presentation.HomepageRoute
 
 @Composable
-fun NavigationRoot(navController: NavHostController) {
+fun NavigationRoot(
+    navController: NavHostController,
+    startDestination: Any
+) {
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoutes.Graph
+        startDestination = startDestination
     ) {
         authGraph(
             navController = navController,

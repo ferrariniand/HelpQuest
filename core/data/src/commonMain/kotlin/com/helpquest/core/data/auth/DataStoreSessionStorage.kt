@@ -33,7 +33,7 @@ class DataStoreSessionStorage(
         }
     }
 
-    override suspend fun set(info: AuthInfo?) {
+    override suspend fun setAuthInfo(info: AuthInfo?) {
         if (info == null) {
             removePreference(authInfoKey)
             return

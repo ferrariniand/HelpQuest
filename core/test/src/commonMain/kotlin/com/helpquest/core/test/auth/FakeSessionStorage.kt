@@ -4,7 +4,7 @@ import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.auth.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeSessionStorage : SessionStorage {
 
@@ -19,13 +19,14 @@ class FakeSessionStorage : SessionStorage {
         )
     )
 
-    var resultAuthInfo: AuthInfo? = null
+    val resultAuthInfoFlow = MutableStateFlow<AuthInfo?>(null)
+
 
     override fun observeAuthInfo(): Flow<AuthInfo?> {
-        return flowOf(resultAuthInfo)
+        return resultAuthInfoFlow
     }
 
-    override suspend fun set(info: AuthInfo?) {
-        resultAuthInfo = info
+    override suspend fun setAuthInfo(info: AuthInfo?) {
+        resultAuthInfoFlow.value = info
     }
 }

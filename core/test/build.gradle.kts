@@ -23,8 +23,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                // Add KMP dependencies here
+                // Add KMP TEST dependencies. ONLY FOR THIS MODULE ARE ADDED IN THE COMMON MAIN INSTEAD OF COMMON TEST
                 implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.test)
 
                 implementation(projects.core.domain)
             }
