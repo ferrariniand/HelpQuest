@@ -7,6 +7,7 @@
     <string name="verification_email_sent_to_x">We've sent a verification email to %1$s</string>
     <string name="resend_verification_email">Resend verification email</string>
     <string name="resent_verification_email">Successfully resent verification email</string>
+    <string name="forgot_password_email_sent_successfully">We've successfully sent you an email with a link to reset your password</string>
     <string name="verifying_account">Verifying account...</string>
     <string name="email_verified_successfully">Email verified successfully</string>
     <string name="email_verified_failed">Fail to verify your email</string>
@@ -17,6 +18,8 @@
         Unable to verify your email. Maybe the link is invalid or has expired.
     </string>
     <string name="close">Close</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot password?</string>

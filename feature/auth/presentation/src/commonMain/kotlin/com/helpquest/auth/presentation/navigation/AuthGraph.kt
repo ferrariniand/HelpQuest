@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.helpquest.auth.presentation.email_verification.EmailVerificationRoot
+import com.helpquest.auth.presentation.forgot_password.ForgotPasswordRoot
 import com.helpquest.auth.presentation.login.LoginRoot
 import com.helpquest.auth.presentation.register.RegisterRoot
 import com.helpquest.auth.presentation.register_success.RegisterSuccessRoot
@@ -21,7 +22,10 @@ fun NavGraphBuilder.authGraph(
             LoginRoot(
                 onLoginSuccess = onLoginSuccess,
                 onForgotPasswordClick = {
-                    navController.navigate(AuthGraphRoutes.ForgotPassword)
+                    navController.navigate(AuthGraphRoutes.ForgotPassword) {
+                        restoreState = true
+                        launchSingleTop = true
+                    }
                 },
                 onCreateAccountClick = {
                     navController.navigate(AuthGraphRoutes.Register) {
@@ -85,6 +89,20 @@ fun NavGraphBuilder.authGraph(
                         popUpTo<AuthGraphRoutes.EmailVerification> {
                             inclusive = true
                         }
+                    }
+                }
+            )
+        }
+        composable<AuthGraphRoutes.ForgotPassword> {
+            ForgotPasswordRoot(
+                onBackClick = {
+                    navController.navigate(AuthGraphRoutes.Login) {
+                        popUpTo(AuthGraphRoutes.ForgotPassword) {
+                            inclusive = true
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
                     }
                 }
             )

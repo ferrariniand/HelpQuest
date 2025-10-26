@@ -1,6 +1,7 @@
 package com.helpquest.auth.presentation.di
 
 import com.helpquest.auth.presentation.email_verification.EmailVerificationViewModel
+import com.helpquest.auth.presentation.forgot_password.ForgotPasswordViewModel
 import com.helpquest.auth.presentation.login.LoginState
 import com.helpquest.auth.presentation.login.LoginViewModel
 import com.helpquest.auth.presentation.register.RegisterState
@@ -17,4 +18,5 @@ val authPresentationModule = module {
     viewModelOf(::RegisterSuccessViewModel)
     viewModelOf(::EmailVerificationViewModel)
     viewModelOf(::LoginViewModel)
+    viewModelOf(::ForgotPasswordViewModel)
 }

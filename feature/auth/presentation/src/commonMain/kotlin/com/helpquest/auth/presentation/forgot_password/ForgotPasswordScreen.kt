@@ -1,0 +1,154 @@
+package com.helpquest.auth.presentation.forgot_password
+
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
+import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
+import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
+import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import helpquest.feature.auth.presentation.generated.resources.Res
+import helpquest.feature.auth.presentation.generated.resources.back
+import helpquest.feature.auth.presentation.generated.resources.email
+import helpquest.feature.auth.presentation.generated.resources.email_placeholder
+import helpquest.feature.auth.presentation.generated.resources.forgot_password
+import helpquest.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
+import helpquest.feature.auth.presentation.generated.resources.submit
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun ForgotPasswordRoot(
+    onBackClick: () -> Unit,
+    viewModel: ForgotPasswordViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ForgotPasswordScreen(
+        state = state,
+        onAction = { action ->
+            when (action) {
+                ForgotPasswordAction.OnBackClick -> onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
+    )
+}
+
+@Composable
+fun ForgotPasswordScreen(
+    state: ForgotPasswordState,
+    onAction: (ForgotPasswordAction) -> Unit,
+) {
+    val focusManager = LocalFocusManager.current
+
+    Scaffold(
+        contentWindowInsets = WindowInsets.statusBars
+            .union(WindowInsets.displayCutout)
+            .union(WindowInsets.navigationBars)
+            .union(WindowInsets.ime),
+    ) { innerPadding ->
+        HelpQuestAdaptiveFormLayout(
+            headerText = stringResource(Res.string.forgot_password),
+            errorText = state.submitError?.asString(),
+            successText = if (state.isEmailSentSuccessfully) {
+                stringResource(Res.string.forgot_password_email_sent_successfully)
+            } else {
+                null
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            formContent = {
+                HelpQuestTextField(
+                    state = state.emailTextState,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = stringResource(Res.string.email_placeholder),
+                    title = stringResource(Res.string.email),
+                    isError = state.emailError != null,
+                    supportingText = state.emailError?.asString(),
+                    keyboardType = KeyboardType.Email,
+                    singleLine = true,
+                    onFocusChanged = { isFocused ->
+                        onAction(ForgotPasswordAction.OnInputTextFocusGain)
+                    },
+                    onDebouncedValueChange = {
+                        onAction(ForgotPasswordAction.OnInputTextFocusGain)
+                    },
+                )
+            },
+            buttonsContent = {
+                HelpQuestButton(
+                    text = stringResource(Res.string.submit),
+                    onClick = {
+                        focusManager.clearFocus()
+                        onAction(ForgotPasswordAction.OnSubmitClick)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    enabled = state.canSubmit,
+                    isLoading = state.isLoading
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                HelpQuestButton(
+                    text = stringResource(Res.string.back),
+                    onClick = {
+                        focusManager.clearFocus()
+                        onAction(ForgotPasswordAction.OnBackClick)
+                    },
+                    style = HelpQuestButtonStyle.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            isLongScreen = false
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+private fun ForgotPasswordScreenLightPreview() {
+    HelpQuestTheme {
+        ForgotPasswordScreen(
+            state = ForgotPasswordState(),
+            onAction = {}
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+private fun ForgotPasswordScreenDarkPreview() {
+    HelpQuestTheme(darkTheme = true) {
+        ForgotPasswordScreen(
+            state = ForgotPasswordState(),
+            onAction = {}
+        )
+    }
+}
