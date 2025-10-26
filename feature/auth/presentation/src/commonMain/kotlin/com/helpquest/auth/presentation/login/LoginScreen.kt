@@ -1,6 +1,5 @@
 package com.helpquest.auth.presentation.login
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
@@ -12,13 +11,12 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -77,6 +75,8 @@ fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Scaffold(
         contentWindowInsets = WindowInsets.statusBars
             .union(WindowInsets.displayCutout)
@@ -116,21 +116,23 @@ fun LoginScreen(
                         .fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
+                HelpQuestButton(
                     text = stringResource(Res.string.forgot_password),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    style = HelpQuestButtonStyle.TEXT,
+                    onClick = {
+                        focusManager.clearFocus()
+                        onAction(LoginAction.OnForgotPasswordClick)
+                    },
+                    enabled = true,
                     modifier = Modifier
                         .align(Alignment.End)
-                        .clickable {
-                            onAction(LoginAction.OnForgotPasswordClick)
-                        }
                 )
             },
             buttonsContent = {
                 HelpQuestButton(
                     text = stringResource(Res.string.login),
                     onClick = {
+                        focusManager.clearFocus()
                         onAction(LoginAction.OnLoginClick)
                     },
                     enabled = state.canLogin,
@@ -142,6 +144,7 @@ fun LoginScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.create_account),
                     onClick = {
+                        focusManager.clearFocus()
                         onAction(LoginAction.OnSignUpClick)
                     },
                     style = HelpQuestButtonStyle.SECONDARY,

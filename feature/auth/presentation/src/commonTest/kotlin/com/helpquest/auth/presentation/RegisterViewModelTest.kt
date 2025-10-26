@@ -238,10 +238,10 @@ class RegisterViewModelTest : KoinTest {
             passwordError = null,
             registrationError = null
         )
+        fakeAuthService.registerResult = Result.Success(Unit)
         viewModel = RegisterViewModel(fakeAuthService, validRegistrationState)
 
         viewModel.state.test {
-            fakeAuthService.registerResult = Result.Success(Unit)
             viewModel.onAction(RegisterAction.OnRegisterClick)
 //TODO: how to test this?
 //            val isRegisteringState = awaitItem()

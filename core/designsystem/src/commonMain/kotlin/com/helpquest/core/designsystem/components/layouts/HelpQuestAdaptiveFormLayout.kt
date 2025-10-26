@@ -16,8 +16,11 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,10 +42,12 @@ fun HelpQuestAdaptiveFormLayout(
     topHeaderText: String? = null,
     headerText: String,
     errorText: String? = null,
+    successText: String? = null,
     logo: @Composable () -> Unit = { HelpQuestBrandLogo() },
     modifier: Modifier = Modifier,
     formContent: @Composable ColumnScope.() -> Unit,
-    buttonsContent: @Composable ColumnScope.() -> Unit
+    buttonsContent: @Composable ColumnScope.() -> Unit,
+    isLongScreen: Boolean = true
 ) {
     val configuration = currentDeviceConfiguration()
     val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
@@ -71,6 +76,7 @@ fun HelpQuestAdaptiveFormLayout(
                         headerText = headerText,
                         headerColor = headerColor,
                         errorText = errorText,
+                        successText = successText,
                         headerTextAlign = TextAlign.Center
                     )
                 }
@@ -101,19 +107,45 @@ fun HelpQuestAdaptiveFormLayout(
                         topHeaderText = topHeaderText,
                         headerText = headerText,
                         headerColor = headerColor,
-                        errorText = errorText
+                        errorText = errorText,
+                        successText = successText,
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                HelpQuestSurface(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    formContent()
-                    Spacer(modifier = Modifier.height(24.dp))
-                    buttonsContent()
-                    Spacer(modifier = Modifier.height(24.dp))
+                if (isLongScreen) {
+                    HelpQuestSurface(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        formContent()
+                        Spacer(modifier = Modifier.height(24.dp))
+                        buttonsContent()
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                } else {
+                    Surface(
+                        color = MaterialTheme.colorScheme.surface,
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp)
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            formContent()
+                            Spacer(modifier = Modifier.weight(1f))
+                            Spacer(modifier = Modifier.height(10.dp))
+                            buttonsContent()
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
+                    }
                 }
             }
         }

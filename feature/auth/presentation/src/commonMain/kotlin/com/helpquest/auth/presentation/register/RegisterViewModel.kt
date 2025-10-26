@@ -51,7 +51,7 @@ class RegisterViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = RegisterState()
+            initialValue = initialState
         )
 
     private val isEmailValidFlow = snapshotFlow { state.value.emailTextState.text.toString() }
@@ -88,7 +88,13 @@ class RegisterViewModel(
 
     fun onAction(action: RegisterAction) {
         when (action) {
-            RegisterAction.OnLoginClick -> Unit
+            RegisterAction.OnLoginClick -> {
+                _state.update {
+                    it.copy(
+                        registrationError = null
+                    )
+                }
+            }
             RegisterAction.OnRegisterClick -> register()
             RegisterAction.OnTogglePasswordVisibilityClick -> {
                 _state.update {
@@ -114,7 +120,8 @@ class RegisterViewModel(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    isRegistering = true
+                    isRegistering = true,
+                    registrationError = null
                 )
             }
 
@@ -158,7 +165,6 @@ class RegisterViewModel(
                 emailError = null,
                 usernameError = null,
                 passwordError = null,
-                registrationError = null
             )
         }
     }

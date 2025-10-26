@@ -64,7 +64,14 @@ class LoginViewModel(
                 }
             }
 
-            else -> Unit
+            LoginAction.OnForgotPasswordClick,
+            LoginAction.OnSignUpClick -> {
+                _state.update {
+                    it.copy(
+                        error = null
+                    )
+                }
+            }
         }
     }
 
@@ -104,7 +111,8 @@ class LoginViewModel(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    isLoggingIn = true
+                    isLoggingIn = true,
+                    error = null
                 )
             }
 

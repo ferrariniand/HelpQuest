@@ -1,6 +1,7 @@
 package com.helpquest.core.designsystem.components.buttons
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -100,50 +101,69 @@ fun HelpQuestButton(
         else -> null
     }
 
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        shape = RoundedCornerShape(8.dp), //TODO: Customize this button
-        colors = colors,
-        border = border
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .padding(6.dp)
+    if (style == HelpQuestButtonStyle.TEXT) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleSmall,
+            color = if (enabled) {
+                MaterialTheme.colorScheme.tertiary
+            } else {
+                MaterialTheme.colorScheme.extended.textDisabled
+            },
+            modifier = modifier
+                .clickable(
+                    enabled = enabled,
+                    onClick = onClick
+                )
+        )
+    } else {
+        Button(
+            onClick = onClick,
+            modifier = modifier,
+            enabled = enabled,
+            shape = RoundedCornerShape(8.dp), //TODO: Customize this button
+            colors = colors,
+            border = border
         ) {
-            CircularProgressIndicator( //TODO: Customize this loader
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(15.dp)
-                    .alpha(
-                        alpha = if (isLoading) 1f else 0f
-                    ),
-                strokeWidth = 1.5.dp,
-                color = Color.Black
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(
-                    8.dp,
-                    Alignment.CenterHorizontally
-                ),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.alpha(
-                    if (isLoading) 0f else 1f
-                )
+                    .padding(6.dp)
             ) {
-                leadingIcon?.invoke()
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.titleSmall
+                CircularProgressIndicator( //TODO: Customize this loader
+                    modifier = Modifier
+                        .size(15.dp)
+                        .alpha(
+                            alpha = if (isLoading) 1f else 0f
+                        ),
+                    strokeWidth = 1.5.dp,
+                    color = Color.Black
                 )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(
+                        8.dp,
+                        Alignment.CenterHorizontally
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.alpha(
+                        if (isLoading) 0f else 1f
+                    )
+                ) {
+                    leadingIcon?.invoke()
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestPrimaryButtonLightPreview() {
     HelpQuestTheme {
         HelpQuestButton(
@@ -155,7 +175,10 @@ fun HelpQuestPrimaryButtonLightPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
 fun HelpQuestPrimaryButtonDarkPreview() {
     HelpQuestTheme(
         darkTheme = true
@@ -169,7 +192,9 @@ fun HelpQuestPrimaryButtonDarkPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestPrimaryButtonLoadingPreview() {
     HelpQuestTheme(
         darkTheme = true
@@ -184,7 +209,9 @@ fun HelpQuestPrimaryButtonLoadingPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestPrimaryButtonDisabledPreview() {
     HelpQuestTheme(
         darkTheme = true
@@ -255,7 +282,9 @@ fun HelpQuestSecondaryButtonDarkDisabledPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestDestructivePrimaryLightButtonPreview() {
     HelpQuestTheme {
         HelpQuestButton(
@@ -267,7 +296,10 @@ fun HelpQuestDestructivePrimaryLightButtonPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
 fun HelpQuestDestructivePrimaryDarkButtonPreview() {
     HelpQuestTheme(
         darkTheme = true
@@ -281,7 +313,9 @@ fun HelpQuestDestructivePrimaryDarkButtonPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestDestructivePrimaryLoadingButtonPreview() {
     HelpQuestTheme {
         HelpQuestButton(
@@ -333,7 +367,9 @@ fun HelpQuestDestructiveSecondaryDarkButtonPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true
+)
 fun HelpQuestTextButtonLightPreview() {
     HelpQuestTheme {
         HelpQuestButton(
@@ -345,7 +381,10 @@ fun HelpQuestTextButtonLightPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
 fun HelpQuestTextButtonDarkPreview() {
     HelpQuestTheme(
         darkTheme = true

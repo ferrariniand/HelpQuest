@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.helpquest.core.designsystem.theme.extended
 
 @Composable
 fun ColumnScope.HeaderSection(
@@ -20,6 +21,7 @@ fun ColumnScope.HeaderSection(
     headerText: String,
     headerColor: Color,
     errorText: String? = null,
+    successText: String? = null,
     headerTextAlign: TextAlign = TextAlign.Companion.Start
 ) {
     if (topHeaderText != null) {
@@ -38,22 +40,32 @@ fun ColumnScope.HeaderSection(
         textAlign = headerTextAlign,
         modifier = Modifier.Companion.fillMaxWidth()
     )
-    if (errorText != null) {
+    AnimatedVisibility(
+        visible = errorText != null,
+    ) {
         Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = errorText ?: "",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.Companion
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
+            textAlign = headerTextAlign
+        )
     }
     AnimatedVisibility(
-        visible = errorText != null
+        visible = successText != null,
     ) {
-        if (errorText != null) {
-            Text(
-                text = errorText,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.Companion
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp),
-                textAlign = headerTextAlign
-            )
-        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = successText ?: "",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.extended.success,
+            modifier = Modifier.Companion
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
+            textAlign = headerTextAlign
+        )
     }
 }

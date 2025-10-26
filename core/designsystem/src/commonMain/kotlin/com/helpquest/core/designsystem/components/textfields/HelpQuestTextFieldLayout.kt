@@ -100,19 +100,17 @@ fun HelpQuestTextFieldLayout(
         AnimatedVisibility(
             visible = supportingText != null && (isError || isFocused)
         ) {
-            if (supportingText != null) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = supportingText,
-                    color = if (isError) {
-                        MaterialTheme.colorScheme.error
-                    } else {
-                        MaterialTheme.colorScheme.extended.textTertiary
-                    },
-                    style = MaterialTheme.typography.bodySmall,
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = supportingText ?: "",
+                color = if (isError) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.extended.textTertiary
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
 
-                    )
-            }
         }
     }
 }
