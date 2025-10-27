@@ -1,15 +1,7 @@
 package com.helpquest.auth.presentation.email_verification
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +12,7 @@ import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveResultLayout
 import com.helpquest.core.designsystem.components.layouts.HelpQuestLoadingLayout
+import com.helpquest.core.designsystem.components.layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.close
@@ -66,18 +59,12 @@ fun EmailVerificationScreen(
     state: EmailVerificationState,
     onAction: (EmailVerificationAction) -> Unit,
 ) {
-    Scaffold(
-        contentWindowInsets = WindowInsets.statusBars
-            .union(WindowInsets.displayCutout)
-            .union(WindowInsets.navigationBars)
-            .union(WindowInsets.ime),
-    ) { innerPadding ->
+    ScaffoldWithInsets {
         when {
             state.isVerifying -> {
                 HelpQuestLoadingLayout(
                     text = stringResource(Res.string.verifying_account),
                     modifier = Modifier
-                        .padding(innerPadding)
                         .fillMaxSize()
                 )
             }
@@ -99,7 +86,6 @@ fun EmailVerificationScreen(
                         )
                     },
                     modifier = Modifier
-                        .padding(innerPadding)
                         .fillMaxWidth()
                 )
             }
@@ -122,7 +108,6 @@ fun EmailVerificationScreen(
                         )
                     },
                     modifier = Modifier
-                        .padding(innerPadding)
                         .fillMaxWidth()
                 )
             }

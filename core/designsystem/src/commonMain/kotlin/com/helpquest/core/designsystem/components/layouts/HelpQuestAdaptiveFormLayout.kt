@@ -33,6 +33,7 @@ import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
+import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardOpen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -61,6 +62,7 @@ fun HelpQuestAdaptiveFormLayout(
         DeviceConfiguration.MOBILE_PORTRAIT -> {
             HelpQuestSurface(
                 modifier = modifier
+                    .clearFocusOnTap()
                     .consumeWindowInsets(WindowInsets.navigationBars)
                     .consumeWindowInsets(WindowInsets.displayCutout),
                 header = {
@@ -94,6 +96,7 @@ fun HelpQuestAdaptiveFormLayout(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
+                    .clearFocusOnTap()
                     .padding(horizontal = 16.dp)
             ) {
                 Column(
@@ -129,7 +132,7 @@ fun HelpQuestAdaptiveFormLayout(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp),
+                            .padding(bottom = if (!isKeyboardOpen) 16.dp else 0.dp),
                         shape = RoundedCornerShape(20.dp)
                     ) {
                         Column(
@@ -157,6 +160,7 @@ fun HelpQuestAdaptiveFormLayout(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
+                    .clearFocusOnTap()
                     .padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(32.dp)

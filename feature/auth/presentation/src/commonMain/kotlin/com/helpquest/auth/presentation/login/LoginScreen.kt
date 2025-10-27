@@ -1,22 +1,13 @@
 package com.helpquest.auth.presentation.login
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,6 +15,7 @@ import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
+import com.helpquest.core.designsystem.components.layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTextField
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
@@ -75,14 +67,7 @@ fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
-
-    Scaffold(
-        contentWindowInsets = WindowInsets.statusBars
-            .union(WindowInsets.displayCutout)
-            .union(WindowInsets.navigationBars)
-            .union(WindowInsets.ime),
-    ) { innerPadding ->
+    ScaffoldWithInsets {
         HelpQuestAdaptiveFormLayout(
             topHeaderText = stringResource(Res.string.welcome_back),
             headerText = stringResource(Res.string.help_quest),
@@ -91,8 +76,7 @@ fun LoginScreen(
                 HelpQuestBrandLogo()
             },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+                .fillMaxSize(),
             formContent = {
                 HelpQuestTextField(
                     state = state.emailTextState,
@@ -120,7 +104,6 @@ fun LoginScreen(
                     text = stringResource(Res.string.forgot_password),
                     style = HelpQuestButtonStyle.TEXT,
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(LoginAction.OnForgotPasswordClick)
                     },
                     enabled = true,
@@ -132,7 +115,6 @@ fun LoginScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.login),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(LoginAction.OnLoginClick)
                     },
                     enabled = state.canLogin,
@@ -144,7 +126,6 @@ fun LoginScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.create_account),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(LoginAction.OnSignUpClick)
                     },
                     style = HelpQuestButtonStyle.SECONDARY,

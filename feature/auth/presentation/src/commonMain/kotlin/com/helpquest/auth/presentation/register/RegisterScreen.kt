@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -73,8 +72,6 @@ fun RegisterScreen(
     onAction: (RegisterAction) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    val focusManager = LocalFocusManager.current
-
     SnackbarScaffold(
         snackbarHostState = snackbarHostState
     ) {
@@ -136,7 +133,6 @@ fun RegisterScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.register),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(RegisterAction.OnRegisterClick)
                     },
                     enabled = state.canRegister,
@@ -148,7 +144,6 @@ fun RegisterScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.login),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(RegisterAction.OnLoginClick)
                     },
                     style = HelpQuestButtonStyle.SECONDARY,

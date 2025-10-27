@@ -1,27 +1,19 @@
 package com.helpquest.auth.presentation.forgot_password
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
+import com.helpquest.core.designsystem.components.layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import helpquest.feature.auth.presentation.generated.resources.Res
@@ -59,14 +51,7 @@ fun ForgotPasswordScreen(
     state: ForgotPasswordState,
     onAction: (ForgotPasswordAction) -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
-
-    Scaffold(
-        contentWindowInsets = WindowInsets.statusBars
-            .union(WindowInsets.displayCutout)
-            .union(WindowInsets.navigationBars)
-            .union(WindowInsets.ime),
-    ) { innerPadding ->
+    ScaffoldWithInsets {
         HelpQuestAdaptiveFormLayout(
             headerText = stringResource(Res.string.forgot_password),
             errorText = state.submitError?.asString(),
@@ -76,8 +61,7 @@ fun ForgotPasswordScreen(
                 null
             },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+                .fillMaxSize(),
             formContent = {
                 HelpQuestTextField(
                     state = state.emailTextState,
@@ -101,7 +85,6 @@ fun ForgotPasswordScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.submit),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(ForgotPasswordAction.OnSubmitClick)
                     },
                     modifier = Modifier
@@ -113,7 +96,6 @@ fun ForgotPasswordScreen(
                 HelpQuestButton(
                     text = stringResource(Res.string.back),
                     onClick = {
-                        focusManager.clearFocus()
                         onAction(ForgotPasswordAction.OnBackClick)
                     },
                     style = HelpQuestButtonStyle.SECONDARY,

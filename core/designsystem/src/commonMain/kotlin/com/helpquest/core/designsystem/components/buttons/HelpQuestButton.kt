@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
@@ -41,6 +42,8 @@ fun HelpQuestButton(
     isLoading: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
+    val focusManager = LocalFocusManager.current
+
     val colors = when (style) {
         HelpQuestButtonStyle.PRIMARY -> ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -113,12 +116,18 @@ fun HelpQuestButton(
             modifier = modifier
                 .clickable(
                     enabled = enabled,
-                    onClick = onClick
+                    onClick = {
+                        focusManager.clearFocus()
+                        onClick()
+                    }
                 )
         )
     } else {
         Button(
-            onClick = onClick,
+            onClick = {
+                focusManager.clearFocus()
+                onClick()
+            },
             modifier = modifier,
             enabled = enabled,
             shape = RoundedCornerShape(8.dp), //TODO: Customize this button
