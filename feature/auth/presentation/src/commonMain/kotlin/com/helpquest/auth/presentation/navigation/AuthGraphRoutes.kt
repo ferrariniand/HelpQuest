@@ -16,11 +16,11 @@ sealed interface AuthGraphRoutes {
     data class RegisterSuccess(val email: String) : AuthGraphRoutes
 
     @Serializable
+    data class EmailVerification(val token: String) : AuthGraphRoutes
+
+    @Serializable
     data object ForgotPassword : AuthGraphRoutes
 
     @Serializable
-    data object ResetPassword : AuthGraphRoutes
-
-    @Serializable
-    data class EmailVerification(val token: String) : AuthGraphRoutes
+    data class ResetPassword(val token: String) : AuthGraphRoutes
 }

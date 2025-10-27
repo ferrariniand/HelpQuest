@@ -19,6 +19,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -26,11 +27,12 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- TODO: add host!!! -->
-                <data
-                    android:scheme="https"
-                    android:host=".com"
-                    android:pathPrefix="/api/auth/verify" />
+                <data android:scheme="https" />
+                <data android:host="hq.com" />
+                <data android:pathPrefix="/api/auth/verify" />
+                <data android:pathPrefix="/api/auth/reset-password" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -38,10 +40,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- TODO: add host!!! -->
-                <data
-                    android:scheme="helpquest"
-                    android:host=".com"
-                    android:pathPrefix="/api/auth/verify" />
+                <data android:scheme="helpquest" />
+                <data android:host="hq.com" />
+                <data android:pathPrefix="/api/auth/verify" />
+                <data android:pathPrefix="/api/auth/reset-password" />
             </intent-filter>
         </activity>
     </application>

@@ -3,7 +3,8 @@ package com.helpquest.core.data.auth
 import com.helpquest.core.data.dto.AuthInfoDto
 import com.helpquest.core.data.dto.request.EmailRequest
 import com.helpquest.core.data.dto.request.LoginRequest
-import com.helpquest.core.data.dto.request.RegisterRequestDto
+import com.helpquest.core.data.dto.request.RegisterRequest
+import com.helpquest.core.data.dto.request.ResetPasswordRequest
 import com.helpquest.core.data.mappers.toAuthInfo
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.data.networking.post
@@ -41,7 +42,7 @@ class KtorAuthService(
     ): EmptyResult<DataError.Remote> {
         return httpClient.post(
             route = "/auth/register",
-            body = RegisterRequestDto(
+            body = RegisterRequest(
                 email = email,
                 username = username,
                 password = password
@@ -67,6 +68,19 @@ class KtorAuthService(
         return httpClient.post<EmailRequest, Unit>(
             route = "/auth/forgot-password",
             body = EmailRequest(email),
+        )
+    }
+
+    override suspend fun resetPassword(
+        newPassword: String,
+        token: String
+    ): EmptyResult<DataError.Remote> {
+        return httpClient.post(
+            route = "/auth/reset-password",
+            body = ResetPasswordRequest(
+                newPassword = newPassword,
+                token = token
+            ),
         )
     }
 }

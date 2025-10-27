@@ -88,14 +88,8 @@ class RegisterViewModel(
 
     fun onAction(action: RegisterAction) {
         when (action) {
-            RegisterAction.OnLoginClick -> {
-                _state.update {
-                    it.copy(
-                        registrationError = null
-                    )
-                }
-            }
             RegisterAction.OnRegisterClick -> register()
+            RegisterAction.OnInputTextFocusGain -> validateFormInputs(acceptEmpty = true)
             RegisterAction.OnTogglePasswordVisibilityClick -> {
                 _state.update {
                     it.copy(
@@ -103,11 +97,12 @@ class RegisterViewModel(
                     )
                 }
             }
-
-            RegisterAction.OnInputTextFocusGain -> {
-                validateFormInputs(
-                    acceptEmpty = true
-                )
+            RegisterAction.OnLoginClick -> {
+                _state.update {
+                    it.copy(
+                        registrationError = null
+                    )
+                }
             }
         }
     }

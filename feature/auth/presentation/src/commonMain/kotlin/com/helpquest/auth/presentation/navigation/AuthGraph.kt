@@ -10,6 +10,7 @@ import com.helpquest.auth.presentation.forgot_password.ForgotPasswordRoot
 import com.helpquest.auth.presentation.login.LoginRoot
 import com.helpquest.auth.presentation.register.RegisterRoot
 import com.helpquest.auth.presentation.register_success.RegisterSuccessRoot
+import com.helpquest.auth.presentation.reset_password.ResetPasswordRoot
 
 fun NavGraphBuilder.authGraph(
     navController: NavController,
@@ -29,6 +30,20 @@ fun NavGraphBuilder.authGraph(
                 },
                 onCreateAccountClick = {
                     navController.navigate(AuthGraphRoutes.Register) {
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+        composable<AuthGraphRoutes.ForgotPassword> {
+            ForgotPasswordRoot(
+                onBackClick = {
+                    navController.navigate(AuthGraphRoutes.Login) {
+                        popUpTo(AuthGraphRoutes.ForgotPassword) {
+                            inclusive = true
+                            saveState = true
+                        }
                         restoreState = true
                         launchSingleTop = true
                     }
@@ -63,7 +78,7 @@ fun NavGraphBuilder.authGraph(
                 }
             )
         }
-        val deepLinkUrl = ""
+        val deepLinkUrl = "hq.com"
         composable<AuthGraphRoutes.EmailVerification>(
             deepLinks = listOf(
                 navDeepLink {
@@ -93,16 +108,25 @@ fun NavGraphBuilder.authGraph(
                 }
             )
         }
-        composable<AuthGraphRoutes.ForgotPassword> {
-            ForgotPasswordRoot(
-                onBackClick = {
+        composable<AuthGraphRoutes.ResetPassword>(
+            deepLinks = listOf(
+                navDeepLink {
+                    //TODO define URL!!!
+                    this.uriPattern = "https://$deepLinkUrl/api/auth/reset-password?token={token}"
+                },
+                navDeepLink {
+                    //TODO define URL!!!
+                    this.uriPattern =
+                        "helpquest://$deepLinkUrl/api/auth/reset-password?token={token}"
+                },
+            )
+        ) {
+            ResetPasswordRoot(
+                onCloseClick = {
                     navController.navigate(AuthGraphRoutes.Login) {
-                        popUpTo(AuthGraphRoutes.ForgotPassword) {
+                        popUpTo<AuthGraphRoutes.ResetPassword> {
                             inclusive = true
-                            saveState = true
                         }
-                        restoreState = true
-                        launchSingleTop = true
                     }
                 }
             )

@@ -8,6 +8,7 @@
     <string name="resend_verification_email">Resend verification email</string>
     <string name="resent_verification_email">Successfully resent verification email</string>
     <string name="forgot_password_email_sent_successfully">We've successfully sent you an email with a link to reset your password</string>
+    <string name="reset_password_successfully">Your password has successfully been changed. You can now log in with your new password</string>
     <string name="verifying_account">Verifying account...</string>
     <string name="email_verified_successfully">Email verified successfully</string>
     <string name="email_verified_failed">Fail to verify your email</string>
@@ -22,7 +23,10 @@
     <string name="submit">Submit</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="set_new_password">Set a new password</string>
     <string name="email">Email</string>
     <string name="register">Register</string>
     <string name="username_placeholder">Hero</string>
@@ -37,4 +41,7 @@
     <string name="error_invalid_username">The username must be between 3 and 20 characters</string>
     <string name="error_invalid_credentials">The email or password is incorrect</string>
     <string name="error_email_not_verified">Unable to login because your email isn't verified</string>
+    <string name="error_reset_password_token_invalid">It seems like the reset password link is not valid or has expired. Please request new email</string>
+    <string name="error_different_confirm_password">The confirm password is different from the new password</string>
+    <string name="error_same_password">The new password can't be equal to the old one</string>
 </resources>
