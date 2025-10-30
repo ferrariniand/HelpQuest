@@ -1,4 +1,4 @@
-import com.helpquest.convention.libs
+import com.helpquest.convention.getLib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -14,13 +14,13 @@ class CmpLibraryConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-ui").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-foundation").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-core").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-components-resources").get())
+                "commonMainImplementation"(getLib("jetbrains-compose-ui"))
+                "commonMainImplementation"(getLib("jetbrains-compose-foundation"))
+                "commonMainImplementation"(getLib("jetbrains-compose-material3"))
+                "commonMainImplementation"(getLib("jetbrains-compose-material-icons-core"))
+                "commonMainImplementation"(getLib("jetbrains-compose-components-resources"))
 
-                "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+                "debugImplementation"(getLib("androidx-compose-ui-tooling"))
             }
         }
     }

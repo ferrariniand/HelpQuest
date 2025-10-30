@@ -54,29 +54,5 @@ fun App(
                 }
             )
         }
-
-//        RegisterScreen(
-//            state = RegisterState(
-//                registrationError = UiText.DynamicString("show a long longlong long long long long long long longlong longlong long message with the error")
-//            ),
-//            onAction = {},
-//            snackbarHostState = SnackbarHostState()
-//        )
-//        RegisterSuccessScreen(
-//            state = RegisterSuccessState(
-//                registeredEmail = "message with the test",
-//                isResendingVerificationEmail = true,
-//                resendVerificationError = UiText.DynamicString("show a long longlong long long long long long long longlong longlong long message with the error")
-//            ),
-//            onAction = {},
-//            snackbarHostState = SnackbarHostState()
-//        )
-//        EmailVerificationScreen(
-//            state = EmailVerificationState(
-//                isVerifying = false,
-//                isVerified = false
-//            ),
-//            onAction = {}
-//            )
     }
 }

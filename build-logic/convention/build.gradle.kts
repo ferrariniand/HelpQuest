@@ -4,7 +4,8 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.helpquest.convention.buildlogic"
+val packageName = "com.helpquest.convention"
+group = "$packageName.buildlogic"
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
@@ -39,35 +40,35 @@ tasks {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "com.helpquest.convention.android.application"
+            id = "$packageName.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidApplicationCompose") {
-            id = "com.helpquest.convention.android.application.compose"
+            id = "$packageName.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("cmpApplication") {
-            id = "com.helpquest.convention.cmp.application"
+            id = "$packageName.cmp.application"
             implementationClass = "CmpApplicationConventionPlugin"
         }
         register("kmpLibrary") {
-            id = "com.helpquest.convention.kmp.library"
+            id = "$packageName.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"
         }
         register("cmpLibrary") {
-            id = "com.helpquest.convention.cmp.library"
+            id = "$packageName.cmp.library"
             implementationClass = "CmpLibraryConventionPlugin"
         }
         register("cmpFeature") {
-            id = "com.helpquest.convention.cmp.feature"
+            id = "$packageName.cmp.feature"
             implementationClass = "CmpFeatureConventionPlugin"
         }
         register("buildKonfig") {
-            id = "com.helpquest.convention.buildkonfig"
+            id = "$packageName.buildkonfig"
             implementationClass = "BuildKonfigConventionPlugin"
         }
         register("room") {
-            id = "com.helpquest.convention.room"
+            id = "$packageName.room"
             implementationClass = "RoomConventionPlugin"
         }
     }

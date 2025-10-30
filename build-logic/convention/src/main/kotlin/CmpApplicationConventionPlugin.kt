@@ -1,7 +1,7 @@
 import com.helpquest.convention.configureAndroidTarget
 import com.helpquest.convention.configureDesktopTarget
 import com.helpquest.convention.configureIosTargets
-import com.helpquest.convention.libs
+import com.helpquest.convention.getLib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -24,7 +24,7 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
             configureDesktopTarget()
 
             dependencies {
-                "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+                "debugImplementation"(getLib("androidx-compose-ui-tooling"))
             }
         }
     }

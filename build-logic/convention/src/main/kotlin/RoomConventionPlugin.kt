@@ -1,5 +1,5 @@
 import androidx.room.gradle.RoomExtension
-import com.helpquest.convention.libs
+import com.helpquest.convention.getLib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -19,13 +19,13 @@ class RoomConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
-                "commonMainApi"(libs.findLibrary("androidx-room-runtime").get())
-                "commonMainApi"(libs.findLibrary("sqlite-bundled").get())
-                "kspAndroid"(libs.findLibrary("androidx-room-compiler").get())
-                "kspIosSimulatorArm64"(libs.findLibrary("androidx-room-compiler").get())
-                "kspIosArm64"(libs.findLibrary("androidx-room-compiler").get())
-                "kspIosX64"(libs.findLibrary("androidx-room-compiler").get())
-                "kspDesktop"(libs.findLibrary("androidx-room-compiler").get())
+                "commonMainApi"(getLib("androidx-room-runtime"))
+                "commonMainApi"(getLib("sqlite-bundled"))
+                "kspAndroid"(getLib("androidx-room-compiler"))
+                "kspIosSimulatorArm64"(getLib("androidx-room-compiler"))
+                "kspIosArm64"(getLib("androidx-room-compiler"))
+                "kspIosX64"(getLib("androidx-room-compiler"))
+                "kspDesktop"(getLib("androidx-room-compiler"))
             }
         }
     }

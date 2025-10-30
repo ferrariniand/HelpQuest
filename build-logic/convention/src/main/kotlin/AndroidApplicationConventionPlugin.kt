@@ -1,6 +1,9 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.helpquest.convention.configureKotlinAndroid
-import com.helpquest.convention.libs
+import com.helpquest.convention.getProjectApplicationId
+import com.helpquest.convention.getProjectTargetSdkVersion
+import com.helpquest.convention.getProjectVersionCode
+import com.helpquest.convention.getProjectVersionName
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -18,10 +21,10 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
 
                 defaultConfig {
-                    applicationId = libs.findVersion("projectApplicationId").get().toString()
-                    targetSdk = libs.findVersion("projectTargetSdkVersion").get().toString().toInt()
-                    versionCode = libs.findVersion("projectVersionCode").get().toString().toInt()
-                    versionName = libs.findVersion("projectVersionName").get().toString()
+                    applicationId = getProjectApplicationId()
+                    targetSdk = getProjectTargetSdkVersion()
+                    versionCode = getProjectVersionCode()
+                    versionName = getProjectVersionName()
 
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
