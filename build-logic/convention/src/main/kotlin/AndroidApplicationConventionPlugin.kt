@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.helpquest.convention.configureBuildTypes
 import com.helpquest.convention.configureKotlinAndroid
 import com.helpquest.convention.getProjectApplicationId
 import com.helpquest.convention.getProjectTargetSdkVersion
@@ -8,7 +9,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class AndroidApplicationConventionPlugin: Plugin<Project> {
+class AndroidApplicationConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
@@ -52,6 +53,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
                 configureKotlinAndroid(this)
             }
+
+            configureBuildTypes()
         }
     }
 }

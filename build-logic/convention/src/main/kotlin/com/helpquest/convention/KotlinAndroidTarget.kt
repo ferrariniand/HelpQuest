@@ -17,6 +17,19 @@ internal fun Project.configureAndroidTarget() {
                 jvmTarget.set(getProjectJvmTarget())
             }
 
+            unitTestVariant {
+                sourceSetTree.set(KotlinSourceSetTree.unitTest)
+
+                dependencies {
+                    "implementation"(getLib("test-core-ktx"))
+                    "implementation"(getLib("androidx-compose-ui-test-junit4"))
+                    "debugImplementation"(
+                        getLib("androidx-compose-ui-test-manifest")
+                    )
+
+                }
+            }
+
             instrumentedTestVariant {
                 sourceSetTree.set(KotlinSourceSetTree.test)
 

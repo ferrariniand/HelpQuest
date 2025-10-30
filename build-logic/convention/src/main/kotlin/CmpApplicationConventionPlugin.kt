@@ -1,4 +1,5 @@
 import com.helpquest.convention.configureAndroidTarget
+import com.helpquest.convention.configureBuildVariants
 import com.helpquest.convention.configureDesktopTarget
 import com.helpquest.convention.configureIosTargets
 import com.helpquest.convention.getLib
@@ -26,6 +27,9 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
             dependencies {
                 "debugImplementation"(getLib("androidx-compose-ui-tooling"))
             }
+
+            configureBuildVariants()
+
         }
     }
 }

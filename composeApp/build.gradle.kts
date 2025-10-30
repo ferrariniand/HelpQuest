@@ -1,5 +1,7 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
+import com.helpquest.convention.BuildVariants
+import com.helpquest.convention.currentBuildVariant
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -70,9 +72,16 @@ kotlin {
             implementation(libs.bundles.koin.common)
 
             // Core Modules
+
+            if (currentBuildVariant() == BuildVariants.MOCK) {
+                //TODO: REPLACE WITH core.mock MODULE
+                implementation(projects.core.test)
+            } else {
+                implementation(projects.core.data)
+            }
+
             implementation(projects.core.domain)
             implementation(projects.core.database)
-            implementation(projects.core.data)
             implementation(projects.core.designsystem)
             implementation(projects.core.presentation)
             // Auth Modules
@@ -100,6 +109,9 @@ kotlin {
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.presentation)
         }
+//        findByName("commonMainMock")?.dependencies {
+//            implementation(projects.core.test)
+//        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlin.test.annotations.common)
