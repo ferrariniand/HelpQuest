@@ -74,8 +74,7 @@ kotlin {
             // Core Modules
 
             if (currentBuildVariant() == BuildVariants.MOCK) {
-                //TODO: REPLACE WITH core.mock MODULE
-                implementation(projects.core.test)
+                implementation(projects.core.mock)
             } else {
                 implementation(projects.core.data)
             }
@@ -109,9 +108,6 @@ kotlin {
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.presentation)
         }
-//        findByName("commonMainMock")?.dependencies {
-//            implementation(projects.core.test)
-//        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlin.test.annotations.common)

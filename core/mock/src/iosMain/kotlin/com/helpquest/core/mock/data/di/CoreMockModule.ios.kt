@@ -1,0 +1,16 @@
+package com.helpquest.core.mock.data.di
+
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import com.helpquest.core.mock.data.auth.DATA_STORE_FILE_NAME
+import com.helpquest.core.mock.data.auth.createDataStore
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.darwin.Darwin
+import org.koin.dsl.module
+
+actual val platformCoreMockModule = module {
+    single<HttpClientEngine> { Darwin.create() }
+    single<DataStore<Preferences>> {
+        createDataStore(DATA_STORE_FILE_NAME)
+    }
+}
