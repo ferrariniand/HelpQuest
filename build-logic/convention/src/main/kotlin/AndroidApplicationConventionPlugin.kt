@@ -1,10 +1,12 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.helpquest.convention.configureAndroidManifest
 import com.helpquest.convention.configureBuildTypes
 import com.helpquest.convention.configureKotlinAndroid
 import com.helpquest.convention.getProjectApplicationId
 import com.helpquest.convention.getProjectTargetSdkVersion
 import com.helpquest.convention.getProjectVersionCode
 import com.helpquest.convention.getProjectVersionName
+import com.helpquest.convention.getVariantApplicationId
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -18,11 +20,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                namespace = "com.helpquest"
+                namespace = getProjectApplicationId()
 
 
                 defaultConfig {
-                    applicationId = getProjectApplicationId()
+                    applicationId = getVariantApplicationId()
                     targetSdk = getProjectTargetSdkVersion()
                     versionCode = getProjectVersionCode()
                     versionName = getProjectVersionName()
@@ -52,6 +54,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 }
 
                 configureKotlinAndroid(this)
+                configureAndroidManifest(this)
             }
 
             configureBuildTypes()

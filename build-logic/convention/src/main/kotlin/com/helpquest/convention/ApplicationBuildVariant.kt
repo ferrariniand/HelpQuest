@@ -14,20 +14,15 @@ enum class BuildVariants(val value: String) {
 
 internal fun Project.configureBuildVariants() {
     extensions.configure<KotlinMultiplatformExtension> {
-        //TODO: understand if should be created a different folder for each variant
-        val buildVariant = when (currentBuildVariant()) {
-            BuildVariants.MOCK -> BuildVariants.MOCK
-            BuildVariants.DEV,
-            BuildVariants.STAGE,
-            BuildVariants.PROD -> BuildVariants.DEV
-        }
-        val variantCapitalized = buildVariant.value.replaceFirstChar { it.uppercaseChar() }
+        val variantCapitalized = getCapitalizedBuildVariantString()
         sourceSets.apply {
             androidMain {
                 kotlin.srcDir("src/androidMain$variantCapitalized/kotlin")
+                resources.srcDir("src/androidMain$variantCapitalized/res")
             }
             commonMain {
                 kotlin.srcDir("src/commonMain$variantCapitalized/kotlin")
+                resources.srcDir("src/commonMain$variantCapitalized/composeResources")
             }
             iosMain {
                 kotlin.srcDir("src/iosMain$variantCapitalized/kotlin")
@@ -67,3 +62,26 @@ fun Project.currentBuildVariant(): BuildVariants =
     getAndroidBuildVariantOrNull()
         ?: getEnvBuildVariantOrNull()
         ?: BuildVariants.DEV
+
+fun Project.getCapitalizedBuildVariantString(): String {
+    //TODO: understand if should be created a different folder for each variant
+    val buildVariant = when (currentBuildVariant()) {
+        BuildVariants.MOCK -> BuildVariants.MOCK
+        BuildVariants.DEV,
+        BuildVariants.STAGE,
+        BuildVariants.PROD -> BuildVariants.DEV
+    }
+    return buildVariant.value.replaceFirstChar { it.uppercaseChar() }
+}
+
+fun Project.getManifestVariantString(): String =
+    currentBuildVariant().value.replaceFirstChar { it.uppercaseChar() }
+
+
+fun Project.getVariantApplicationId(): String {
+    val buildVariant = currentBuildVariant()
+    return when (buildVariant) {
+        BuildVariants.PROD -> getProjectApplicationId()
+        else -> "${getProjectApplicationId()}.${buildVariant.value}"
+    }
+}

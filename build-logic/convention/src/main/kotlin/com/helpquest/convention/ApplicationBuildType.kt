@@ -15,14 +15,22 @@ internal fun Project.configureBuildTypes() {
     extensions.configure<ApplicationExtension> {
         buildTypes {
             create(BuildVariants.PROD.value) {
-                initWith(getByName(BuildType.RELEASE.value))
-                matchingFallbacks += listOf(BuildType.RELEASE.value)
-                isMinifyEnabled = true
+                initWith(getByName(BuildType.DEBUG.value))
+                matchingFallbacks += listOf(BuildType.DEBUG.value)
+                isMinifyEnabled = false
+                //TODO define RELEASE CONFIGURATION AND SIGNING !!!!!
+//                initWith(getByName(BuildType.RELEASE.value))
+//                matchingFallbacks += listOf(BuildType.RELEASE.value)
+//                isMinifyEnabled = true
                 //TODO proguard
             }
             create(BuildVariants.STAGE.value) {
-                initWith(getByName(BuildType.RELEASE.value))
-                matchingFallbacks += listOf(BuildType.RELEASE.value)
+                initWith(getByName(BuildType.DEBUG.value))
+                matchingFallbacks += listOf(BuildType.DEBUG.value)
+                isMinifyEnabled = false
+                //TODO define RELEASE CONFIGURATION AND SIGNING !!!!!
+//                initWith(getByName(BuildType.RELEASE.value))
+//                matchingFallbacks += listOf(BuildType.RELEASE.value)
                 //TODO proguard
             }
             create(BuildVariants.DEV.value) {
