@@ -6,7 +6,6 @@ import com.helpquest.convention.getProjectApplicationId
 import com.helpquest.convention.getProjectTargetSdkVersion
 import com.helpquest.convention.getProjectVersionCode
 import com.helpquest.convention.getProjectVersionName
-import com.helpquest.convention.getVariantApplicationId
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -24,7 +23,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
 
                 defaultConfig {
-                    applicationId = getVariantApplicationId()
+                    applicationId = getProjectApplicationId()
                     targetSdk = getProjectTargetSdkVersion()
                     versionCode = getProjectVersionCode()
                     versionName = getProjectVersionName()
@@ -45,11 +44,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                             merges += "/META-INF/LICENSE.md"
                             merges += "/META-INF/LICENSE-notice.md"
                         }
-                    }
-                }
-                buildTypes {
-                    getByName("release") {
-                        isMinifyEnabled = false
                     }
                 }
 

@@ -28,6 +28,7 @@ internal fun Project.configureBuildTypes() {
                 initWith(getByName(BuildType.DEBUG.value))
                 matchingFallbacks += listOf(BuildType.DEBUG.value)
                 isMinifyEnabled = false
+                applicationIdSuffix = ".${BuildVariants.STAGE.value}"
                 //TODO define RELEASE CONFIGURATION AND SIGNING !!!!!
 //                initWith(getByName(BuildType.RELEASE.value))
 //                matchingFallbacks += listOf(BuildType.RELEASE.value)
@@ -37,11 +38,13 @@ internal fun Project.configureBuildTypes() {
                 initWith(getByName(BuildType.DEBUG.value))
                 matchingFallbacks += listOf(BuildType.DEBUG.value)
                 isMinifyEnabled = false
+                applicationIdSuffix = ".${BuildVariants.DEV.value}"
             }
             create(BuildVariants.MOCK.value) {
                 initWith(getByName(BuildType.DEBUG.value))
                 matchingFallbacks += listOf(BuildType.DEBUG.value)
                 isMinifyEnabled = false
+                applicationIdSuffix = ".${BuildVariants.MOCK.value}"
             }
         }
     }

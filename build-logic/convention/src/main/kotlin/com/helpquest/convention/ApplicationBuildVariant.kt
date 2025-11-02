@@ -12,7 +12,7 @@ enum class BuildVariants(val value: String) {
     PROD("prod"),
 }
 
-internal fun Project.configureBuildVariants() {
+fun Project.configureBuildVariants() {
     extensions.configure<KotlinMultiplatformExtension> {
         val variantCapitalized = getCapitalizedBuildVariantString()
         sourceSets.apply {
@@ -76,12 +76,3 @@ fun Project.getCapitalizedBuildVariantString(): String {
 
 fun Project.getManifestVariantString(): String =
     currentBuildVariant().value.replaceFirstChar { it.uppercaseChar() }
-
-
-fun Project.getVariantApplicationId(): String {
-    val buildVariant = currentBuildVariant()
-    return when (buildVariant) {
-        BuildVariants.PROD -> getProjectApplicationId()
-        else -> "${getProjectApplicationId()}.${buildVariant.value}"
-    }
-}

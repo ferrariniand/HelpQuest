@@ -1,7 +1,5 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
-import com.helpquest.convention.BuildVariants
-import com.helpquest.convention.currentBuildVariant
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -72,13 +70,7 @@ kotlin {
             implementation(libs.bundles.koin.common)
 
             // Core Modules
-
-            if (currentBuildVariant() == BuildVariants.MOCK) {
-                implementation(projects.core.mock)
-            } else {
-                implementation(projects.core.data)
-            }
-
+            implementation(projects.core.data)
             implementation(projects.core.domain)
             implementation(projects.core.database)
             implementation(projects.core.designsystem)

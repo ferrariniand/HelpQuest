@@ -1,3 +1,5 @@
+import com.helpquest.convention.configureBuildVariants
+
 plugins {
     alias(libs.plugins.convention.kmp.library)
     alias(libs.plugins.convention.buildkonfig)
@@ -70,5 +72,6 @@ kotlin {
             }
         }
     }
+    configureBuildVariants()
 
 }
