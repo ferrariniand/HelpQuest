@@ -160,27 +160,27 @@ val DarkExtendedColors = ExtendedColors(
 )
 
 val LightColorScheme = lightColorScheme(
-    primary = HelpQuestBrand500,
-    onPrimary = HelpQuestBrand1000,
+    primary = HelpQuestBrand500Dev,
+    onPrimary = HelpQuestBrand1000Dev,
     primaryContainer = HelpQuestBrand100,
-    onPrimaryContainer = HelpQuestBrand900,
+    onPrimaryContainer = HelpQuestBrand900Dev,
 
     secondary = HelpQuestBase700,
     onSecondary = HelpQuestBase0,
     secondaryContainer = HelpQuestBase100,
     onSecondaryContainer = HelpQuestBase900,
 
-    tertiary = HelpQuestBrand900,
+    tertiary = HelpQuestBrand900Dev,
     onTertiary = HelpQuestBase0,
     tertiaryContainer = HelpQuestBrand100,
-    onTertiaryContainer = HelpQuestBrand1000,
+    onTertiaryContainer = HelpQuestBrand1000Dev,
 
     error = HelpQuestRed500,
     onError = HelpQuestBase0,
     errorContainer = HelpQuestRed200,
     onErrorContainer = HelpQuestRed600,
 
-    background = HelpQuestBrand1000,
+    background = HelpQuestBrand1000Dev,
     onBackground = HelpQuestBase0,
     surface = HelpQuestBase0,
     onSurface = HelpQuestBase1000,
@@ -192,9 +192,9 @@ val LightColorScheme = lightColorScheme(
 )
 
 val DarkColorScheme = darkColorScheme(
-    primary = HelpQuestBrand500,
-    onPrimary = HelpQuestBrand1000,
-    primaryContainer = HelpQuestBrand900,
+    primary = HelpQuestBrand500Dev,
+    onPrimary = HelpQuestBrand1000Dev,
+    primaryContainer = HelpQuestBrand900Dev,
     onPrimaryContainer = HelpQuestBrand500,
 
     secondary = HelpQuestBase400,
@@ -202,10 +202,10 @@ val DarkColorScheme = darkColorScheme(
     secondaryContainer = HelpQuestBase900,
     onSecondaryContainer = HelpQuestBase150,
 
-    tertiary = HelpQuestBrand500,
+    tertiary = HelpQuestBrand500Dev,
     onTertiary = HelpQuestBase1000,
-    tertiaryContainer = HelpQuestBrand900,
-    onTertiaryContainer = HelpQuestBrand500,
+    tertiaryContainer = HelpQuestBrand900Dev,
+    onTertiaryContainer = HelpQuestBrand500Dev,
 
     error = HelpQuestRed500,
     onError = HelpQuestBase0,

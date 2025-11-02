@@ -5,6 +5,7 @@
     <string name="you">You</string>
     <string name="dismiss_dialog">Dismiss dialog</string>
     <string name="default_class">Default class</string>
+    <string name="content_description_enable_debug_mode">enable debug mode</string>
     <string name="error_content_unavailable">Content unavailable</string>
     <string name="error_user_image_unavailable">User image unavailable</string>
 </resources>

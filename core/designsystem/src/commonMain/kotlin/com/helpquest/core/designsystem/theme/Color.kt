@@ -8,10 +8,23 @@ import androidx.compose.ui.graphics.Color
 //TODO: create it using https://m3.material.io/blog/material-theme-builder
 
 // Brand colors
-val HelpQuestBrand1000 = Color(0xFF092E2D)
-val HelpQuestBrand900 = Color(0xFF106461)
+val HelpQuestBrand1000Mock = Color(0xFF6A3DE8)
+val HelpQuestBrand1000Dev = Color(0xFF092E2D)
+val HelpQuestBrand1000Stage = Color(0xFF092E2D)
+val HelpQuestBrand1000Prod = Color(0xFF4A1885)
+
+val HelpQuestBrand900Mock = Color(0xFF8B5CF6)
+val HelpQuestBrand900Dev = Color(0xFF106461)
+val HelpQuestBrand900Stage = Color(0xFF106461)
+val HelpQuestBrand900Prod = Color(0xFF6A3DE8)
 val HelpQuestBrand600 = Color(0xFF19BA87)
+
 val HelpQuestBrand500 = Color(0xFF4DDEAB)
+val HelpQuestBrand500Mock = Color(0xFFDE4DC8)
+val HelpQuestBrand500Dev = Color(0xFFDE4DC8)
+val HelpQuestBrand500Stage = Color(0xFF4DDEAB)
+val HelpQuestBrand500Prod = Color(0xFFE7AF40)
+
 val HelpQuestBrand500Alpha40 = Color(0x664DDEAB)
 val HelpQuestBrand100 = Color(0xFFCEF5E4)
 

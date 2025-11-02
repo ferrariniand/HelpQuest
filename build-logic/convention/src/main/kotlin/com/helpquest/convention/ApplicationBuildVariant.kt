@@ -12,9 +12,9 @@ enum class BuildVariants(val value: String) {
     PROD("prod"),
 }
 
-fun Project.configureBuildVariants() {
+fun Project.configureBuildVariants(shouldCreateAllVariants: Boolean = false) {
     extensions.configure<KotlinMultiplatformExtension> {
-        val variantCapitalized = getCapitalizedBuildVariantString()
+        val variantCapitalized = getBuildVariantCapitalizedString(shouldCreateAllVariants)
         sourceSets.apply {
             androidMain {
                 kotlin.srcDir("src/androidMain$variantCapitalized/kotlin")
@@ -63,13 +63,16 @@ fun Project.currentBuildVariant(): BuildVariants =
         ?: getEnvBuildVariantOrNull()
         ?: BuildVariants.DEV
 
-fun Project.getCapitalizedBuildVariantString(): String {
-    //TODO: understand if should be created a different folder for each variant
-    val buildVariant = when (currentBuildVariant()) {
-        BuildVariants.MOCK -> BuildVariants.MOCK
-        BuildVariants.DEV,
-        BuildVariants.STAGE,
-        BuildVariants.PROD -> BuildVariants.DEV
+fun Project.getBuildVariantCapitalizedString(shouldCreateAllVariants: Boolean): String {
+    val currentBuildVariant = currentBuildVariant()
+    //if shouldCreateAllVariants, use the current build variant;
+    // else use "mock" for MOCK and "dev" for all the other build variants
+    val buildVariant = when {
+        shouldCreateAllVariants || (currentBuildVariant == BuildVariants.MOCK) -> {
+            currentBuildVariant
+        }
+
+        else -> BuildVariants.DEV
     }
     return buildVariant.value.replaceFirstChar { it.uppercaseChar() }
 }

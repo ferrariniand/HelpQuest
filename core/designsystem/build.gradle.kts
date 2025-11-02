@@ -1,3 +1,4 @@
+import com.helpquest.convention.configureBuildVariants
 
 plugins {
     alias(libs.plugins.convention.cmp.library)
@@ -43,5 +44,9 @@ kotlin {
             }
         }
     }
+
+    configureBuildVariants(
+        shouldCreateAllVariants = true
+    )
 
 }

@@ -27,7 +27,7 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
             dependencies {
                 "debugImplementation"(getLib("androidx-compose-ui-tooling"))
             }
-
+            //TODO: understand if should be created a different case for each variant or just MOCK and DEV(for all the others)
             configureBuildVariants()
 
         }
