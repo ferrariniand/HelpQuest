@@ -1,11 +1,10 @@
 package com.helpquest.core.designsystem.components.layouts
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.extended
 
 @Composable
-fun ColumnScope.HeaderSection(
+fun HeaderSection(
     topHeaderText: String? = null,
     headerText: String,
     headerColor: Color,
@@ -43,29 +42,31 @@ fun ColumnScope.HeaderSection(
     AnimatedVisibility(
         visible = errorText != null,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = errorText ?: "",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.Companion
-                .fillMaxWidth()
-                .padding(vertical = 5.dp),
-            textAlign = headerTextAlign
-        )
+        Column {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = errorText ?: "",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.Companion
+                    .fillMaxWidth(),
+                textAlign = headerTextAlign
+            )
+        }
     }
     AnimatedVisibility(
         visible = successText != null,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = successText ?: "",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.extended.success,
-            modifier = Modifier.Companion
-                .fillMaxWidth()
-                .padding(vertical = 5.dp),
-            textAlign = headerTextAlign
-        )
+        Column {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = successText ?: "",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.extended.success,
+                modifier = Modifier.Companion
+                    .fillMaxWidth(),
+                textAlign = headerTextAlign
+            )
+        }
     }
 }

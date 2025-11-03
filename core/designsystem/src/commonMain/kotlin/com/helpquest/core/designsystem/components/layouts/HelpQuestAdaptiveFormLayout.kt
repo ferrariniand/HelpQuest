@@ -1,5 +1,6 @@
 package com.helpquest.core.designsystem.components.layouts
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -71,16 +72,22 @@ fun HelpQuestAdaptiveFormLayout(
                     Spacer(modifier = Modifier.height(24.dp))
                 }
             ) {
-                if (!isKeyboardOpen) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    HeaderSection(
-                        topHeaderText = topHeaderText,
-                        headerText = headerText,
-                        headerColor = headerColor,
-                        errorText = errorText,
-                        successText = successText,
-                        headerTextAlign = TextAlign.Center
-                    )
+                AnimatedVisibility(
+                    visible = !isKeyboardOpen,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        HeaderSection(
+                            topHeaderText = topHeaderText,
+                            headerText = headerText,
+                            headerColor = headerColor,
+                            errorText = errorText,
+                            successText = successText,
+                            headerTextAlign = TextAlign.Center
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 formContent()

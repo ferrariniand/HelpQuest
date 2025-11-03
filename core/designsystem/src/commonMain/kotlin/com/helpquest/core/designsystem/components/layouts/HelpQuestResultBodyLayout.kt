@@ -1,6 +1,7 @@
 package com.helpquest.core.designsystem.components.layouts
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,15 +44,17 @@ fun ColumnScope.HelpQuestResultBodyLayout(
         AnimatedVisibility(
             visible = secondaryError != null
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = secondaryError ?: "",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error
-            )
+            Column {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = secondaryError ?: "",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 

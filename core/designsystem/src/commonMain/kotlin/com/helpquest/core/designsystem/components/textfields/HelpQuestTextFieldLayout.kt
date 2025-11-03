@@ -94,22 +94,21 @@ fun HelpQuestTextFieldLayout(
 
         textField(textFieldStyleModifier, interactionSource)
 
-        if (supportingText != null && (isError || isFocused)) {
-            Spacer(modifier = Modifier.height(4.dp))
-        }
         AnimatedVisibility(
             visible = supportingText != null && (isError || isFocused)
         ) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = supportingText ?: "",
-                color = if (isError) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.extended.textTertiary
-                },
-                style = MaterialTheme.typography.bodySmall,
-            )
+            Column {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = supportingText ?: "",
+                    color = if (isError) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.extended.textTertiary
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
 
         }
     }

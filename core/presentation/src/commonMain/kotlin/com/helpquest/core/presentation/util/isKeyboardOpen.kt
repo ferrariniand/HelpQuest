@@ -12,3 +12,11 @@ fun isKeyboardOpen(): State<Boolean> {
     val imeHeight = WindowInsets.ime.getBottom(LocalDensity.current)
     return rememberUpdatedState(imeHeight > 0)
 }
+
+@Composable
+fun isKeyboardVisible(): State<Boolean> {
+    val configuration = currentDeviceConfiguration()
+    val imeHeight = WindowInsets.ime.getBottom(LocalDensity.current)
+
+    return rememberUpdatedState(imeHeight > 0 && (configuration != DeviceConfiguration.DESKTOP))
+}

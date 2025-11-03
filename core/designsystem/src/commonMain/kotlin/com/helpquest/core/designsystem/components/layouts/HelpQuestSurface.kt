@@ -1,5 +1,6 @@
 package com.helpquest.core.designsystem.components.layouts
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
-import com.helpquest.core.presentation.util.isKeyboardOpen
+import com.helpquest.core.presentation.util.isKeyboardVisible
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -27,7 +28,7 @@ fun HelpQuestSurface(
     header: @Composable ColumnScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val isKeyboardOpen by isKeyboardOpen()
+    val isKeyboardVisible by isKeyboardVisible()
 
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -38,8 +39,12 @@ fun HelpQuestSurface(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            if (!isKeyboardOpen) {
-                header()
+            AnimatedVisibility(
+                visible = !isKeyboardVisible
+            ) {
+                Column {
+                    header()
+                }
             }
             Surface(
                 color = MaterialTheme.colorScheme.surface,
