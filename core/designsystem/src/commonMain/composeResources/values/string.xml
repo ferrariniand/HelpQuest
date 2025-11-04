@@ -4,6 +4,7 @@
     <string name="show_password">Show password</string>
     <string name="you">You</string>
     <string name="dismiss_dialog">Dismiss dialog</string>
+    <string name="cancel">Cancel</string>
     <string name="default_class">Default class</string>
     <string name="content_description_enable_debug_mode">enable debug mode</string>
     <string name="error_content_unavailable">Content unavailable</string>

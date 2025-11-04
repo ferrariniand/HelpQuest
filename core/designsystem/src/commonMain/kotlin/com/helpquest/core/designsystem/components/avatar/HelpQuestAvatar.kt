@@ -7,7 +7,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
@@ -18,6 +17,9 @@ enum class AvatarSize(val dp: Dp) {
     SMALL(40.dp), LARGE(60.dp)
 }
 
+/** User image + Class icon
+ * if classImageUrl is null and showClass is true, will be shown the default class
+ */
 @Composable
 fun HelpQuestAvatar(
     displayText: String,
@@ -27,8 +29,7 @@ fun HelpQuestAvatar(
     showUserIdentity: Boolean = false,
     classImageUrl: String? = null,
     showClass: Boolean = false,
-    onClick: (() -> Unit)? = null,
-    textColor: Color = MaterialTheme.colorScheme.extended.textPlaceholder
+    onClick: (() -> Unit)? = null, //TODO: is it needed?? ( mabe the clickable item is a card that contains it)
 ) {
     Box(
         modifier = modifier

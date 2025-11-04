@@ -7,11 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestStackedAvatars(
-    avatars: List<AvatarUi>,
+    avatars: List<ParticipantUi>,
     modifier: Modifier = Modifier,
     size: AvatarSize = AvatarSize.SMALL,
     maxVisible: Int = 2,
@@ -53,22 +54,22 @@ fun HelpQuestStackedAvatarsLightPreview() {
     HelpQuestTheme {
         HelpQuestStackedAvatars(
             avatars = listOf(
-                AvatarUi(
+                ParticipantUi(
                     id = "1",
                     username = "Philipp",
                     initials = "PH",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "2",
                     username = "Sabrina",
                     initials = "SA",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "3",
                     username = "John",
                     initials = "JO",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "4",
                     username = "Laura",
                     initials = "LA",
@@ -89,22 +90,22 @@ fun HelpQuestStackedAvatarsDarkPreview() {
     ) {
         HelpQuestStackedAvatars(
             avatars = listOf(
-                AvatarUi(
+                ParticipantUi(
                     id = "1",
                     username = "Philipp",
                     initials = "PH",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "2",
                     username = "Sabrina",
                     initials = "SA",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "3",
                     username = "John",
                     initials = "JO",
                 ),
-                AvatarUi(
+                ParticipantUi(
                     id = "4",
                     username = "Laura",
                     initials = "LA",

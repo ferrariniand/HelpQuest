@@ -28,7 +28,7 @@ import helpquest.core.designsystem.generated.resources.error_user_image_unavaila
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
+//User image (or initials)
 @Composable
 fun HelpQuestAvatarPhoto(
     displayText: String,
