@@ -1,4 +1,4 @@
-package com.helpquest.core.designsystem.components.layouts
+package com.helpquest.core.designsystem.components.result_layouts
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

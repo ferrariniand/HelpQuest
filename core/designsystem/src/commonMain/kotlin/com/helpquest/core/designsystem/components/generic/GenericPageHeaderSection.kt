@@ -1,4 +1,4 @@
-package com.helpquest.core.designsystem.components.layouts
+package com.helpquest.core.designsystem.components.generic
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.extended
 
 @Composable
-fun HeaderSection(
+fun GenericPageHeaderSection(
     topHeaderText: String? = null,
     headerText: String,
     headerColor: Color,

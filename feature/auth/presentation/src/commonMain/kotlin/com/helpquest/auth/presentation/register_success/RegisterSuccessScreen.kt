@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.containers_layouts.SnackbarScaffold
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
-import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveResultLayout
-import com.helpquest.core.designsystem.components.layouts.SnackbarScaffold
+import com.helpquest.core.designsystem.components.result_layouts.HelpQuestAdaptiveResultLayout
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.UiText

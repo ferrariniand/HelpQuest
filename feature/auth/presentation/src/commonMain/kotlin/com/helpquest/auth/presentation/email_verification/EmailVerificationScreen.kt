@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.containers_layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
-import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveResultLayout
-import com.helpquest.core.designsystem.components.layouts.HelpQuestLoadingLayout
-import com.helpquest.core.designsystem.components.layouts.ScaffoldWithInsets
+import com.helpquest.core.designsystem.components.result_layouts.HelpQuestAdaptiveResultLayout
+import com.helpquest.core.designsystem.components.result_layouts.HelpQuestLoadingLayout
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.close

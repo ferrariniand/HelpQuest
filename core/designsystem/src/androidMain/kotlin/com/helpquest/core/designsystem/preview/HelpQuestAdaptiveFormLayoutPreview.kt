@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
-import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
+import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAdaptiveFormLayout
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 
 @Composable

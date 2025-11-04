@@ -1,4 +1,4 @@
-package com.helpquest.core.designsystem.components.layouts
+package com.helpquest.core.designsystem.components.result_layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
+import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestSurface
+import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
 import com.helpquest.core.designsystem.components.icons.HelpQuestLoadingIndicator
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
@@ -106,7 +108,7 @@ fun HelpQuestAdaptiveResultLayout(
                     brandLogo()
                     if (title != null) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        HeaderSection(
+                        GenericPageHeaderSection(
                             headerText = title,
                             headerColor = headerColor,
                             errorText = secondaryError

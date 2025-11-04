@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
-import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveResultLayout
+import com.helpquest.core.designsystem.components.result_layouts.HelpQuestAdaptiveResultLayout
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 
 @Composable

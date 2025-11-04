@@ -1,4 +1,4 @@
-package com.helpquest.core.designsystem.components.layouts
+package com.helpquest.core.designsystem.components.containers_layouts
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column

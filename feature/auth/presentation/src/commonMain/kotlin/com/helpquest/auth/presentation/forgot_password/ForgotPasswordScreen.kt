@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
-import com.helpquest.core.designsystem.components.layouts.HelpQuestAdaptiveFormLayout
-import com.helpquest.core.designsystem.components.layouts.ScaffoldWithInsets
+import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAdaptiveFormLayout
+import com.helpquest.core.designsystem.components.containers_layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import helpquest.feature.auth.presentation.generated.resources.Res

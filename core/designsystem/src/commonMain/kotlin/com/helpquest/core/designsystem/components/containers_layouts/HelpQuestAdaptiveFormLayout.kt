@@ -1,4 +1,4 @@
-package com.helpquest.core.designsystem.components.layouts
+package com.helpquest.core.designsystem.components.containers_layouts
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
@@ -79,7 +80,7 @@ fun HelpQuestAdaptiveFormLayout(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        HeaderSection(
+                        GenericPageHeaderSection(
                             topHeaderText = topHeaderText,
                             headerText = headerText,
                             headerColor = headerColor,
@@ -113,7 +114,7 @@ fun HelpQuestAdaptiveFormLayout(
                     Spacer(modifier = Modifier.height(16.dp))
                     logo()
                     Spacer(modifier = Modifier.height(16.dp))
-                    HeaderSection(
+                    GenericPageHeaderSection(
                         topHeaderText = topHeaderText,
                         headerText = headerText,
                         headerColor = headerColor,
@@ -182,7 +183,7 @@ fun HelpQuestAdaptiveFormLayout(
                         .padding(horizontal = 24.dp, vertical = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    HeaderSection(
+                    GenericPageHeaderSection(
                         topHeaderText = topHeaderText,
                         headerText = headerText,
                         headerColor = headerColor,
