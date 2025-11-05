@@ -1,4 +1,4 @@
-package com.helpquest.core.domain.auth
+package com.helpquest.core.domain.models
 
 data class User(
     val id: String,

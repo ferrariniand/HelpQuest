@@ -2,7 +2,7 @@ package com.helpquest.core.test.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.SessionStorage
-import com.helpquest.core.domain.auth.User
+import com.helpquest.core.domain.models.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

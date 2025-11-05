@@ -2,7 +2,7 @@ package com.helpquest.core.data.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.AuthService
-import com.helpquest.core.domain.auth.User
+import com.helpquest.core.domain.models.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result

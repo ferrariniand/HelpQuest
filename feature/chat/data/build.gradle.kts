@@ -1,3 +1,4 @@
+import com.helpquest.convention.configureBuildVariants
 
 plugins {
     alias(libs.plugins.convention.kmp.feature.data)
@@ -5,6 +6,18 @@ plugins {
 }
 
 kotlin {
+    kover {
+        reports {
+            filters {
+                excludes {
+                    packages(
+                        "com.helpquest.chat.data.di",
+                        "com.helpquest.chat.data.dto",
+                    )
+                }
+            }
+        }
+    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
@@ -39,5 +52,6 @@ kotlin {
             }
         }
     }
-
+    //TODO: understand if should be created a different case for just MOCK and DEV or for each variant (all the others)
+    configureBuildVariants()
 }

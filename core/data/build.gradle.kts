@@ -72,7 +72,7 @@ kotlin {
             }
         }
     }
-    //TODO: understand if should be created a different case for each variant or just MOCK and DEV(for all the others)
+    //TODO: understand if should be created a different case for just MOCK and DEV or for each variant (all the others)
     configureBuildVariants()
 
 }

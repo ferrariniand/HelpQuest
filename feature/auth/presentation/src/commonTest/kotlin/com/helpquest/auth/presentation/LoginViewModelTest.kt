@@ -16,7 +16,7 @@ import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.login.LoginAction
 import com.helpquest.auth.presentation.login.LoginState
 import com.helpquest.auth.presentation.login.LoginViewModel
-import com.helpquest.core.domain.auth.User
+import com.helpquest.core.domain.models.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
