@@ -20,7 +20,7 @@ internal fun Project.configureAndroidTarget() {
             unitTestVariant {
                 sourceSetTree.set(KotlinSourceSetTree.unitTest)
 
-                dependencies {
+                project.dependencies {
                     "implementation"(getLib("test-core-ktx"))
                     "implementation"(getLib("androidx-compose-ui-test-junit4"))
                     "debugImplementation"(
@@ -33,7 +33,7 @@ internal fun Project.configureAndroidTarget() {
             instrumentedTestVariant {
                 sourceSetTree.set(KotlinSourceSetTree.test)
 
-                dependencies {
+                project.dependencies {
                     "implementation"(getLib("test-core-ktx"))
                     "implementation"(getLib("androidx-compose-ui-test-junit4"))
                     "debugImplementation"(
