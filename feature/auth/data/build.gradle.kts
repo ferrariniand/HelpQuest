@@ -1,7 +1,6 @@
 
 plugins {
-    alias(libs.plugins.convention.kmp.library)
-    alias(libs.plugins.convention.buildkonfig)
+    alias(libs.plugins.convention.kmp.feature.data)
 }
 
 kotlin {
@@ -16,8 +15,6 @@ kotlin {
             dependencies {
                 // Add KMP dependencies here
 
-                implementation(projects.core.domain)
-                implementation(projects.core.data)
                 implementation(projects.feature.auth.domain)
             }
         }

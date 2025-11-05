@@ -1,3 +1,4 @@
+import com.helpquest.convention.getBundle
 import com.helpquest.convention.getLib
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,12 +15,10 @@ class CmpFeatureConventionPlugin: Plugin<Project> {
             dependencies {
                 "commonMainImplementation"(project(":core:presentation"))
                 "commonMainImplementation"(project(":core:designsystem"))
+                "commonMainImplementation"(project(":core:domain"))
 
                 "commonMainImplementation"(platform(getLib("koin-bom")))
-                "androidMainImplementation"(platform(getLib("koin-bom")))
-
-                "commonMainImplementation"(getLib("koin-compose"))
-                "commonMainImplementation"(getLib("koin-compose-viewmodel"))
+                "commonMainImplementation"(getBundle("koin-common"))
 
                 "commonMainImplementation"(getLib("jetbrains-compose-runtime"))
                 "commonMainImplementation"(getLib("jetbrains-compose-viewmodel"))
@@ -32,10 +31,8 @@ class CmpFeatureConventionPlugin: Plugin<Project> {
                 "commonMainImplementation"(getLib("jetbrains-compose-navigation"))
                 "commonMainImplementation"(getLib("jetbrains-compose-backhandler"))
 
-                "androidMainImplementation"(getLib("koin-android"))
-                "androidMainImplementation"(getLib("koin-androidx-compose"))
-                "androidMainImplementation"(getLib("koin-androidx-navigation"))
-                "androidMainImplementation"(getLib("koin-core-viewmodel"))
+                "androidMainImplementation"(platform(getLib("koin-bom")))
+                "androidMainImplementation"(getBundle("koin-android"))
             }
         }
     }

@@ -11,6 +11,7 @@ val Project.libs: VersionCatalog
     get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 internal fun Project.getLib(name: String) = libs.findLibrary(name).get()
+internal fun Project.getBundle(name: String) = libs.findBundle(name).get()
 internal fun Project.getProjectApplicationId() =
     libs.findVersion("projectApplicationId").get().toString()
 

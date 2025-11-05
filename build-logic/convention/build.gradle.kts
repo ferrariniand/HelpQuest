@@ -55,6 +55,10 @@ gradlePlugin {
             id = "$packageName.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"
         }
+        register("kmpFeatureData") {
+            id = "$packageName.kmp.feature.data"
+            implementationClass = "KmpFeatureDataConventionPlugin"
+        }
         register("cmpLibrary") {
             id = "$packageName.cmp.library"
             implementationClass = "CmpLibraryConventionPlugin"

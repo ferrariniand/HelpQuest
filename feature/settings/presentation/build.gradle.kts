@@ -17,9 +17,9 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-                implementation(projects.core.domain)
-                implementation(projects.core.designsystem)
                 implementation(projects.feature.settings.domain)
             }
         }

@@ -35,7 +35,7 @@ kotlin {
             implementation(libs.core.splashscreen)
 
             //Koin
-            implementation(libs.koin.android)
+            implementation(libs.bundles.koin.android)
 
             //api command is like implementation command, but extends the usage of the lib to the modules that depends on this module
             api(libs.play.feature.delivery)

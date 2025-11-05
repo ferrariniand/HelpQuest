@@ -20,9 +20,6 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(projects.core.domain)
-                implementation(projects.core.presentation)
-                implementation(projects.core.designsystem)
                 implementation(projects.feature.home.domain)
 
             }

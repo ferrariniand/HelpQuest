@@ -17,9 +17,13 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-                implementation(projects.core.domain)
-                implementation(projects.core.designsystem)
+                implementation(libs.material3.adaptive)
+                implementation(libs.material3.adaptive.layout)
+                implementation(libs.material3.adaptive.navigation)
+
                 implementation(projects.feature.chat.domain)
             }
         }

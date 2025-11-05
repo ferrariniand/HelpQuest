@@ -138,10 +138,10 @@ material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adap
 # Koin
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-core-viewmodel = { group = "io.insert-koin", name = "koin-core-viewmodel", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core-viewmodel = { group = "io.insert-koin", name = "koin-core-viewmodel", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
 
@@ -243,6 +243,7 @@ convention-android-application = { id = "com.helpquest.convention.android.applic
 convention-android-application-compose = { id = "com.helpquest.convention.android.application.compose", version = "unspecified" }
 convention-cmp-application = { id = "com.helpquest.convention.cmp.application", version = "unspecified" }
 convention-kmp-library = { id = "com.helpquest.convention.kmp.library", version = "unspecified" }
+convention-kmp-feature-data = { id = "com.helpquest.convention.kmp.feature.data", version = "unspecified" }
 convention-cmp-library = { id = "com.helpquest.convention.cmp.library", version = "unspecified" }
 convention-cmp-feature = { id = "com.helpquest.convention.cmp.feature", version = "unspecified" }
 convention-buildkonfig = { id = "com.helpquest.convention.buildkonfig", version = "unspecified" }
@@ -285,6 +286,13 @@ koin-common = [
     "koin-core",
     "koin-compose",
     "koin-compose-viewmodel"
+]
+
+koin-android = [
+    "koin-android",
+    "koin-androidx-compose",
+    "koin-androidx-navigation",
+    "koin-core-viewmodel"
 ]
 
 ktor-common = [
