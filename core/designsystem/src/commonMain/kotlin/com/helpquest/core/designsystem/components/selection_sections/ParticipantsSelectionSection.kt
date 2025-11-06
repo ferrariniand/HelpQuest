@@ -19,17 +19,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
+import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import helpquest.core.designsystem.generated.resources.Res
+import helpquest.core.designsystem.generated.resources.error_participant_not_found
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ColumnScope.ParticipantsSelectionSection(
     selectedParticipants: List<ParticipantUi>,
     modifier: Modifier = Modifier,
-    searchResult: ParticipantUi? = null
+    searchResult: ParticipantSearchResult? = null
 ) {
     val deviceConfiguration = currentDeviceConfiguration()
     val rootHeightModifier = when (deviceConfiguration) {
@@ -55,15 +59,20 @@ fun ColumnScope.ParticipantsSelectionSection(
         ) {
             searchResult?.let {
                 item {
-                    ParticipantListItem(
-                        participantUi = searchResult,
+                    SearchResultItem(
+                        participantSearchResult = searchResult,
                         modifier = Modifier
                             .fillMaxWidth()
                     )
                 }
             }
+            if (selectedParticipants.isNotEmpty() && searchResult != null) {
+                item {
+                    HelpQuestHorizontalDivider()
+                }
+            }
 
-            if (selectedParticipants.isNotEmpty() && searchResult == null) {
+            if (selectedParticipants.isNotEmpty()) {
                 items(
                     items = selectedParticipants,
                     key = { it.id }
@@ -78,6 +87,51 @@ fun ColumnScope.ParticipantsSelectionSection(
         }
     }
 
+}
+
+@Composable
+fun SearchResultItem(
+    participantSearchResult: ParticipantSearchResult,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        participantSearchResult.getParticipantUiOrNull()?.let { participant ->
+            HelpQuestAvatar(
+                displayText = participant.initials,
+                userImageUrl = participant.imageUrl,
+                showUserIdentity = participant.showParticipantIdentity,
+                classImageUrl = participant.classImageUrl,
+                showClass = true
+            )
+        }
+        val resultText = if (
+            participantSearchResult is ParticipantSearchResult.Success
+        ) {
+            participantSearchResult.participant.username
+        } else {
+            stringResource(Res.string.error_participant_not_found)
+        }
+        val resultVerticalPadding = if (
+            participantSearchResult.isSuccess()
+        ) 0.dp else 12.dp
+
+        Text(
+            text = resultText,
+            style = MaterialTheme.typography.titleXSmall,
+            color = MaterialTheme.colorScheme.extended.textPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(vertical = resultVerticalPadding)
+        )
+    }
 }
 
 @Composable
@@ -96,7 +150,7 @@ fun ParticipantListItem(
         HelpQuestAvatar(
             displayText = participantUi.initials,
             userImageUrl = participantUi.imageUrl,
-            showUserIdentity = participantUi.showUserIdentity,
+            showUserIdentity = participantUi.showParticipantIdentity,
             classImageUrl = participantUi.classImageUrl,
             showClass = true
         )

@@ -24,6 +24,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun HelpQuestTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
+    internalModifier: Modifier = Modifier,
     placeholder: String? = null,
     title: String? = null,
     supportingText: String? = null,
@@ -65,7 +66,7 @@ fun HelpQuestTextField(
             modifier = styleModifier,
             decorator = { innerBox ->
                 Box(
-                    modifier = Modifier
+                    modifier = internalModifier
                         .fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart
                 ) {

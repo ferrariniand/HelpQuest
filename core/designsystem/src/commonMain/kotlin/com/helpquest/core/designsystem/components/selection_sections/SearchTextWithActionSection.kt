@@ -19,6 +19,7 @@ fun SearchTextWithActionSection(
     queryState: TextFieldState,
     searchTextPlaceholder: String,
     onFocusChanged: (Boolean) -> Unit,
+    onDebouncedValueChange: (String) -> Unit,
     actionText: String,
     onActionClick: () -> Unit,
     isActionEnabled: Boolean,
@@ -32,20 +33,23 @@ fun SearchTextWithActionSection(
                 horizontal = 20.dp,
                 vertical = 16.dp
             ),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         HelpQuestTextField(
             state = queryState,
             modifier = Modifier
                 .weight(1f),
+            internalModifier = Modifier
+                .padding(vertical = 3.dp),
             placeholder = searchTextPlaceholder,
             title = null,
             supportingText = error?.asString(),
             isError = error != null,
             singleLine = true,
             keyboardType = KeyboardType.Email,
-            onFocusChanged = onFocusChanged
+            onFocusChanged = onFocusChanged,
+            onDebouncedValueChange = onDebouncedValueChange,
         )
         HelpQuestButton(
             text = actionText,
