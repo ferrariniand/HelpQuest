@@ -14,6 +14,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.register.RegisterAction
+import com.helpquest.auth.presentation.register.RegisterEvent
 import com.helpquest.auth.presentation.register.RegisterState
 import com.helpquest.auth.presentation.register.RegisterViewModel
 import com.helpquest.core.domain.util.DataError
@@ -242,13 +243,16 @@ class RegisterViewModelTest : KoinTest {
         viewModel = RegisterViewModel(fakeAuthService, validRegistrationState)
 
         viewModel.state.test {
-            viewModel.onAction(RegisterAction.OnRegisterClick)
-//TODO: how to test this?
-//            val isRegisteringState = awaitItem()
-//            assertThat(isRegisteringState.isRegistering).isTrue()
-            val successState = awaitItem()
-            assertThat(successState.isRegistering).isFalse()
-            assertThat(successState.registrationError).isNull()
+            viewModel.events.test {
+
+                viewModel.onAction(RegisterAction.OnRegisterClick)
+                val successState = viewModel.state.first()
+                val collectedEvent = awaitItem()
+                assertThat(successState.isRegistering).isFalse()
+                assertThat(successState.registrationError).isNull()
+                assertThat(collectedEvent).isEqualTo(RegisterEvent.Success("test@test.com"))
+            }
+            cancelAndConsumeRemainingEvents()
         }
 
     }

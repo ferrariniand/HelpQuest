@@ -5,12 +5,14 @@ package com.helpquest.auth.presentation
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.register_success.RegisterSuccessAction
+import com.helpquest.auth.presentation.register_success.RegisterSuccessEvent
 import com.helpquest.auth.presentation.register_success.RegisterSuccessViewModel
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
@@ -66,13 +68,15 @@ class RegisterSuccessViewModelTest : KoinTest {
 
         viewModel.state.test {
             fakeAuthService.resendVerificationResult = Result.Success(Unit)
-            viewModel.onAction(RegisterSuccessAction.OnResendVerificationEmailClick)
-//TODO: how to test this?
-//            val isRegisteringSuccessState = awaitItem()
-//            assertThat(isRegisteringState.isResendingVerificationEmail).isTrue()
-            val successState = awaitItem()
-            assertThat(successState.isResendingVerificationEmail).isFalse()
-            assertThat(successState.resendVerificationError).isNull()
+            viewModel.events.test {
+                viewModel.onAction(RegisterSuccessAction.OnResendVerificationEmailClick)
+                val successState = viewModel.state.first()
+                val collectedEvent = awaitItem()
+                assertThat(successState.isResendingVerificationEmail).isFalse()
+                assertThat(successState.resendVerificationError).isNull()
+                assertThat(collectedEvent).isEqualTo(RegisterSuccessEvent.ResendVerificationEmailSuccess)
+            }
+            cancelAndConsumeRemainingEvents()
         }
 
     }

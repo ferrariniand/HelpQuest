@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,7 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
+import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.UiText
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import com.helpquest.core.presentation.util.isKeyboardVisible
 
 @Composable
 fun SearchTextWithActionSection(
@@ -27,11 +31,17 @@ fun SearchTextWithActionSection(
     modifier: Modifier = Modifier,
     error: UiText? = null,
 ) {
+    val isKeyboardVisible by isKeyboardVisible()
+
+    val deviceConfiguration = currentDeviceConfiguration()
+    val shouldReducePadding = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
+            && isKeyboardVisible
+
     Row(
         modifier = modifier
             .padding(
                 horizontal = 20.dp,
-                vertical = 16.dp
+                vertical = if (shouldReducePadding) 6.dp else 16.dp
             ),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -41,7 +51,7 @@ fun SearchTextWithActionSection(
             modifier = Modifier
                 .weight(1f),
             internalModifier = Modifier
-                .padding(vertical = 3.dp),
+                .padding(vertical = if (shouldReducePadding) 0.dp else 3.dp),
             placeholder = searchTextPlaceholder,
             title = null,
             supportingText = error?.asString(),
@@ -57,6 +67,7 @@ fun SearchTextWithActionSection(
             style = HelpQuestButtonStyle.SECONDARY,
             enabled = isActionEnabled,
             isLoading = isLoading,
+            reduceVerticalPadding = shouldReducePadding
         )
     }
 }

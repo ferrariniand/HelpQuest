@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,16 +26,19 @@ import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import com.helpquest.core.presentation.util.isKeyboardVisible
 import helpquest.core.designsystem.generated.resources.Res
 import helpquest.core.designsystem.generated.resources.error_participant_not_found
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ColumnScope.ParticipantsSelectionSection(
+fun ColumnScope.ParticipantsSearchedAndSelectedSection(
     selectedParticipants: List<ParticipantUi>,
     modifier: Modifier = Modifier,
     searchResult: ParticipantSearchResult? = null
 ) {
+    val isKeyboardVisible by isKeyboardVisible()
+
     val deviceConfiguration = currentDeviceConfiguration()
     val rootHeightModifier = when (deviceConfiguration) {
         DeviceConfiguration.TABLET_PORTRAIT,
@@ -49,6 +53,10 @@ fun ColumnScope.ParticipantsSelectionSection(
             .weight(1f)
     }
 
+    val shouldHideSelectedParticipants =
+        (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
+                && isKeyboardVisible
+
     Box(
         modifier = rootHeightModifier
             .then(modifier)
@@ -61,6 +69,7 @@ fun ColumnScope.ParticipantsSelectionSection(
                 item {
                     SearchResultItem(
                         participantSearchResult = searchResult,
+                        shouldReducePadding = shouldHideSelectedParticipants,
                         modifier = Modifier
                             .fillMaxWidth()
                     )
@@ -72,7 +81,7 @@ fun ColumnScope.ParticipantsSelectionSection(
                 }
             }
 
-            if (selectedParticipants.isNotEmpty()) {
+            if (selectedParticipants.isNotEmpty() && !shouldHideSelectedParticipants) {
                 items(
                     items = selectedParticipants,
                     key = { it.id }
@@ -92,13 +101,14 @@ fun ColumnScope.ParticipantsSelectionSection(
 @Composable
 fun SearchResultItem(
     participantSearchResult: ParticipantSearchResult,
+    shouldReducePadding: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = if (shouldReducePadding) 6.dp else 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {

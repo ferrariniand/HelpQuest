@@ -14,6 +14,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.login.LoginAction
+import com.helpquest.auth.presentation.login.LoginEvent
 import com.helpquest.auth.presentation.login.LoginState
 import com.helpquest.auth.presentation.login.LoginViewModel
 import com.helpquest.core.domain.models.User
@@ -164,15 +165,18 @@ class LoginViewModelTest : KoinTest {
 
         viewModel.state.test {
             fakeAuthService.loginResult = Result.Success(result)
-            viewModel.onAction(LoginAction.OnLoginClick)
-//TODO: how to test this?
-//            val isRegisteringState = awaitItem()
-//            assertThat(isRegisteringState.isRegistering).isTrue()
-            val successState = awaitItem()
-            assertThat(successState.canLogin).isTrue()
-            assertThat(successState.isLoggingIn).isFalse()
-            assertThat(successState.error).isNull()
-            assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isEqualTo(result)
+            viewModel.events.test {
+                viewModel.onAction(LoginAction.OnLoginClick)
+                val successState = viewModel.state.first()
+                val collectedEvent = awaitItem()
+                assertThat(successState.canLogin).isTrue()
+                assertThat(successState.isLoggingIn).isFalse()
+                assertThat(successState.error).isNull()
+                assertThat(fakeSessionStorage.resultAuthInfoFlow.value).isEqualTo(result)
+                assertThat(collectedEvent).isEqualTo(LoginEvent.Success)
+            }
+            cancelAndConsumeRemainingEvents()
+
         }
 
     }

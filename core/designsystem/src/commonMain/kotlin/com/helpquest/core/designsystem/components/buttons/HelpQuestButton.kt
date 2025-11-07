@@ -40,6 +40,7 @@ fun HelpQuestButton(
     style: HelpQuestButtonStyle = HelpQuestButtonStyle.PRIMARY,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    reduceVerticalPadding: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
     val focusManager = LocalFocusManager.current
@@ -137,7 +138,10 @@ fun HelpQuestButton(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(6.dp)
+                    .padding(
+                        horizontal = 6.dp,
+                        vertical = if (reduceVerticalPadding) 4.dp else 6.dp
+                    )
             ) {
                 CircularProgressIndicator( //TODO: Customize this loader
                     modifier = Modifier
