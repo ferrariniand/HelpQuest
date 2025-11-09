@@ -5,38 +5,32 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
-import com.helpquest.core.designsystem.theme.extended
-import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardVisible
-import helpquest.core.designsystem.generated.resources.Res
-import helpquest.core.designsystem.generated.resources.error_participant_not_found
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ParticipantsSearchSection(
+fun <T> SingleSearchSection(
     queryState: TextFieldState,
     searchTextPlaceholder: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
     onFocusChanged: (Boolean) -> Unit,
     onDebouncedValueChange: (String) -> Unit,
     actionText: String,
@@ -44,7 +38,9 @@ fun ParticipantsSearchSection(
     isActionEnabled: Boolean,
     isLoading: Boolean,
     error: UiText? = null,
-    searchResult: ParticipantSearchResult? = null,
+    searchResult: SearchResult<T>? = null,
+    resultItemContent: @Composable RowScope.(T) -> Unit,
+    notFoundItemContent: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isKeyboardVisible by isKeyboardVisible()
@@ -59,7 +55,7 @@ fun ParticipantsSearchSection(
         Row(
             modifier = Modifier
                 .padding(
-                    horizontal = 20.dp,
+                    horizontal = 16.dp,
                     vertical = if (shouldReducePadding) 6.dp else 16.dp
                 ),
             verticalAlignment = Alignment.Top,
@@ -76,7 +72,7 @@ fun ParticipantsSearchSection(
                 supportingText = error?.asString(),
                 isError = error != null,
                 singleLine = true,
-                keyboardType = KeyboardType.Email,
+                keyboardType = keyboardType,
                 onFocusChanged = onFocusChanged,
                 onDebouncedValueChange = onDebouncedValueChange,
             )
@@ -92,19 +88,28 @@ fun ParticipantsSearchSection(
         HelpQuestHorizontalDivider()
         Box(
             modifier = Modifier
+                .padding(
+                    vertical = when {
+                        searchResult == null -> 0.dp
+                        shouldReducePadding -> 4.dp
+                        else -> 8.dp
+                    }
+                ),
         ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                searchResult?.let {
-                    item {
-                        SearchResultItem(
-                            participantSearchResult = searchResult,
-                            shouldReducePadding = shouldReducePadding,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
+                searchResult?.let { searchResult ->
+                    searchResult.getSearchResultOrNull()?.let { resultItem ->
+                        item {
+                            SingleSearchResultItem(
+                                item = resultItem,
+                                shouldReducePadding = shouldReducePadding,
+                                resultItemContent = resultItemContent,
+                                notFoundItemContent = notFoundItemContent,
+                            )
+                        }
                     }
                 }
             }
@@ -113,47 +118,23 @@ fun ParticipantsSearchSection(
 }
 
 @Composable
-fun SearchResultItem(
-    participantSearchResult: ParticipantSearchResult,
+fun <T> SingleSearchResultItem(
+    item: T?,
     shouldReducePadding: Boolean,
-    modifier: Modifier = Modifier
+    resultItemContent: @Composable RowScope.(T) -> Unit,
+    notFoundItemContent: @Composable RowScope.() -> Unit,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = if (shouldReducePadding) 6.dp else 16.dp),
+            .padding(horizontal = 16.dp, vertical = if (shouldReducePadding) 4.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        participantSearchResult.getParticipantUiOrNull()?.let { participant ->
-            HelpQuestAvatar(
-                displayText = participant.initials,
-                userImageUrl = participant.imageUrl,
-                showUserIdentity = participant.showParticipantIdentity,
-                classImageUrl = participant.classImageUrl,
-                showClass = true
-            )
+        item?.let {
+            resultItemContent(it)
+        } ?: run {
+            notFoundItemContent()
         }
-        val resultText = if (
-            participantSearchResult is ParticipantSearchResult.Success
-        ) {
-            participantSearchResult.participant.username
-        } else {
-            stringResource(Res.string.error_participant_not_found)
-        }
-        val resultVerticalPadding = if (
-            participantSearchResult.isSuccess()
-        ) 0.dp else 12.dp
-
-        Text(
-            text = resultText,
-            style = MaterialTheme.typography.titleXSmall,
-            color = MaterialTheme.colorScheme.extended.textPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(vertical = resultVerticalPadding)
-        )
     }
 }

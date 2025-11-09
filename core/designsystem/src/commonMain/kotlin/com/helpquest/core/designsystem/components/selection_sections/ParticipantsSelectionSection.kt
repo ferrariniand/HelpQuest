@@ -55,6 +55,7 @@ fun ColumnScope.ParticipantsSelectionSection(
     Box(
         modifier = rootHeightModifier
             .then(modifier)
+            .padding(vertical = 8.dp),
     ) {
         LazyColumn(
             modifier = Modifier
@@ -87,7 +88,7 @@ fun ParticipantListItem(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
