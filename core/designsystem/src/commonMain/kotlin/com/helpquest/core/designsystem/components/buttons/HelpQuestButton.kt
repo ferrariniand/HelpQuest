@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +18,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import com.helpquest.core.designsystem.components.result_layouts.Loader
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -143,15 +142,7 @@ fun HelpQuestButton(
                         vertical = if (reduceVerticalPadding) 4.dp else 6.dp
                     )
             ) {
-                CircularProgressIndicator( //TODO: Customize this loader
-                    modifier = Modifier
-                        .size(15.dp)
-                        .alpha(
-                            alpha = if (isLoading) 1f else 0f
-                        ),
-                    strokeWidth = 1.5.dp,
-                    color = Color.Black
-                )
+                Loader(isLoading)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(
                         8.dp,

@@ -30,7 +30,7 @@ import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestSurface
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.components.icons.HelpQuestFailureIcon
-import com.helpquest.core.designsystem.components.icons.HelpQuestLoadingIndicator
+import com.helpquest.core.designsystem.components.icons.HelpQuestPageLoadingIndicator
 import com.helpquest.core.designsystem.components.icons.HelpQuestSuccessIcon
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
@@ -491,7 +491,7 @@ fun HelpQuestAdaptiveResultLoadingLayoutLightPreview() {
         HelpQuestAdaptiveResultLayout(
             description = "Test description disposed on more than one line and showing loading message",
             resultLogo = {
-                HelpQuestLoadingIndicator()
+                HelpQuestPageLoadingIndicator()
             },
             modifier = Modifier
                 .fillMaxSize(),
@@ -511,7 +511,7 @@ fun HelpQuestAdaptiveResultLoadingLayoutDarkPreview() {
         HelpQuestAdaptiveResultLayout(
             description = "Test description disposed on more than one line and showing loading message",
             resultLogo = {
-                HelpQuestLoadingIndicator()
+                HelpQuestPageLoadingIndicator()
             },
             modifier = Modifier
                 .fillMaxSize(),

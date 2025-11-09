@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HelpQuestLoadingIndicator(
+fun HelpQuestPageLoadingIndicator(
     modifier: Modifier = Modifier
         .size(100.dp)
 ) {

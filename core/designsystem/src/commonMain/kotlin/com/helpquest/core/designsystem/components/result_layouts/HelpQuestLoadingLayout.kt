@@ -2,7 +2,7 @@ package com.helpquest.core.designsystem.components.result_layouts
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.helpquest.core.designsystem.components.icons.HelpQuestLoadingIndicator
+import com.helpquest.core.designsystem.components.icons.HelpQuestPageLoadingIndicator
 
 @Composable
 fun HelpQuestLoadingLayout(
@@ -12,7 +12,7 @@ fun HelpQuestLoadingLayout(
     HelpQuestAdaptiveResultLayout(
         description = text,
         resultLogo = {
-            HelpQuestLoadingIndicator()
+            HelpQuestPageLoadingIndicator()
         },
         isLoadings = true,
         modifier = modifier
