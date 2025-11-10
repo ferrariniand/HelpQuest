@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,7 +27,6 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
-import com.helpquest.core.presentation.util.isKeyboardVisible
 
 @Composable
 fun <T> MultipleSearchSection(
@@ -48,11 +46,8 @@ fun <T> MultipleSearchSection(
     notFoundItemContent: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isKeyboardVisible by isKeyboardVisible()
-
     val deviceConfiguration = currentDeviceConfiguration()
-    val shouldReducePadding = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
-            && isKeyboardVisible
+    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
 
     Column(
         modifier = modifier
@@ -61,7 +56,7 @@ fun <T> MultipleSearchSection(
             modifier = Modifier
                 .padding(
                     horizontal = 16.dp,
-                    vertical = if (shouldReducePadding) 6.dp else 16.dp
+                    vertical = if (isSmallScreenHeight) 8.dp else 16.dp
                 ),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -71,7 +66,7 @@ fun <T> MultipleSearchSection(
                 modifier = Modifier
                     .weight(1f),
                 internalModifier = Modifier
-                    .padding(vertical = if (shouldReducePadding) 0.dp else 3.dp),
+                    .padding(vertical = if (isSmallScreenHeight) 0.dp else 3.dp),
                 placeholder = searchTextPlaceholder,
                 title = null,
                 supportingText = error?.asString(),
@@ -87,7 +82,7 @@ fun <T> MultipleSearchSection(
                 modifier = Modifier
                     .padding(
                         horizontal = 6.dp,
-                        vertical = if (shouldReducePadding) 4.dp else 6.dp
+                        vertical = if (isSmallScreenHeight) 4.dp else 6.dp
                     )
             )
         }
@@ -97,7 +92,7 @@ fun <T> MultipleSearchSection(
                 .padding(
                     vertical = when {
                         searchResult == null -> 0.dp
-                        shouldReducePadding -> 4.dp
+                        isSmallScreenHeight -> 4.dp
                         else -> 8.dp
                     }
                 ),
@@ -114,7 +109,7 @@ fun <T> MultipleSearchSection(
                         ) { item ->
                             MultipleSearchResultItem(
                                 item = item,
-                                shouldReducePadding = shouldReducePadding,
+                                isSmallScreenHeight = isSmallScreenHeight,
                                 resultItemContent = resultItemContent,
                                 actionText = actionText,
                                 onActionClick = onActionClick,
@@ -129,7 +124,7 @@ fun <T> MultipleSearchSection(
                                     .background(MaterialTheme.colorScheme.surface)
                                     .padding(
                                         horizontal = 16.dp,
-                                        vertical = if (shouldReducePadding) 4.dp else 8.dp
+                                        vertical = if (isSmallScreenHeight) 4.dp else 8.dp
                                     ),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -147,7 +142,7 @@ fun <T> MultipleSearchSection(
 @Composable
 fun <T> MultipleSearchResultItem(
     item: T,
-    shouldReducePadding: Boolean,
+    isSmallScreenHeight: Boolean,
     resultItemContent: @Composable RowScope.(T) -> Unit,
     actionText: String,
     onActionClick: (T) -> Unit,
@@ -157,7 +152,7 @@ fun <T> MultipleSearchResultItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = if (shouldReducePadding) 4.dp else 8.dp),
+            .padding(horizontal = 16.dp, vertical = if (isSmallScreenHeight) 4.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
@@ -174,7 +169,7 @@ fun <T> MultipleSearchResultItem(
             },
             enabled = actionEnabledCondition(item),
             style = HelpQuestButtonStyle.PRIMARY,
-            reduceVerticalPadding = shouldReducePadding,
+            reduceVerticalPadding = isSmallScreenHeight,
         )
     }
 }

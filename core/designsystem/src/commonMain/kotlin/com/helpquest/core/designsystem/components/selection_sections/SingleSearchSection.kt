@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,7 +23,6 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
-import com.helpquest.core.presentation.util.isKeyboardVisible
 
 @Composable
 fun <T> SingleSearchSection(
@@ -43,11 +41,9 @@ fun <T> SingleSearchSection(
     notFoundItemContent: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isKeyboardVisible by isKeyboardVisible()
 
     val deviceConfiguration = currentDeviceConfiguration()
-    val shouldReducePadding = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
-            && isKeyboardVisible
+    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
 
     Column(
         modifier = modifier
@@ -56,7 +52,7 @@ fun <T> SingleSearchSection(
             modifier = Modifier
                 .padding(
                     horizontal = 16.dp,
-                    vertical = if (shouldReducePadding) 6.dp else 16.dp
+                    vertical = if (isSmallScreenHeight) 8.dp else 16.dp
                 ),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -66,7 +62,7 @@ fun <T> SingleSearchSection(
                 modifier = Modifier
                     .weight(1f),
                 internalModifier = Modifier
-                    .padding(vertical = if (shouldReducePadding) 0.dp else 3.dp),
+                    .padding(vertical = if (isSmallScreenHeight) 0.dp else 3.dp),
                 placeholder = searchTextPlaceholder,
                 title = null,
                 supportingText = error?.asString(),
@@ -82,7 +78,7 @@ fun <T> SingleSearchSection(
                 style = HelpQuestButtonStyle.SECONDARY,
                 enabled = isActionEnabled,
                 isLoading = isLoading,
-                reduceVerticalPadding = shouldReducePadding
+                reduceVerticalPadding = isSmallScreenHeight
             )
         }
         HelpQuestHorizontalDivider()
@@ -91,7 +87,7 @@ fun <T> SingleSearchSection(
                 .padding(
                     vertical = when {
                         searchResult == null -> 0.dp
-                        shouldReducePadding -> 4.dp
+                        isSmallScreenHeight -> 4.dp
                         else -> 8.dp
                     }
                 ),
@@ -105,7 +101,7 @@ fun <T> SingleSearchSection(
                         item {
                             SingleSearchResultItem(
                                 item = resultItem,
-                                shouldReducePadding = shouldReducePadding,
+                                isSmallScreenHeight = isSmallScreenHeight,
                                 resultItemContent = resultItemContent,
                                 notFoundItemContent = notFoundItemContent,
                             )
@@ -120,7 +116,7 @@ fun <T> SingleSearchSection(
 @Composable
 fun <T> SingleSearchResultItem(
     item: T?,
-    shouldReducePadding: Boolean,
+    isSmallScreenHeight: Boolean,
     resultItemContent: @Composable RowScope.(T) -> Unit,
     notFoundItemContent: @Composable RowScope.() -> Unit,
 ) {
@@ -128,7 +124,7 @@ fun <T> SingleSearchResultItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = if (shouldReducePadding) 4.dp else 8.dp),
+            .padding(horizontal = 16.dp, vertical = if (isSmallScreenHeight) 4.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item?.let {

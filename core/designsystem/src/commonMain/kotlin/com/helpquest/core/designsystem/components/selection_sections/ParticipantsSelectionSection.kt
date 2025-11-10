@@ -48,14 +48,14 @@ fun ColumnScope.ParticipantsSelectionSection(
             .weight(1f)
     }
 
+    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
     val shouldHideSelectedParticipants =
-        (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
-                && isKeyboardVisible
+        isSmallScreenHeight && isKeyboardVisible
 
     Box(
         modifier = rootHeightModifier
             .then(modifier)
-            .padding(vertical = 8.dp),
+            .padding(vertical = if (isSmallScreenHeight) 4.dp else 8.dp),
     ) {
         LazyColumn(
             modifier = Modifier
@@ -69,6 +69,7 @@ fun ColumnScope.ParticipantsSelectionSection(
                 ) { participant ->
                     ParticipantListItem(
                         participantUi = participant,
+                        isSmallScreenHeight = isSmallScreenHeight,
                         modifier = Modifier
                             .fillMaxWidth()
                     )
@@ -82,13 +83,14 @@ fun ColumnScope.ParticipantsSelectionSection(
 @Composable
 fun ParticipantListItem(
     participantUi: ParticipantUi,
+    isSmallScreenHeight: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = if (isSmallScreenHeight) 4.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
