@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="you">You</string>
+    <string name="profile_settings">Profile settings</string>
+    <string name="logout">Logout</string>
+</resources>
