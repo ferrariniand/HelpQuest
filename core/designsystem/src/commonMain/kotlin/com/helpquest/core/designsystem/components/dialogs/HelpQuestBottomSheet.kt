@@ -30,7 +30,7 @@ fun HelpQuestBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        dragHandle = null, //TODO: maybe will be used in a different BottomSheet
+        dragHandle = null,
         contentWindowInsets = { WindowInsets(0.dp) },
         modifier = modifier.statusBarsPadding(),
     ) {

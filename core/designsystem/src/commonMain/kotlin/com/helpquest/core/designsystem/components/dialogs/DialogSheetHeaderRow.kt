@@ -26,8 +26,9 @@ fun DialogSheetHeaderRow(
     Row(
         modifier = modifier
             .padding(
-                horizontal = 20.dp,
-                vertical = 16.dp
+                start = 16.dp,
+                end = 4.dp,
+                top = 4.dp
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {

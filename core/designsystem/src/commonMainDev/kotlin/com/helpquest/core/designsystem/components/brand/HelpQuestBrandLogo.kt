@@ -23,7 +23,8 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun HelpQuestBrandLogo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tintColor: Color = MaterialTheme.colorScheme.primary
 ) {
 
     // 1. Define the colors for the rainbow effect
@@ -36,7 +37,6 @@ fun HelpQuestBrandLogo(
         Color(0xFF4B0082), // Indigo
         Color(0xFFEE82EE)  // Violet
     )
-    val tintColor: Color = MaterialTheme.colorScheme.primary
 
     // 2. State to trigger the animation on/off
     var triggerAnimation by remember { mutableStateOf(false) }

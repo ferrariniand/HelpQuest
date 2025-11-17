@@ -30,8 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.helpquest.core.designsystem.components.auth.AuthPageHeaderSection
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
-import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
@@ -80,7 +80,7 @@ fun HelpQuestAdaptiveFormLayout(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        GenericPageHeaderSection(
+                        AuthPageHeaderSection(
                             topHeaderText = topHeaderText,
                             headerText = headerText,
                             headerColor = headerColor,
@@ -114,7 +114,7 @@ fun HelpQuestAdaptiveFormLayout(
                     Spacer(modifier = Modifier.height(16.dp))
                     logo()
                     Spacer(modifier = Modifier.height(16.dp))
-                    GenericPageHeaderSection(
+                    AuthPageHeaderSection(
                         topHeaderText = topHeaderText,
                         headerText = headerText,
                         headerColor = headerColor,
@@ -183,7 +183,7 @@ fun HelpQuestAdaptiveFormLayout(
                         .padding(horizontal = 24.dp, vertical = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    GenericPageHeaderSection(
+                    AuthPageHeaderSection(
                         topHeaderText = topHeaderText,
                         headerText = headerText,
                         headerColor = headerColor,

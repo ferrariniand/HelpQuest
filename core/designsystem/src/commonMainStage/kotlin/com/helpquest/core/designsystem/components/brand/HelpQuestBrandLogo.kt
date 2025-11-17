@@ -11,13 +11,14 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun HelpQuestBrandLogo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tintColor: Color = MaterialTheme.colorScheme.primary
 ) {
     Icon(
         //TODO: CREATE BRAND LOGO
         imageVector = vectorResource(Res.drawable.compose_multiplatform),
-        contentDescription = null,
-        tint = MaterialTheme.colorScheme.primary,
+        contentDescription = stringResource(Res.string.app_name),
+        tint = tintColor,
         modifier = modifier
     )
 }
