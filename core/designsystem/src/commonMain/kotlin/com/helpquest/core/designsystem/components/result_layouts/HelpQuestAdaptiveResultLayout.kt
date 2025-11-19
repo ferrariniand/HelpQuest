@@ -51,11 +51,6 @@ fun HelpQuestAdaptiveResultLayout(
     modifier: Modifier = Modifier,
 ) {
     val configuration = currentDeviceConfiguration()
-    val headerColor = if (configuration == DeviceConfiguration.MOBILE_LANDSCAPE) {
-        MaterialTheme.colorScheme.onBackground
-    } else {
-        MaterialTheme.colorScheme.extended.textPrimary
-    }
 
     when (configuration) {
         DeviceConfiguration.MOBILE_PORTRAIT -> {
@@ -93,6 +88,7 @@ fun HelpQuestAdaptiveResultLayout(
             )
         }
 
+        DeviceConfiguration.MOBILE_SPLIT_SCREEN, //TODO: define a UI for MOBILE_SPLIT_SCREEN
         DeviceConfiguration.MOBILE_LANDSCAPE -> {
             Row(
                 modifier = modifier
@@ -110,7 +106,7 @@ fun HelpQuestAdaptiveResultLayout(
                         Spacer(modifier = Modifier.height(16.dp))
                         AuthPageHeaderSection(
                             headerText = title,
-                            headerColor = headerColor,
+                            headerColor = MaterialTheme.colorScheme.onBackground,
                             errorText = secondaryError
                         )
                     }

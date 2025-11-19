@@ -29,7 +29,7 @@ fun HelpQuestAvatar(
     showUserIdentity: Boolean = false,
     classImageUrl: String? = null,
     showClass: Boolean = false,
-    onClick: (() -> Unit)? = null, //TODO: is it needed?? ( mabe the clickable item is a card that contains it)
+    onClick: (() -> Unit)? = null,
 ) {
     Box(
         modifier = modifier

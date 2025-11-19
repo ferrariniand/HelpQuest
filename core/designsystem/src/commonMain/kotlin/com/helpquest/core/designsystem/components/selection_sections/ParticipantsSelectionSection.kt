@@ -48,7 +48,7 @@ fun ColumnScope.ParticipantsSelectionSection(
             .weight(1f)
     }
 
-    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
+    val isSmallScreenHeight = deviceConfiguration.isSmallScreenHeight
     val shouldHideSelectedParticipants =
         isSmallScreenHeight && isKeyboardVisible
 

@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 
 @Composable
@@ -26,7 +25,7 @@ fun DialogSheetButtonSection(
     modifier: Modifier = Modifier
 ) {
     val deviceConfiguration = currentDeviceConfiguration()
-    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
+    val isSmallScreenHeight = deviceConfiguration.isSmallScreenHeight
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp, vertical = if (isSmallScreenHeight) 8.dp else 16.dp)

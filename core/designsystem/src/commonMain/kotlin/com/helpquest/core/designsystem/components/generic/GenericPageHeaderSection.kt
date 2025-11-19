@@ -9,12 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 
 @Composable
 fun GenericPageHeaderSection(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
+    val deviceConfiguration = currentDeviceConfiguration()
+    val isSmallScreenHeight = deviceConfiguration.isSmallScreenHeight
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -22,9 +25,9 @@ fun GenericPageHeaderSection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 80.dp)
+                .heightIn(max = if (isSmallScreenHeight) 56.dp else 72.dp)
                 .padding(
-                    vertical = 20.dp,
+                    vertical = if (isSmallScreenHeight) 8.dp else 16.dp,
                     horizontal = 16.dp
                 ),
             contentAlignment = Alignment.Center

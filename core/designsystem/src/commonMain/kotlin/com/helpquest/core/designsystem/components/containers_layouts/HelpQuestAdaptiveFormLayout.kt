@@ -99,6 +99,7 @@ fun HelpQuestAdaptiveFormLayout(
             }
         }
 
+        DeviceConfiguration.MOBILE_SPLIT_SCREEN, //TODO: define a UI for MOBILE_SPLIT_SCREEN
         DeviceConfiguration.MOBILE_LANDSCAPE -> {
             Row(
                 modifier = modifier

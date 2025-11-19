@@ -15,6 +15,7 @@ fun currentDeviceConfiguration(): DeviceConfiguration {
 }
 
 enum class DeviceConfiguration {
+    MOBILE_SPLIT_SCREEN,
     MOBILE_PORTRAIT,
     MOBILE_LANDSCAPE,
     TABLET_PORTRAIT,
@@ -24,14 +25,19 @@ enum class DeviceConfiguration {
     val isMobile: Boolean
         get() = this in listOf(MOBILE_PORTRAIT, MOBILE_LANDSCAPE)
 
+    val isSmallScreenHeight: Boolean
+        get() = this in listOf(MOBILE_SPLIT_SCREEN, MOBILE_LANDSCAPE)
+
     companion object {
         fun fromWindowSizeClass(windowSizeClass: WindowSizeClass): DeviceConfiguration {
             return with(windowSizeClass) {
                 when {
+                    minHeightDp < HEIGHT_DP_MEDIUM_LOWER_BOUND && minWidthDp < WIDTH_DP_MEDIUM_LOWER_BOUND -> MOBILE_SPLIT_SCREEN
+                    minHeightDp < HEIGHT_DP_MEDIUM_LOWER_BOUND -> MOBILE_LANDSCAPE
+
                     minWidthDp < WIDTH_DP_MEDIUM_LOWER_BOUND &&
                             minHeightDp >= HEIGHT_DP_MEDIUM_LOWER_BOUND -> MOBILE_PORTRAIT
 
-                    minHeightDp < HEIGHT_DP_MEDIUM_LOWER_BOUND -> MOBILE_LANDSCAPE
 
                     minWidthDp in WIDTH_DP_MEDIUM_LOWER_BOUND..WIDTH_DP_EXPANDED_LOWER_BOUND &&
                             minHeightDp >= HEIGHT_DP_EXPANDED_LOWER_BOUND -> TABLET_PORTRAIT

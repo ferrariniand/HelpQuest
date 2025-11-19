@@ -32,7 +32,6 @@ import com.helpquest.core.designsystem.components.selection_sections.Participant
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
-import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
@@ -86,8 +85,7 @@ fun CreateChatScreen(
     val configuration = currentDeviceConfiguration()
     val isKeyboardVisible by isKeyboardVisible()
 
-    val shouldHideHeader = (configuration == DeviceConfiguration.MOBILE_LANDSCAPE)
-            || isKeyboardVisible
+    val shouldHideHeader = configuration.isSmallScreenHeight || isKeyboardVisible
 
     Column(
         modifier = Modifier

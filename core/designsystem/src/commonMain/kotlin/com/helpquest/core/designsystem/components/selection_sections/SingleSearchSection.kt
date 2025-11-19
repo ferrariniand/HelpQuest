@@ -20,7 +20,6 @@ import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
-import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 
@@ -43,7 +42,7 @@ fun <T> SingleSearchSection(
 ) {
 
     val deviceConfiguration = currentDeviceConfiguration()
-    val isSmallScreenHeight = (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE)
+    val isSmallScreenHeight = deviceConfiguration.isSmallScreenHeight
 
     Column(
         modifier = modifier
