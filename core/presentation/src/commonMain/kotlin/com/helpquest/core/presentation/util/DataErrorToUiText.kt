@@ -15,14 +15,14 @@ import helpquest.core.presentation.generated.resources.error_server
 import helpquest.core.presentation.generated.resources.error_service_unavailable
 import helpquest.core.presentation.generated.resources.error_too_many_requests
 import helpquest.core.presentation.generated.resources.error_unauthorized
-import helpquest.core.presentation.generated.resources.error_unknown
+import helpquest.core.presentation.generated.resources.error_unknown_long
 
 
 fun DataError.toUiText(): UiText {
     val resource = when (this) {
         DataError.Local.DISK_FULL -> Res.string.error_disk_full
         DataError.Local.NOT_FOUND -> Res.string.error_not_found
-        DataError.Local.UNKNOWN -> Res.string.error_unknown
+        DataError.Local.UNKNOWN -> Res.string.error_unknown_long
         DataError.Remote.BAD_REQUEST -> Res.string.error_bad_request
         DataError.Remote.REQUEST_TIMEOUT -> Res.string.error_request_timeout
         DataError.Remote.UNAUTHORIZED -> Res.string.error_unauthorized
@@ -35,7 +35,7 @@ fun DataError.toUiText(): UiText {
         DataError.Remote.SERVER_ERROR -> Res.string.error_server
         DataError.Remote.SERVICE_UNAVAILABLE -> Res.string.error_service_unavailable
         DataError.Remote.SERIALIZATION -> Res.string.error_serialization
-        DataError.Remote.UNKNOWN -> Res.string.error_unknown
+        DataError.Remote.UNKNOWN -> Res.string.error_unknown_long
     }
     return UiText.Resource(resource)
 }

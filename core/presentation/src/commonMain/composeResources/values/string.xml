@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="reconnecting">Reconnecting...</string>
     <string name="error_disk_full">Oops, it looks like your storage is full!</string>
     <string name="error_not_found">Couldn't find the requested item</string>
-    <string name="error_unknown">An unknown error happened</string>
+    <string name="error_unknown_short">Unknown error</string>
+    <string name="error_unknown_long">An unknown error happened</string>
     <string name="error_bad_request">Bad request</string>
     <string name="error_request_timeout">Your request has timed out</string>
     <string name="error_unauthorized">Invalid credentials</string>
@@ -14,4 +18,5 @@
     <string name="error_server">Oops, a server-side error happened</string>
     <string name="error_service_unavailable">Service unavailable, please try again later</string>
     <string name="error_serialization">Serialization error</string>
+    <string name="error_network">Network error</string>
 </resources>
