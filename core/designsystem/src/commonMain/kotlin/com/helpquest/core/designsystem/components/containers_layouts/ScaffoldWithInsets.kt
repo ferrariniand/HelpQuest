@@ -8,13 +8,16 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun ScaffoldWithInsets(
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.background,
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -23,6 +26,7 @@ fun ScaffoldWithInsets(
             .union(WindowInsets.displayCutout)
             .union(WindowInsets.ime)
             .union(WindowInsets.navigationBars),
+        containerColor = containerColor
     ) { innerPadding ->
         Box(
             modifier = Modifier

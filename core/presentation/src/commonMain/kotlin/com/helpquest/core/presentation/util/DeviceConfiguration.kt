@@ -28,6 +28,9 @@ enum class DeviceConfiguration {
     val isSmallScreenHeight: Boolean
         get() = this in listOf(MOBILE_SPLIT_SCREEN, MOBILE_LANDSCAPE)
 
+    val isWideScreen: Boolean
+        get() = this in listOf(TABLET_LANDSCAPE, DESKTOP)
+
     companion object {
         fun fromWindowSizeClass(windowSizeClass: WindowSizeClass): DeviceConfiguration {
             return with(windowSizeClass) {
