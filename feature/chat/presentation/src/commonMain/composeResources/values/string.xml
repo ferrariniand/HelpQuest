@@ -6,6 +6,21 @@
     <string name="email_or_username">Email or Username</string>
     <string name="you">You</string>
     <string name="group_chat">Group chat</string>
+    <string name="no_chats">No chats</string>
+    <string name="no_chats_subtitle">Create new chat to start messaging</string>
+    <string name="no_messages">No messages</string>
+    <string name="no_messages_subtitle">Be the first to send a message!</string>
+    <string name="send">Send</string>
+    <string name="send_a_message">Send a message</string>
+    <string name="sending">Sending...</string>
+    <string name="sent">Sent</string>
+    <string name="failed">Failed</string>
+    <string name="retry">Retry</string>
+    <string name="delete_for_everyone">Delete for everyone</string>
+    <string name="go_back">Go back</string>
+    <string name="open_chat_options_menu">Open chat options menu</string>
+    <string name="chat_members">Chat members</string>
+    <string name="leave_chat">Leave chat</string>
     <string name="error_participant_not_found">No participant found</string>
     <string name="error_participant_already_added">Participant already added</string>
 </resources>
