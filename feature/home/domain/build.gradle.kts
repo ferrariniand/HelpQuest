@@ -16,7 +16,7 @@ kotlin {
                 // Add KMP dependencies here
 
                 implementation(projects.core.domain)
-                implementation(projects.feature.quests.domain)
+                implementation(projects.feature.quest.domain)
                 implementation(projects.feature.profile.domain)
             }
         }

@@ -84,9 +84,10 @@ kotlin {
             implementation(projects.feature.profile.data)
             implementation(projects.feature.profile.presentation)
             // Quests Modules
-            implementation(projects.feature.quests.domain)
-            implementation(projects.feature.quests.data)
-            implementation(projects.feature.quests.presentation)
+            implementation(projects.feature.quest.domain)
+            implementation(projects.feature.quest.data)
+            implementation(projects.feature.quest.database)
+            implementation(projects.feature.quest.presentation)
             // Chat Modules
             implementation(projects.feature.chat.domain)
             implementation(projects.feature.chat.data)

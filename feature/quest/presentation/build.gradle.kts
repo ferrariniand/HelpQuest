@@ -1,7 +1,9 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
-    alias(libs.plugins.convention.kmp.library)
-    alias(libs.plugins.convention.room)
+    alias(libs.plugins.convention.cmp.feature)
 }
 
 kotlin {
@@ -15,8 +17,16 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-                implementation(projects.core.database)
+                implementation(projects.feature.quest.domain)
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(compose.uiTest)
             }
         }
 
