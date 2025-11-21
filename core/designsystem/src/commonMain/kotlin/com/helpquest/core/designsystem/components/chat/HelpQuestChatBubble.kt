@@ -37,7 +37,7 @@ fun HelpQuestChatBubble(
     sender: String = stringResource(Res.string.you),
     color: Color = MaterialTheme.colorScheme.extended.surfaceHigher,
     messageStatus: @Composable (() -> Unit)? = null,
-    triangleSize: Dp = 16.dp,
+    triangleSize: Dp = 10.dp,
     onLongClick: (() -> Unit)? = null
 ) {
     val padding = 12.dp
