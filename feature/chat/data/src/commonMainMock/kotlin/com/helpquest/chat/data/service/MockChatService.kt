@@ -3,6 +3,8 @@ package com.helpquest.chat.data.service
 import com.helpquest.chat.domain.models.Chat
 import com.helpquest.chat.domain.service.ChatService
 import com.helpquest.core.domain.models.Participant
+import com.helpquest.core.domain.models.Class
+import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import kotlin.random.Random
@@ -15,7 +17,7 @@ class MockChatService() : ChatService {
         username = "primo",
         profilePictureUrl = "test",
         showParticipantIdentity = true,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantNoClass = Participant(
@@ -23,7 +25,6 @@ class MockChatService() : ChatService {
         username = "secondo",
         profilePictureUrl = "test",
         showParticipantIdentity = true,
-        classImageUrl = null,
     )
 
     val participantNoImage = Participant(
@@ -31,7 +32,8 @@ class MockChatService() : ChatService {
         username = "terzo",
         profilePictureUrl = null,
         showParticipantIdentity = true,
-        classImageUrl = "test",
+        participantClass = Class.TECH_WIZARD,
+        participantSubClass = SubClass.SOFTWARE_MAGE,
     )
 
     val participantDontShowID = Participant(
@@ -39,7 +41,7 @@ class MockChatService() : ChatService {
         username = "quarto",
         profilePictureUrl = "test",
         showParticipantIdentity = false,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantNoImageDontShowID = Participant(
@@ -47,7 +49,7 @@ class MockChatService() : ChatService {
         username = "quinto",
         profilePictureUrl = null,
         showParticipantIdentity = false,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantList = listOf(

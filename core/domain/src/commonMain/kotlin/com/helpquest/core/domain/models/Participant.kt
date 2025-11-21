@@ -5,7 +5,8 @@ data class Participant(
     val username: String,
     val profilePictureUrl: String?,
     val showParticipantIdentity: Boolean = false,
-    val classImageUrl: String? = null,
+    val participantClass: Class? = null,
+    val participantSubClass: SubClass? = null,
 ) {
     val initials: String
         get() = username.take(2).uppercase()

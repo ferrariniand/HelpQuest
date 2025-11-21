@@ -10,6 +10,6 @@ fun Participant.toParticipantUi(): ParticipantUi {
         initials = initials,
         imageUrl = profilePictureUrl,
         showParticipantIdentity = showParticipantIdentity,
-        classImageUrl = classImageUrl
+        classImageUrl = participantClass?.classImageUrl
     )
 }

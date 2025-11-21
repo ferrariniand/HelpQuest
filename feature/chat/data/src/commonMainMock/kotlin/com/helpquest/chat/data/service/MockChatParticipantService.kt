@@ -2,6 +2,8 @@ package com.helpquest.chat.data.service
 
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.core.domain.models.Participant
+import com.helpquest.core.domain.models.Class
+import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 
@@ -12,7 +14,7 @@ class MockChatParticipantService() : ChatParticipantService {
         username = "primo",
         profilePictureUrl = "test",
         showParticipantIdentity = true,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantNoClass = Participant(
@@ -20,7 +22,6 @@ class MockChatParticipantService() : ChatParticipantService {
         username = "secondo",
         profilePictureUrl = "test",
         showParticipantIdentity = true,
-        classImageUrl = null,
     )
 
     val participantNoImage = Participant(
@@ -28,7 +29,8 @@ class MockChatParticipantService() : ChatParticipantService {
         username = "terzo",
         profilePictureUrl = null,
         showParticipantIdentity = true,
-        classImageUrl = "test",
+        participantClass = Class.TECH_WIZARD,
+        participantSubClass = SubClass.SOFTWARE_MAGE,
     )
 
     val participantDontShowID = Participant(
@@ -36,7 +38,7 @@ class MockChatParticipantService() : ChatParticipantService {
         username = "quarto",
         profilePictureUrl = "test",
         showParticipantIdentity = false,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantNoImageDontShowID = Participant(
@@ -44,7 +46,7 @@ class MockChatParticipantService() : ChatParticipantService {
         username = "quinto",
         profilePictureUrl = null,
         showParticipantIdentity = false,
-        classImageUrl = "test",
+        participantClass = Class.VILLAGER,
     )
 
     val participantList = listOf(
