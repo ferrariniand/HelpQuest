@@ -1,28 +1,22 @@
 package com.helpquest.home.presentation.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.dropdown.DropDownItem
+import com.helpquest.core.designsystem.components.dropdown.HelpQuestDropDownMenu
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
-import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
@@ -39,7 +33,7 @@ import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun HomepageHeader(
-    localParticipant: ParticipantUi,
+    localParticipant: ParticipantUi?,
     isUserMenuOpen: Boolean,
     onUserAvatarClick: () -> Unit,
     onDismissMenu: () -> Unit,
@@ -78,7 +72,7 @@ fun HomepageHeader(
 
 @Composable
 fun ProfileAvatarSection(
-    localParticipant: ParticipantUi,
+    localParticipant: ParticipantUi?,
     isMenuOpen: Boolean,
     onClick: () -> Unit,
     onDismissMenu: () -> Unit,
@@ -89,73 +83,35 @@ fun ProfileAvatarSection(
     Box(
         modifier = modifier
     ) {
-        HelpQuestAvatar(
-            displayText = localParticipant.initials,
-            userImageUrl = localParticipant.imageUrl,
-            showUserIdentity = true,
-            classImageUrl = localParticipant.classImageUrl,
-            showClass = true,
-            onClick = onClick
-        )
-
-        DropdownMenu(
-            expanded = isMenuOpen,
-            shape = RoundedCornerShape(16.dp),
-            onDismissRequest = onDismissMenu,
-            containerColor = MaterialTheme.colorScheme.surface,
-            border = BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.extended.surfaceOutline
-            )
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Icon(
-                            imageVector = vectorResource(DesignSystemRes.drawable.users_icon),
-                            contentDescription = stringResource(Res.string.profile_settings),
-                            tint = MaterialTheme.colorScheme.extended.textSecondary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Text(
-                            text = stringResource(Res.string.profile_settings),
-                            color = MaterialTheme.colorScheme.extended.textSecondary,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                },
-                onClick = {
-                    onDismissMenu()
-                    onProfileSettingsClick()
-                }
-            )
-            HelpQuestHorizontalDivider()
-            DropdownMenuItem(
-                text = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Icon(
-                            imageVector = vectorResource(DesignSystemRes.drawable.log_out_icon),
-                            contentDescription = stringResource(Res.string.logout),
-                            tint = MaterialTheme.colorScheme.extended.destructiveHover,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Text(
-                            text = stringResource(Res.string.logout),
-                            color = MaterialTheme.colorScheme.extended.destructiveHover,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                },
-                onClick = {
-                    onDismissMenu()
-                    onLogoutClick()
-                }
+        if (localParticipant != null) {
+            HelpQuestAvatar(
+                displayText = localParticipant.initials,
+                userImageUrl = localParticipant.imageUrl,
+                showUserIdentity = true,
+                classImageUrl = localParticipant.classImageUrl,
+                showClass = true,
+                onClick = onClick
             )
         }
+
+        HelpQuestDropDownMenu(
+            isOpen = isMenuOpen,
+            onDismiss = onDismissMenu,
+            items = listOf(
+                DropDownItem(
+                    title = stringResource(Res.string.profile_settings),
+                    icon = vectorResource(DesignSystemRes.drawable.users_icon),
+                    contentColor = MaterialTheme.colorScheme.extended.textSecondary,
+                    onClick = onProfileSettingsClick
+                ),
+                DropDownItem(
+                    title = stringResource(Res.string.logout),
+                    icon = vectorResource(DesignSystemRes.drawable.log_out_icon),
+                    contentColor = MaterialTheme.colorScheme.extended.destructiveHover,
+                    onClick = onLogoutClick
+                )
+            )
+        )
     }
 }
 
