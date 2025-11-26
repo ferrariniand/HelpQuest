@@ -17,6 +17,7 @@ kotlin {
                 // Add KMP dependencies here
 
                 implementation(projects.feature.quest.domain)
+                implementation(projects.feature.quest.database)
             }
         }
 
@@ -25,6 +26,7 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+                implementation(libs.koin.android)
             }
         }
 
