@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessage
+import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.presentation.components.ChatItemHeaderRow
 import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.core.designsystem.components.buttons.HelpQuestIconButton
@@ -162,7 +163,9 @@ fun ChatDetailHeaderPreview() {
                             content = "This is a last chat message that was sent by Philipp " +
                                     "and goes over multiple lines to showcase the ellipsis",
                             createdAt = Clock.System.now(),
-                            senderId = "1"
+                            senderId = "1",
+                            deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                            deliveredAt = Clock.System.now()
                         ),
                         lastMessageSenderUsername = "Philipp"
                     ),

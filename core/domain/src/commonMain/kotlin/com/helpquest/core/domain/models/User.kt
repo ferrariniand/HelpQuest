@@ -6,4 +6,7 @@ data class User(
     val username: String,
     val hasVerifiedEmail: Boolean,
     val profilePictureUrl: String? = null
-)
+) {
+    val initials: String
+        get() = username.take(2).uppercase()
+}

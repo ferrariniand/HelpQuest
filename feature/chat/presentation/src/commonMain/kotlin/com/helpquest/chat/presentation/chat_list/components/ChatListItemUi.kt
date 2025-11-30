@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessage
+import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.presentation.components.ChatItemHeaderRow
 import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
@@ -73,7 +74,7 @@ fun ChatListItemUi(
                             color = MaterialTheme.colorScheme.extended.textSecondary,
                         )
                     ) {
-                        append(chat.lastMessageSenderUsername + ":")
+                        append(chat.lastMessageSenderUsername + ": ")
                     }
                     append(chat.lastMessage.content)
                 }
@@ -130,7 +131,9 @@ fun ChatListItemUiLightPreview() {
                     content = "This is a last chat message that was sent by Philipp " +
                             "and goes over multiple lines to showcase the ellipsis",
                     createdAt = Clock.System.now(),
-                    senderId = "1"
+                    senderId = "1",
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                    deliveredAt = Clock.System.now()
                 ),
                 lastMessageSenderUsername = "Philipp"
             )
@@ -171,7 +174,9 @@ fun ChatListItemUiDarkPreview() {
                     content = "This is a last chat message that was sent by Philipp " +
                             "and goes over multiple lines to showcase the ellipsis",
                     createdAt = Clock.System.now(),
-                    senderId = "1"
+                    senderId = "1",
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                    deliveredAt = Clock.System.now()
                 ),
                 lastMessageSenderUsername = "Philipp"
             )
@@ -207,7 +212,9 @@ fun ChatListItemUiLightSingleParticipantPreview() {
                     content = "This is a last chat message that was sent by Philipp " +
                             "and goes over multiple lines to showcase the ellipsis",
                     createdAt = Clock.System.now(),
-                    senderId = "1"
+                    senderId = "1",
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                    deliveredAt = Clock.System.now()
                 ),
                 lastMessageSenderUsername = "Philipp"
             )
@@ -243,7 +250,9 @@ fun ChatListItemUiDarkSingleParticipantPreview() {
                     content = "This is a last chat message that was sent by Philipp " +
                             "and goes over multiple lines to showcase the ellipsis",
                     createdAt = Clock.System.now(),
-                    senderId = "1"
+                    senderId = "1",
+                    deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                    deliveredAt = Clock.System.now()
                 ),
                 lastMessageSenderUsername = "Philipp"
             )

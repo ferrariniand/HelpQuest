@@ -264,7 +264,9 @@ private fun ChatDetailScreenMessagesLightPreview() {
                         content = "This is a last chat message that was sent by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
                         createdAt = Clock.System.now(),
-                        senderId = "1"
+                        senderId = "1",
+                        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                        deliveredAt = Clock.System.now()
                     ),
                     lastMessageSenderUsername = "Philipp"
                 ),
@@ -335,7 +337,9 @@ private fun ChatDetailScreenMessagesDarkPreview() {
                         content = "This is a last chat message that was sent by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
                         createdAt = Clock.System.now(),
-                        senderId = "1"
+                        senderId = "1",
+                        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+                        deliveredAt = Clock.System.now()
                     ),
                     lastMessageSenderUsername = "Philipp"
                 ),

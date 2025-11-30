@@ -1,12 +1,15 @@
 package com.helpquest.chat.data.service
 
 import com.helpquest.chat.domain.models.Chat
+import com.helpquest.chat.domain.models.ChatMessage
+import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.service.ChatService
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
+import kotlin.String
 import kotlin.random.Random
 import kotlin.time.Clock
 
@@ -66,6 +69,39 @@ class MockChatService() : ChatService {
         participantNoImageDontShowID
     )
 
+    val chatId = Random.nextInt().toString()
+    val messageId = Random.nextInt().toString()
+    val lastMessage = ChatMessage(
+        id = messageId,
+        chatId = chatId,
+        content = "this is the last message sent in the chat",
+        createdAt = Clock.System.now(),
+        senderId = participantFull.userId,
+        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+        deliveredAt = Clock.System.now(),
+    )
+
+    val chat1 = Chat(
+        id = chatId,
+        participants = participantList,
+        lastActivityAt = Clock.System.now(),
+        lastMessage = lastMessage
+    )
+
+    val chat2 = Chat(
+        id = Random.nextInt().toString(),
+        participants = listOf(
+            participantFull,
+            participantDontShowID,
+        ),
+        lastActivityAt = Clock.System.now(),
+        lastMessage = null
+    )
+    val chatList = listOf(
+        chat1,
+        chat2
+    )
+
 
     override suspend fun createChat(otherUserIds: List<String>): Result<Chat, DataError.Remote> {
         return if (otherUserIds.isEmpty()) {
@@ -87,5 +123,9 @@ class MockChatService() : ChatService {
 
             Result.Success(chat)
         }
+    }
+
+    override suspend fun getChats(): Result<List<Chat>, DataError.Remote> {
+        return Result.Success(chatList)
     }
 }
