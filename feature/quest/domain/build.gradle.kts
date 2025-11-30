@@ -14,6 +14,7 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(libs.kotlinx.coroutines.core)
 
                 implementation(projects.core.domain)
             }
