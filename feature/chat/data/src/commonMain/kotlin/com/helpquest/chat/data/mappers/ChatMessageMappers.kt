@@ -22,6 +22,18 @@ fun ChatMessageDto.toChatMessage(): ChatMessage {
     )
 }
 
+fun ChatMessageEntity.toChatMessage(): ChatMessage {
+    return ChatMessage(
+        id = messageId,
+        chatId = chatId,
+        content = content,
+        createdAt = Instant.fromEpochMilliseconds(timestamp),
+        senderId = senderId,
+        deliveryStatus = ChatMessageDeliveryStatus.valueOf(this.deliveryStatus),
+        deliveredAt = Instant.fromEpochMilliseconds(deliveryStatusTimestamp),
+    )
+}
+
 fun LastMessageView.toChatMessage(): ChatMessage {
     return ChatMessage(
         id = messageId,

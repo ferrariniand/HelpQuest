@@ -25,6 +25,20 @@ fun QuestActivityDto.toQuestActivity(): QuestActivity {
     )
 }
 
+fun QuestActivityEntity.toQuestActivity(): QuestActivity {
+    return QuestActivity(
+        activityId = activityId,
+        questId = questId,
+        content = content,
+        actorId = actorId,
+        activityStatus = QuestActivityStatus.valueOf(activityStatus),
+        startActivityAt = Instant.fromEpochMilliseconds(startTimestamp),
+        endActivityAt = endTimestamp?.let {
+            Instant.fromEpochMilliseconds(it)
+        },
+    )
+}
+
 fun LastActivityView.toQuestActivity(): QuestActivity {
     return QuestActivity(
         activityId = activityId,
