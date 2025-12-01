@@ -3,14 +3,20 @@
 package com.helpquest.chat.data.service
 
 import com.helpquest.chat.domain.models.Chat
+import com.helpquest.chat.domain.models.ChatInfo
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
+import com.helpquest.chat.domain.models.MessageWithSender
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -31,19 +37,33 @@ class FakeChatRepository : ChatRepository {
     )
     val chatId = Random.nextInt().toString()
     val messageId = Random.nextInt().toString()
+
+    val message = ChatMessage(
+        id = messageId,
+        chatId = chatId,
+        content = "test message content",
+        createdAt = Clock.System.now(),
+        senderId = "id2",
+        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+        deliveredAt = Clock.System.now()
+    )
+
+    val messageWithSender = MessageWithSender(
+        message = message,
+        sender = participant2,
+        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+    )
+
     val chat = Chat(
         id = chatId,
-        participants = listOf(participant),
+        participants = listOf(participant, participant2),
         lastActivityAt = Clock.System.now(),
-        lastMessage = ChatMessage(
-            id = messageId,
-            chatId = chatId,
-            content = "test message content",
-            createdAt = Clock.System.now(),
-            senderId = "id5",
-            deliveryStatus = ChatMessageDeliveryStatus.SENT,
-            deliveredAt = Clock.System.now()
-        )
+        lastMessage = message
+    )
+
+    val chatInfo = ChatInfo(
+        chat = chat,
+        messages = listOf(messageWithSender, messageWithSender, messageWithSender)
     )
 
 
@@ -57,16 +77,34 @@ class FakeChatRepository : ChatRepository {
         lastMessage = null
     )
 
+    val chatInfo2 = ChatInfo(
+        chat = chat2,
+        messages = emptyList()
+    )
+
     var chatList = listOf(chat, chat2)
+    var chatInfoList = listOf(chatInfo, chatInfo2)
 
     var fetchChatsResult: Result<List<Chat>, DataError.Remote> =
         Result.Success(chatList)
+
+    var fetchChatByIdResult: EmptyResult<DataError.Remote> =
+        Result.Success(chat).asEmptyResult()
 
     override fun getChats(): Flow<List<Chat>> {
         return flowOf(chatList)
     }
 
+    override fun getChatInfoById(chatId: String): Flow<ChatInfo> {
+        return flowOf(chatInfoList).map { list -> list.find { it.chat.id == chatId } }
+            .filterNotNull()
+    }
+
     override suspend fun fetchChats(): Result<List<Chat>, DataError.Remote> {
         return fetchChatsResult
+    }
+
+    override suspend fun fetchChatById(chatId: String): EmptyResult<DataError.Remote> {
+        return fetchChatByIdResult
     }
 }

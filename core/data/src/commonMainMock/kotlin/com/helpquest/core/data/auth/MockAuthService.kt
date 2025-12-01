@@ -14,10 +14,11 @@ class MockAuthService() : AuthService {
     var savedAuthInfo: AuthInfo? = null
     var savedPassword: String? = null
     private val mockUser = User(
-        id = "id",
+        id = "id1",
         email = "email",
-        username = "username",
-        hasVerifiedEmail = true
+        username = "primo",
+        hasVerifiedEmail = true,
+        profilePictureUrl = "test",
     )
     private val mockAuthInfo = AuthInfo(
         accessToken = "accessToken",

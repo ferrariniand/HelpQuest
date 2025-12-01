@@ -54,11 +54,13 @@ class FakeChatService : ChatService {
         lastMessage = null
     )
 
+    val chatList = listOf(chat, chat2)
+
     var createChatResult: Result<Chat, DataError.Remote> =
         Result.Success(chat)
 
     var getChatsResult: Result<List<Chat>, DataError.Remote> =
-        Result.Success(listOf(chat, chat2))
+        Result.Success(chatList)
 
     override suspend fun createChat(otherUserIds: List<String>): Result<Chat, DataError.Remote> {
         return createChatResult
@@ -66,5 +68,11 @@ class FakeChatService : ChatService {
 
     override suspend fun getChats(): Result<List<Chat>, DataError.Remote> {
         return getChatsResult
+    }
+
+    override suspend fun getChatById(chatId: String): Result<Chat, DataError.Remote> {
+        return chatList.find { it.id == chatId }?.let {
+            Result.Success(it)
+        } ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

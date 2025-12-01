@@ -12,14 +12,15 @@ class FakeSessionStorage : SessionStorage {
         accessToken = "accessToken",
         refreshToken = "refreshToken",
         user = User(
-            id = "id",
+            id = "id1",
             email = "email",
-            username = "username",
-            hasVerifiedEmail = false
+            username = "primo",
+            hasVerifiedEmail = false,
+            profilePictureUrl = "test",
         )
     )
 
-    val resultAuthInfoFlow = MutableStateFlow<AuthInfo?>(null)
+    val resultAuthInfoFlow = MutableStateFlow<AuthInfo?>(fakeAuthInfo)
 
 
     override fun observeAuthInfo(): Flow<AuthInfo?> {

@@ -128,4 +128,10 @@ class MockChatService() : ChatService {
     override suspend fun getChats(): Result<List<Chat>, DataError.Remote> {
         return Result.Success(chatList)
     }
+
+    override suspend fun getChatById(chatId: String): Result<Chat, DataError.Remote> {
+        return chatList.find { it.id == chatId }?.let {
+            Result.Success(it)
+        } ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
 }
