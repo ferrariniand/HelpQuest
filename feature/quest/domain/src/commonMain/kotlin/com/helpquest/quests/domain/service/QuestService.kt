@@ -5,7 +5,8 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.quests.domain.models.Quest
 
-interface QuestBoardService {
+interface QuestService {
+
     suspend fun createQuest(
         questTitle: String,
         questDescription: String,
@@ -14,5 +15,8 @@ interface QuestBoardService {
     ): Result<Quest, DataError.Remote>
 
     suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote>
+    suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote>
+
+    suspend fun getQuestById(questId: String): Result<Quest, DataError.Remote>
 
 }

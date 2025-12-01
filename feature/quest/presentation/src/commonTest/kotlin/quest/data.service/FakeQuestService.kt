@@ -11,12 +11,12 @@ import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
 import com.helpquest.quests.domain.models.QuestStatus
-import com.helpquest.quests.domain.service.QuestLogService
+import com.helpquest.quests.domain.service.QuestService
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class FakeQuestLogService : QuestLogService {
+class FakeQuestService : QuestService {
 
     val participant = Participant(
         userId = "id1",
@@ -66,11 +66,38 @@ class FakeQuestLogService : QuestLogService {
         lastActivity = null
     )
 
-    var getQuestLogResult: Result<List<Quest>, DataError.Remote> =
-        Result.Success(listOf(quest, quest2))
+    val questList = listOf(quest, quest2)
 
+
+    var createQuestResult: Result<Quest, DataError.Remote> =
+        Result.Success(quest)
+
+    var getQuestBoardResult: Result<List<Quest>, DataError.Remote> =
+        Result.Success(questList)
+
+    var getQuestLogResult: Result<List<Quest>, DataError.Remote> =
+        Result.Success(questList)
+
+    override suspend fun createQuest(
+        questTitle: String,
+        questDescription: String,
+        questCategory: Category,
+        questCreatorId: String
+    ): Result<Quest, DataError.Remote> {
+        return createQuestResult
+    }
+
+    override suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote> {
+        return getQuestBoardResult
+    }
 
     override suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote> {
         return getQuestLogResult
+    }
+
+    override suspend fun getQuestById(questId: String): Result<Quest, DataError.Remote> {
+        return questList.find { it.questId == questId }?.let {
+            Result.Success(it)
+        } ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

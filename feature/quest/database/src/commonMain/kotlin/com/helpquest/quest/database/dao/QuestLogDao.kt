@@ -71,7 +71,14 @@ interface QuestLogDao {
     )
     fun getActiveParticipantsByQuestId(questId: String): Flow<List<QuestParticipantEntity>>
 
-    @Query("SELECT * FROM questentity WHERE questId = :questId")
+    @Query(
+        """
+        SELECT q.*
+        FROM questentity q
+        JOIN questparticipantcrossref qpcr ON q.questId = qpcr.questId
+        WHERE q.questId = :questId AND qpcr.isActive = 1
+    """
+    )
     @Transaction
     fun getQuestInfoById(questId: String): Flow<QuestInfoEntity?>
 
