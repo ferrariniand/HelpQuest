@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -46,6 +47,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatListRoot(
+    chatId: String?,
     onChatClick: (ChatUi) -> Unit,
     onCreateChatClick: () -> Unit,
     onProfileSettingsClick: () -> Unit,
@@ -61,6 +63,11 @@ fun ChatListRoot(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
+
+    LaunchedEffect(chatId) {
+        viewModel.onAction(ChatListAction.OnSelectChat(chatId))
+    }
+
     ChatListScreen(
         state = state,
         onAction = { action ->
@@ -68,6 +75,7 @@ fun ChatListRoot(
                 is ChatListAction.OnChatClick -> onChatClick(action.chat)
                 ChatListAction.OnCreateChatClick -> onCreateChatClick()
                 ChatListAction.OnProfileSettingsClick -> onProfileSettingsClick()
+                else -> Unit
             }
             viewModel.onAction(action)
         },

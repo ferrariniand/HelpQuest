@@ -73,6 +73,7 @@ fun ChatListDetailAdaptiveLayout(
         listPane = {
             AnimatedPane {
                 ChatListRoot(
+                    chatId = sharedState.selectedChatId,
                     onChatClick = {
                         chatListDetailViewModel.onAction(ChatListDetailAction.OnChatClick(it.id))
                         scope.launch {

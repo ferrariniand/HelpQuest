@@ -6,7 +6,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.chat.domain.service.ChatParticipantService
-import com.helpquest.chat.domain.service.ChatService
+import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 class CreateChatViewModel(
     private val chatParticipantService: ChatParticipantService,
-    private val chatService: ChatService,
+    private val repository: ChatRepository,
     initialState: CreateChatState = CreateChatState()
 
 ) : ViewModel() {
@@ -219,7 +219,7 @@ class CreateChatViewModel(
                 )
             }
 
-            chatService
+            repository
                 .createChat(userIds)
                 .onSuccess { chat ->
                     _state.update {
