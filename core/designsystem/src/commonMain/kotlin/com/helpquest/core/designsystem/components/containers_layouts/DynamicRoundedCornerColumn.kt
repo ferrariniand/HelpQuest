@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 
@@ -20,12 +21,13 @@ fun DynamicRoundedCornerColumn(
     Column(
         modifier = modifier
             .shadow(
-                elevation = if (isCornersRounded) 4.dp else 0.dp,
-                shape = if (isCornersRounded) RoundedCornerShape(16.dp) else RectangleShape
+                elevation = if (isCornersRounded) 8.dp else 0.dp,
+                shape = if (isCornersRounded) RoundedCornerShape(24.dp) else RectangleShape,
+                spotColor = Color.Black.copy(alpha = 0.2f)
             )
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = if (isCornersRounded) RoundedCornerShape(16.dp) else RectangleShape
+                shape = if (isCornersRounded) RoundedCornerShape(24.dp) else RectangleShape
             )
     ) {
         content()

@@ -170,6 +170,10 @@ fun ChatDetailScreen(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(
+                                    vertical = 8.dp,
+                                    horizontal = 16.dp
+                                )
                         )
                     }
                 }
@@ -182,16 +186,21 @@ fun ChatDetailScreen(
                     visible = configuration.isWideScreen && state.chatUi != null
                 ) {
                     //Send Message Box is in a different rounded box of the Message list
-                    SendMessageBox(
-                        messageTextFieldState = state.messageTextFieldState,
-                        isTextInputEnabled = state.canSendMessage,
-                        connectionState = state.connectionState,
-                        onSendClick = {
-                            onAction(ChatDetailAction.OnSendMessageClick)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
+                    DynamicRoundedCornerColumn(
+                        isCornersRounded = configuration.isWideScreen,
+                    ) {
+                        SendMessageBox(
+                            messageTextFieldState = state.messageTextFieldState,
+                            isTextInputEnabled = state.canSendMessage,
+                            connectionState = state.connectionState,
+                            onSendClick = {
+                                onAction(ChatDetailAction.OnSendMessageClick)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        )
+                    }
                 }
             }
         }

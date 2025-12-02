@@ -31,6 +31,7 @@ import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -42,6 +43,9 @@ fun ChatListItemUi(
     modifier: Modifier = Modifier
 ) {
     val isGroupChat = chat.otherParticipants.size > 1
+    val deviceConfiguration = currentDeviceConfiguration()
+    val isSmallScreenHeight = deviceConfiguration.isSmallScreenHeight
+
     Row(
         modifier = modifier
             .height(IntrinsicSize.Min)
@@ -57,8 +61,13 @@ fun ChatListItemUi(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(
+                    vertical = if (isSmallScreenHeight) 8.dp else 16.dp,
+                    horizontal = 16.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(
+                if (isSmallScreenHeight) 8.dp else 16.dp
+            )
         ) {
             ChatItemHeaderRow(
                 chat = chat,
