@@ -82,14 +82,17 @@ class FakeChatRepository : ChatRepository {
         messages = emptyList()
     )
 
-    var chatList = listOf(chat, chat2)
-    var chatInfoList = listOf(chatInfo, chatInfo2)
+    var chatList = mutableListOf(chat, chat2)
+    var chatInfoList = mutableListOf(chatInfo, chatInfo2)
 
     var fetchChatsResult: Result<List<Chat>, DataError.Remote> =
         Result.Success(chatList)
 
     var fetchChatByIdResult: EmptyResult<DataError.Remote> =
         Result.Success(chat).asEmptyResult()
+
+    var createChatResult: Result<Chat, DataError.Remote> =
+        Result.Success(chat)
 
     override fun getChats(): Flow<List<Chat>> {
         return flowOf(chatList)
@@ -106,5 +109,16 @@ class FakeChatRepository : ChatRepository {
 
     override suspend fun fetchChatById(chatId: String): EmptyResult<DataError.Remote> {
         return fetchChatByIdResult
+    }
+
+    override suspend fun createChat(otherUserIds: List<String>): Result<Chat, DataError.Remote> {
+        return createChatResult
+    }
+
+    override suspend fun leaveChat(chatId: String): EmptyResult<DataError.Remote> {
+        return chatList.find { it.id == chatId }?.let {
+            chatList.remove(it)
+            Result.Success(Unit)
+        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

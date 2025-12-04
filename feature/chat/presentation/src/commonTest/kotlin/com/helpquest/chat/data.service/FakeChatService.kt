@@ -8,7 +8,9 @@ import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.service.ChatService
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -54,7 +56,7 @@ class FakeChatService : ChatService {
         lastMessage = null
     )
 
-    val chatList = listOf(chat, chat2)
+    val chatList = mutableListOf(chat, chat2)
 
     var createChatResult: Result<Chat, DataError.Remote> =
         Result.Success(chat)
@@ -74,5 +76,12 @@ class FakeChatService : ChatService {
         return chatList.find { it.id == chatId }?.let {
             Result.Success(it)
         } ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
+
+    override suspend fun leaveChat(chatId: String): EmptyResult<DataError.Remote> {
+        return chatList.find { it.id == chatId }?.let {
+            chatList.remove(it)
+            Result.Success(Unit)
+        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

@@ -8,7 +8,9 @@ import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import kotlin.String
 import kotlin.random.Random
 import kotlin.time.Clock
@@ -97,7 +99,7 @@ class MockChatService() : ChatService {
         lastActivityAt = Clock.System.now(),
         lastMessage = null
     )
-    val chatList = listOf(
+    val chatList = mutableListOf(
         chat1,
         chat2
     )
@@ -133,5 +135,12 @@ class MockChatService() : ChatService {
         return chatList.find { it.id == chatId }?.let {
             Result.Success(it)
         } ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
+
+    override suspend fun leaveChat(chatId: String): EmptyResult<DataError.Remote> {
+        return chatList.find { it.id == chatId }?.let {
+            chatList.remove(it)
+            Result.Success(Unit)
+        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }
