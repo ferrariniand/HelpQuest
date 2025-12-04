@@ -1,5 +1,6 @@
 package com.helpquest.quests.domain.service
 
+import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -16,5 +17,14 @@ interface QuestRepository {
     suspend fun fetchQuestBoard(): Result<List<Quest>, DataError.Remote>
 
     suspend fun fetchQuestById(questId: String): EmptyResult<DataError.Remote>
+
+    suspend fun createQuest(
+        questTitle: String,
+        questDescription: String,
+        questCategory: Category,
+        questCreatorId: String,
+    ): Result<Quest, DataError.Remote>
+
+    suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote>
 
 }

@@ -5,7 +5,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.helpquest.quest.database.entities.QuestEntity
-import com.helpquest.quest.database.entities.QuestInfoEntity
 import com.helpquest.quest.database.entities.QuestWithParticipants
 import kotlinx.coroutines.flow.Flow
 
@@ -27,17 +26,6 @@ interface QuestBoardDao {
 
     @Query("SELECT * FROM questentity ORDER BY createdTimestamp DESC")
     fun getQuestsWithParticipants(): Flow<List<QuestWithParticipants>>
-
-    @Query(
-        """
-        SELECT q.*
-        FROM questentity q
-        JOIN questparticipantcrossref qpcr ON q.questId = qpcr.questId
-        WHERE q.questId = :questId AND qpcr.isActive = 1
-    """
-    )
-    @Transaction
-    fun getQuestInfoById(questId: String): Flow<QuestInfoEntity?>
 
     @Query("DELETE FROM questentity WHERE questId = :questId")
     suspend fun deleteQuestById(questId: String)

@@ -6,7 +6,9 @@ package quest.data.service
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -66,7 +68,7 @@ class FakeQuestService : QuestService {
         lastActivity = null
     )
 
-    val questList = listOf(quest, quest2)
+    val questList = mutableListOf(quest, quest2)
 
 
     var createQuestResult: Result<Quest, DataError.Remote> =
@@ -99,5 +101,12 @@ class FakeQuestService : QuestService {
         return questList.find { it.questId == questId }?.let {
             Result.Success(it)
         } ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
+
+    override suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote> {
+        return questList.find { it.questId == questId }?.let {
+            questList.remove(it)
+            Result.Success(Unit)
+        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

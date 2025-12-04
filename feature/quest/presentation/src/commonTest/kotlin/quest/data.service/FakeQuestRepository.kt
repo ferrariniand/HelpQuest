@@ -92,8 +92,8 @@ class FakeQuestRepository : QuestRepository {
     )
 
 
-    var questList = listOf(quest, quest2)
-    var questInfoList = listOf(questInfo, questInfo2)
+    var questList = mutableListOf(quest, quest2)
+    var questInfoList = mutableListOf(questInfo, questInfo2)
 
     var fetchQuestLogResult: Result<List<Quest>, DataError.Remote> =
         Result.Success(questList)
@@ -103,6 +103,9 @@ class FakeQuestRepository : QuestRepository {
 
     var fetchQuestByIdResult: EmptyResult<DataError.Remote> =
         Result.Success(quest).asEmptyResult()
+
+    var createQuestResult: Result<Quest, DataError.Remote> =
+        Result.Success(quest)
 
     override fun getQuestLog(): Flow<List<Quest>> {
         return flowOf(questList)
@@ -127,5 +130,21 @@ class FakeQuestRepository : QuestRepository {
 
     override suspend fun fetchQuestById(questId: String): EmptyResult<DataError.Remote> {
         return fetchQuestByIdResult
+    }
+
+    override suspend fun createQuest(
+        questTitle: String,
+        questDescription: String,
+        questCategory: Category,
+        questCreatorId: String
+    ): Result<Quest, DataError.Remote> {
+        return createQuestResult
+    }
+
+    override suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote> {
+        return questList.find { it.questId == questId }?.let {
+            questList.remove(it)
+            Result.Success(Unit)
+        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

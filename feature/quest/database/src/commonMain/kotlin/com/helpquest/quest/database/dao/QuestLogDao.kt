@@ -29,18 +29,6 @@ interface QuestLogDao {
     @Transaction
     fun getQuestsWithParticipants(): Flow<List<QuestWithParticipants>>
 
-    @Query(
-        """
-        SELECT DISTINCT q.*
-        FROM questentity q
-        JOIN questparticipantcrossref qpcr ON q.questId = qpcr.questId
-        WHERE qpcr.isActive = 1
-        ORDER BY createdTimestamp ASC
-    """
-    )
-    @Transaction
-    fun getQuestsWithActiveParticipants(): Flow<List<QuestWithParticipants>>
-
     @Query("SELECT questId FROM questentity")
     suspend fun getAllQuestIds(): List<String>
 
@@ -72,12 +60,7 @@ interface QuestLogDao {
     fun getActiveParticipantsByQuestId(questId: String): Flow<List<QuestParticipantEntity>>
 
     @Query(
-        """
-        SELECT q.*
-        FROM questentity q
-        JOIN questparticipantcrossref qpcr ON q.questId = qpcr.questId
-        WHERE q.questId = :questId AND qpcr.isActive = 1
-    """
+        "SELECT * FROM questentity WHERE questId = :questId"
     )
     @Transaction
     fun getQuestInfoById(questId: String): Flow<QuestInfoEntity?>

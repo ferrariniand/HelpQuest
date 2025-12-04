@@ -2,6 +2,7 @@ package com.helpquest.quests.domain.service
 
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.quests.domain.models.Quest
 
@@ -18,5 +19,7 @@ interface QuestService {
     suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote>
 
     suspend fun getQuestById(questId: String): Result<Quest, DataError.Remote>
+    suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote>
+
 
 }

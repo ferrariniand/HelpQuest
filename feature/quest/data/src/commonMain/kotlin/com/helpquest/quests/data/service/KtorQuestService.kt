@@ -1,11 +1,14 @@
 package com.helpquest.quests.data.service
 
 
+import com.helpquest.core.data.networking.delete
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.data.networking.post
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.map
 import com.helpquest.quests.data.dto.QuestDto
 import com.helpquest.quests.data.dto.requests.CreateQuestRequest
@@ -55,5 +58,11 @@ class KtorQuestService(
         return httpClient.get<QuestDto>(
             route = "/quest/$questId"
         ).map { it.toQuest() }
+    }
+
+    override suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote> {
+        return httpClient.delete<Unit>(
+            route = "/quest/$questId/leave"
+        ).asEmptyResult()
     }
 }
