@@ -28,6 +28,9 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(compose.uiTest)
+
+                // Core Test Module
+                implementation(projects.core.test)
             }
         }
 

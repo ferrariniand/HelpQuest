@@ -7,6 +7,7 @@ import com.helpquest.core.data.di.coreDataModule
 import com.helpquest.core.presentation.di.corePresentationModule
 import com.helpquest.home.presentation.di.homepagePresentationModule
 import com.helpquest.quests.data.di.questDataModule
+import com.helpquest.quests.presentation.di.questPresentationModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -22,6 +23,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             chatDataModule,
             homepagePresentationModule,
             questDataModule,
+            questPresentationModule
         )
     }
 }

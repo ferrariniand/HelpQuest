@@ -8,6 +8,7 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
+import com.helpquest.core.domain.util.onSuccess
 import com.helpquest.quests.domain.models.ActivityWithActor
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestActivity
@@ -107,6 +108,9 @@ class FakeQuestRepository : QuestRepository {
     var createQuestResult: Result<Quest, DataError.Remote> =
         Result.Success(quest)
 
+    var leaveQuestResult: EmptyResult<DataError.Remote> =
+        Result.Success(quest).asEmptyResult()
+
     override fun getQuestLog(): Flow<List<Quest>> {
         return flowOf(questList)
     }
@@ -142,9 +146,12 @@ class FakeQuestRepository : QuestRepository {
     }
 
     override suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote> {
-        return questList.find { it.questId == questId }?.let {
-            questList.remove(it)
-            Result.Success(Unit)
-        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
+        return leaveQuestResult
+            .onSuccess {
+                questList.find { it.questId == questId }?.let {
+                    questList.remove(it)
+                    Result.Success(Unit)
+                }?.asEmptyResult()
+            }
     }
 }
