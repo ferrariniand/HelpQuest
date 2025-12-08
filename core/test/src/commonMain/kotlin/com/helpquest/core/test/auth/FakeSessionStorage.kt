@@ -20,7 +20,7 @@ class FakeSessionStorage : SessionStorage {
         )
     )
 
-    val resultAuthInfoFlow = MutableStateFlow<AuthInfo?>(fakeAuthInfo)
+    var resultAuthInfoFlow = MutableStateFlow<AuthInfo?>(fakeAuthInfo)
 
 
     override fun observeAuthInfo(): Flow<AuthInfo?> {

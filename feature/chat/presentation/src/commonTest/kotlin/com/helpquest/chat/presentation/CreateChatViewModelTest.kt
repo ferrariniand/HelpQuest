@@ -12,9 +12,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.helpquest.chat.data.service.FakeChatParticipantService
-import com.helpquest.chat.data.service.FakeChatService
+import com.helpquest.chat.data.service.FakeChatRepository
 import com.helpquest.chat.domain.service.ChatParticipantService
-import com.helpquest.chat.domain.service.ChatService
+import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.presentation.create_chat.CreateChatAction
 import com.helpquest.chat.presentation.create_chat.CreateChatEvent
 import com.helpquest.chat.presentation.create_chat.CreateChatState
@@ -47,11 +47,11 @@ import kotlin.test.Test
 class CreateChatViewModelTest : KoinTest {
 
     private val fakeChatParticipantService by inject<FakeChatParticipantService>()
-    private val fakeChatService by inject<FakeChatService>()
+    private val fakeChatRepository by inject<FakeChatRepository>()
 
     val overrideChatDataModule = module {
         singleOf(::FakeChatParticipantService) bind ChatParticipantService::class
-        singleOf(::FakeChatService) bind ChatService::class
+        singleOf(::FakeChatRepository) bind ChatRepository::class
     }
 
     private lateinit var viewModel: CreateChatViewModel
@@ -83,7 +83,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateEmptyQuery
         )
         viewModel.state.test {
@@ -106,7 +106,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuery
         )
         viewModel.state.test {
@@ -141,7 +141,7 @@ class CreateChatViewModelTest : KoinTest {
             Result.Failure(DataError.Remote.NOT_FOUND)
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateNotFoundQuery
         )
         viewModel.state.test {
@@ -170,7 +170,7 @@ class CreateChatViewModelTest : KoinTest {
             Result.Failure(DataError.Remote.UNKNOWN)
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuery
         )
         viewModel.state.test {
@@ -201,7 +201,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -234,7 +234,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -272,7 +272,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -318,7 +318,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -347,7 +347,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -367,7 +367,7 @@ class CreateChatViewModelTest : KoinTest {
 
     @Test
     fun `OnCreateChatClick action with success response`() = runBlocking {
-        val participant = fakeChatService.participant.toParticipantUi()
+        val participant = fakeChatRepository.participant.toParticipantUi()
         val stateValidQuerySearched = CreateChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -380,7 +380,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
@@ -397,7 +397,11 @@ class CreateChatViewModelTest : KoinTest {
                 assertThat(successState.createChatError).isNull()
                 assertThat(successState.selectedChatParticipants).isEmpty()
                 assertThat(successState.queryTextState.text).isEqualTo("")
-                assertThat(collectedEvent).isEqualTo(CreateChatEvent.OnChatCreated(fakeChatService.chat))
+                assertThat(collectedEvent).isEqualTo(
+                    CreateChatEvent.OnChatCreated(
+                        fakeChatRepository.chat
+                    )
+                )
                 cancelAndConsumeRemainingEvents()
             }
             cancelAndConsumeRemainingEvents()
@@ -406,7 +410,7 @@ class CreateChatViewModelTest : KoinTest {
 
     @Test
     fun `OnCreateChatClick action with error response`() = runBlocking {
-        val participant = fakeChatService.participant.toParticipantUi()
+        val participant = fakeChatRepository.participant.toParticipantUi()
         val stateValidQuerySearched = CreateChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -419,11 +423,11 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel = CreateChatViewModel(
             fakeChatParticipantService,
-            fakeChatService,
+            fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            fakeChatService.createChatResult = Result.Failure(DataError.Remote.UNKNOWN)
+            fakeChatRepository.createChatResult = Result.Failure(DataError.Remote.UNKNOWN)
             viewModel.onAction(CreateChatAction.OnCreateChatClick)
             val resultState = viewModel.state.first()
 

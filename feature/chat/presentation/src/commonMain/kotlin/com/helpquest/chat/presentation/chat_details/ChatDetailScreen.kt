@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalUuidApi::class, ExperimentalTime::class)
 
 package com.helpquest.chat.presentation.chat_details
 
@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -30,7 +32,7 @@ import com.helpquest.chat.presentation.chat_details.components.SendMessageBox
 import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.designsystem.components.containers_layouts.DynamicRoundedCornerColumn
-import com.helpquest.core.designsystem.components.containers_layouts.ScaffoldWithInsets
+import com.helpquest.core.designsystem.components.containers_layouts.SnackbarScaffold
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
@@ -42,6 +44,7 @@ import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -54,9 +57,16 @@ fun ChatDetailRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val snackbarState = remember { SnackbarHostState() }
+
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            else -> Unit
+            ChatDetailEvent.OnChatLeft -> onBack()
+            is ChatDetailEvent.OnError -> {
+                snackbarState.showSnackbar(
+                    event.error.asStringAsync()
+                )
+            }
         }
     }
     LaunchedEffect(chatId) {
@@ -73,6 +83,7 @@ fun ChatDetailRoot(
     ChatDetailScreen(
         state = state,
         showBackButton = showBackButton,
+        snackbarState = snackbarState,
         onAction = viewModel::onAction
     )
 }
@@ -81,12 +92,14 @@ fun ChatDetailRoot(
 fun ChatDetailScreen(
     state: ChatDetailState,
     showBackButton: Boolean,
+    snackbarState: SnackbarHostState,
     onAction: (ChatDetailAction) -> Unit,
 ) {
     val configuration = currentDeviceConfiguration()
     val messageListState = rememberLazyListState()
 
-    ScaffoldWithInsets(
+    SnackbarScaffold(
+        snackbarHostState = snackbarState,
         modifier = Modifier
             .fillMaxSize(),
         containerColor = if (!configuration.isWideScreen) {
@@ -216,6 +229,7 @@ private fun ChatDetailScreenEmptyLightPreview() {
         ChatDetailScreen(
             state = ChatDetailState(),
             showBackButton = true,
+            snackbarState = remember { SnackbarHostState() },
             onAction = {}
         )
     }
@@ -231,6 +245,7 @@ private fun ChatDetailScreenEmptyDarkPreview() {
         ChatDetailScreen(
             state = ChatDetailState(),
             showBackButton = true,
+            snackbarState = remember { SnackbarHostState() },
             onAction = {}
         )
     }
@@ -303,6 +318,7 @@ private fun ChatDetailScreenMessagesLightPreview() {
                 }
             ),
             showBackButton = true,
+            snackbarState = remember { SnackbarHostState() },
             onAction = {}
         )
     }
@@ -376,6 +392,7 @@ private fun ChatDetailScreenMessagesDarkPreview() {
                 }
             ),
             showBackButton = true,
+            snackbarState = remember { SnackbarHostState() },
             onAction = {}
         )
     }

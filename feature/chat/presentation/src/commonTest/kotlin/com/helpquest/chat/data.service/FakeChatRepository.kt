@@ -13,7 +13,9 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
+import com.helpquest.core.domain.util.onSuccess
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -83,6 +85,7 @@ class FakeChatRepository : ChatRepository {
     )
 
     var chatList = mutableListOf(chat, chat2)
+    val chatListFlow = MutableStateFlow(chatList)
     var chatInfoList = mutableListOf(chatInfo, chatInfo2)
 
     var fetchChatsResult: Result<List<Chat>, DataError.Remote> =
@@ -94,8 +97,11 @@ class FakeChatRepository : ChatRepository {
     var createChatResult: Result<Chat, DataError.Remote> =
         Result.Success(chat)
 
+    var leaveChatResult: EmptyResult<DataError.Remote> =
+        Result.Success(chat).asEmptyResult()
+
     override fun getChats(): Flow<List<Chat>> {
-        return flowOf(chatList)
+        return chatListFlow
     }
 
     override fun getChatInfoById(chatId: String): Flow<ChatInfo> {
@@ -116,9 +122,12 @@ class FakeChatRepository : ChatRepository {
     }
 
     override suspend fun leaveChat(chatId: String): EmptyResult<DataError.Remote> {
-        return chatList.find { it.id == chatId }?.let {
-            chatList.remove(it)
-            Result.Success(Unit)
-        }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
+        return leaveChatResult
+            .onSuccess {
+                chatList.find { it.id == chatId }?.let {
+                    chatList.remove(it)
+                    Result.Success(Unit)
+                }?.asEmptyResult()
+            }
     }
 }
