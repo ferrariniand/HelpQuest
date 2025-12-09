@@ -3,8 +3,8 @@ package com.helpquest.chat.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import com.helpquest.chat.presentation.create_chat.CreateChatScreen
-import com.helpquest.chat.presentation.create_chat.CreateChatState
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatScreen
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatState
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
@@ -59,8 +59,10 @@ val participantList = listOf(
 @PreviewScreenSizes
 private fun CreateChatScreenFailurePreview() {
     HelpQuestTheme {
-        CreateChatScreen(
-            state = CreateChatState(
+        ManageChatScreen(
+            headerText = "Create Chat",
+            primaryButtonText = "Create Chat",
+            state = ManageChatState(
                 selectedChatParticipants = participantList,
                 currentSearchResult = SearchResult.Success(
                     listOf(

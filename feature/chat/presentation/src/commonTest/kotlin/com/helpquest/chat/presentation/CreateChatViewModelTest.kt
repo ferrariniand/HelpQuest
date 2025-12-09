@@ -15,10 +15,10 @@ import com.helpquest.chat.data.service.FakeChatParticipantService
 import com.helpquest.chat.data.service.FakeChatRepository
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
-import com.helpquest.chat.presentation.create_chat.CreateChatAction
 import com.helpquest.chat.presentation.create_chat.CreateChatEvent
-import com.helpquest.chat.presentation.create_chat.CreateChatState
-import com.helpquest.chat.presentation.create_chat.CreateChatViewModel
+import com.helpquest.chat.presentation.create_manage_chat.CreateChatViewModel
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatAction
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatState
 import com.helpquest.chat.presentation.di.chatPresentationModule
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.domain.util.DataError
@@ -76,7 +76,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnDebounceSearchTextField with blank query`() = runBlocking {
         // When OnDebounceSearchTextField action is called with a blank or empty search query, verify the state is updated to clear the search result and disable adding participants.
-        val stateEmptyQuery = CreateChatState(
+        val stateEmptyQuery = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = ""
             ),
@@ -87,7 +87,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateEmptyQuery
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnDebounceSearchTextField)
+            viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -99,7 +99,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnDebounceSearchTextField triggers successful search`() = runBlocking {
         // When performSearch is called with a valid query and the service returns a success result, check that the state is updated with the found participant, isSearching is false, and canAddParticipant is true.
-        val stateValidQuery = CreateChatState(
+        val stateValidQuery = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -110,7 +110,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuery
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnDebounceSearchTextField)
+            viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
             assertThat(
@@ -132,7 +132,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnDebounceSearchTextField triggers search with  Not Found  error`() = runBlocking {
         // If the search service returns a DataError.Remote.NOT_FOUND error, ensure the state reflects that the participant was not found and searching has stopped.
-        val stateNotFoundQuery = CreateChatState(
+        val stateNotFoundQuery = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "not-found"
             ),
@@ -145,7 +145,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateNotFoundQuery
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnDebounceSearchTextField)
+            viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -161,7 +161,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnDebounceSearchTextField triggers search with a generic error`() = runBlocking {
         // If the search service returns any other error, verify the state is updated with the correct UI error message and isSearching is set to false.
-        val stateValidQuery = CreateChatState(
+        val stateValidQuery = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -174,7 +174,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuery
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnDebounceSearchTextField)
+            viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -189,7 +189,7 @@ class CreateChatViewModelTest : KoinTest {
     fun `OnAddClick with a valid search result`() = runBlocking {
         // When a participant is found and OnAddClick is triggered, verify the participant is added to selectedChatParticipants, the search query is cleared, and canAddParticipant is set to false.
         val participant = fakeChatParticipantService.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -205,7 +205,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnAddClick(participant))
+            viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -222,7 +222,7 @@ class CreateChatViewModelTest : KoinTest {
     fun `OnAddClick with a duplicate participant`() = runBlocking {
         // If OnAddClick is called for a participant that is already in the selectedChatParticipants list, verify that the participant is not added again.
         val participant = fakeChatParticipantService.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -238,7 +238,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnAddClick(participant))
+            viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEqualTo(mapOf(participant to true))
@@ -260,7 +260,7 @@ class CreateChatViewModelTest : KoinTest {
         // Trigger OnAddClick when currentSearchResult is null and verify that the selectedChatParticipants list remains unchanged.
         // If OnAddClick is called for a participant that is already in the selectedChatParticipants list, verify that the participant is not added again.
         val participant = fakeChatParticipantService.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -276,7 +276,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnAddClick(participant))
+            viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -297,7 +297,7 @@ class CreateChatViewModelTest : KoinTest {
     fun `OnDismissDialog action resets search state`() = runBlocking {
         // When OnDismissDialog action is called, verify that isSearching is set to false and any existing searchError is cleared from the state.
         val participant = fakeChatParticipantService.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -322,7 +322,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnDismissDialog)
+            viewModel.onAction(ManageChatAction.OnDismissDialog)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -337,7 +337,7 @@ class CreateChatViewModelTest : KoinTest {
 
     @Test
     fun `OnCreateChatClick action with empty selectedChatParticipants`() = runBlocking {
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -351,7 +351,7 @@ class CreateChatViewModelTest : KoinTest {
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            viewModel.onAction(CreateChatAction.OnCreateChatClick)
+            viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
@@ -368,7 +368,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnCreateChatClick action with success response`() = runBlocking {
         val participant = fakeChatRepository.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -385,7 +385,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel.state.test {
             viewModel.events.test {
-                viewModel.onAction(CreateChatAction.OnCreateChatClick)
+                viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
                 val successState = viewModel.state.first()
                 val collectedEvent = awaitItem()
 
@@ -411,7 +411,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnCreateChatClick action with error response`() = runBlocking {
         val participant = fakeChatRepository.participant.toParticipantUi()
-        val stateValidQuerySearched = CreateChatState(
+        val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
             ),
@@ -428,7 +428,7 @@ class CreateChatViewModelTest : KoinTest {
         )
         viewModel.state.test {
             fakeChatRepository.createChatResult = Result.Failure(DataError.Remote.UNKNOWN)
-            viewModel.onAction(CreateChatAction.OnCreateChatClick)
+            viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.isCreatingChat).isFalse()

@@ -68,7 +68,7 @@ class ChatListDetailViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnCreateChatClick updates dialog state`() = runBlocking {
-        // Verify that `OnCreateChatClick` action updates the `dialogState` in the state flow to `DialogState.CreateChat`.
+        // Verify that `OnManageChatClick` action updates the `dialogState` in the state flow to `DialogState.CreateChat`.
         viewModel = ChatListDetailViewModel()
         viewModel.state.test {
             val initState = awaitItem()
@@ -100,15 +100,40 @@ class ChatListDetailViewModelTest : KoinTest {
 
                 assertThat(resultStateAfterCreate.selectedChatId).isNull()
                 assertThat(resultStateAfterCreate.dialogState).isEqualTo(DialogState.CreateChat)
-                viewModel.onAction(ChatListDetailAction.OnDismissCurrentDialog)
+                viewModel.onAction(ChatListDetailAction.OnDismissCurrentDialog(true))
                 val resultStateAfterDismiss = viewModel.state.first()
                 val collectedEvent = awaitItem()
 
 
                 assertThat(resultStateAfterDismiss.selectedChatId).isNull()
                 assertThat(resultStateAfterDismiss.dialogState).isEqualTo(DialogState.Hidden)
-                assertThat(collectedEvent).isEqualTo(ChatListDetailEvent.DialogDismissed)
+                assertThat(collectedEvent).isEqualTo(ChatListDetailEvent.CreateChatDialogDismissed)
             }
+            cancelAndConsumeRemainingEvents()
+
+        }
+    }
+
+    @Test
+    fun `onAction OnDismissCurrentDialog updates dialog state`() = runBlocking {
+        // Verify that `OnDismissCurrentDialog` action updates the `dialogState` in the state flow to `DialogState.Hidden`.
+        viewModel = ChatListDetailViewModel()
+        viewModel.state.test {
+            val initState = awaitItem()
+            assertThat(initState.selectedChatId).isNull()
+            assertThat(initState.dialogState).isEqualTo(DialogState.Hidden)
+
+            viewModel.onAction(ChatListDetailAction.OnCreateChatClick)
+            val resultStateAfterCreate = viewModel.state.first()
+
+            assertThat(resultStateAfterCreate.selectedChatId).isNull()
+            assertThat(resultStateAfterCreate.dialogState).isEqualTo(DialogState.CreateChat)
+            viewModel.onAction(ChatListDetailAction.OnDismissCurrentDialog(false))
+            val resultStateAfterDismiss = viewModel.state.first()
+
+
+            assertThat(resultStateAfterDismiss.selectedChatId).isNull()
+            assertThat(resultStateAfterDismiss.dialogState).isEqualTo(DialogState.Hidden)
             cancelAndConsumeRemainingEvents()
 
         }

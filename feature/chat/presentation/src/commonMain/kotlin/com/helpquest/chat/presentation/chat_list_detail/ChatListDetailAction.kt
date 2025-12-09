@@ -5,5 +5,5 @@ sealed interface ChatListDetailAction {
     data object OnProfileSettingsClick : ChatListDetailAction
     data object OnCreateChatClick : ChatListDetailAction
     data object OnManageChatClick : ChatListDetailAction
-    data object OnDismissCurrentDialog : ChatListDetailAction
+    data class OnDismissCurrentDialog(val isCreateChatDialog: Boolean) : ChatListDetailAction
 }

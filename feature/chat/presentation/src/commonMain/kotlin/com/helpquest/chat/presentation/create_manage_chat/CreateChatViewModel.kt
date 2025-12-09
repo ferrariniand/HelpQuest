@@ -1,12 +1,13 @@
 @file:OptIn(FlowPreview::class)
 
-package com.helpquest.chat.presentation.create_chat
+package com.helpquest.chat.presentation.create_manage_chat
 
 import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
+import com.helpquest.chat.presentation.create_chat.CreateChatEvent
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
@@ -30,8 +31,7 @@ import kotlinx.coroutines.launch
 class CreateChatViewModel(
     private val chatParticipantService: ChatParticipantService,
     private val repository: ChatRepository,
-    initialState: CreateChatState = CreateChatState()
-
+    initialState: ManageChatState = ManageChatState()
 ) : ViewModel() {
 
     private var hasLoadedInitialData = false
@@ -52,12 +52,12 @@ class CreateChatViewModel(
             initialValue = initialState
         )
 
-    fun onAction(action: CreateChatAction) {
+    fun onAction(action: ManageChatAction) {
         when (action) {
-            CreateChatAction.OnDebounceSearchTextField -> performSearch()
-            is CreateChatAction.OnAddClick -> addParticipant(action.participant)
-            CreateChatAction.OnCreateChatClick -> createChat()
-            CreateChatAction.OnDismissDialog -> {
+            ManageChatAction.OnDebounceSearchTextField -> performSearch()
+            is ManageChatAction.OnAddClick -> addParticipant(action.participant)
+            ManageChatAction.OnPrimaryActionClick -> createChat()
+            ManageChatAction.OnDismissDialog -> {
                 _state.value.queryTextState.clearText()
                 _state.update {
                     it.copy(

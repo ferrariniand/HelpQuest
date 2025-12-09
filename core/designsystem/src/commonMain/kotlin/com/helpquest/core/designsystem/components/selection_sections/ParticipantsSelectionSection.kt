@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
+import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
@@ -29,6 +30,7 @@ import com.helpquest.core.presentation.util.isKeyboardVisible
 
 @Composable
 fun ColumnScope.ParticipantsSelectionSection(
+    existingParticipants: List<ParticipantUi>,
     selectedParticipants: List<ParticipantUi>,
     modifier: Modifier = Modifier,
 ) {
@@ -61,6 +63,23 @@ fun ColumnScope.ParticipantsSelectionSection(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
+            items(
+                items = existingParticipants,
+                key = { "existing_${it.id}" }
+            ) { participant ->
+                ParticipantListItem(
+                    participantUi = participant,
+                    isSmallScreenHeight = isSmallScreenHeight,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+
+            if (existingParticipants.isNotEmpty() && selectedParticipants.isNotEmpty()) {
+                item {
+                    HelpQuestHorizontalDivider()
+                }
+            }
 
             if (selectedParticipants.isNotEmpty() && !shouldHideSelectedParticipants) {
                 items(

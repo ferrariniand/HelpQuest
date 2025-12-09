@@ -1,4 +1,4 @@
-package com.helpquest.chat.presentation.create_chat
+package com.helpquest.chat.presentation.create_manage_chat
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -18,69 +18,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.helpquest.chat.domain.models.Chat
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.dialogs.DialogSheetButtonSection
 import com.helpquest.core.designsystem.components.dialogs.DialogSheetHeaderRow
-import com.helpquest.core.designsystem.components.dialogs.HelpQuestAdaptiveDialogSheetLayout
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.components.selection_sections.MultipleSearchSection
 import com.helpquest.core.designsystem.components.selection_sections.ParticipantsSelectionSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
-import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardVisible
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.add
 import helpquest.feature.chat.presentation.generated.resources.cancel
-import helpquest.feature.chat.presentation.generated.resources.create_chat
 import helpquest.feature.chat.presentation.generated.resources.email_or_username
 import helpquest.feature.chat.presentation.generated.resources.error_participant_not_found
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
-
 
 @Composable
-fun CreateChatRoot(
-    onDismiss: () -> Unit,
-    onChatCreated: (Chat) -> Unit,
-    viewModel: CreateChatViewModel = koinViewModel()
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is CreateChatEvent.OnChatCreated -> onChatCreated(event.chat)
-        }
-    }
-
-    HelpQuestAdaptiveDialogSheetLayout(
-        onDismiss = onDismiss
-    ) {
-        CreateChatScreen(
-            state = state,
-            onAction = { action ->
-                when (action) {
-                    CreateChatAction.OnDismissDialog -> onDismiss()
-                    else -> Unit
-                }
-                viewModel.onAction(action)
-            }
-        )
-    }
-}
-
-@Composable
-fun CreateChatScreen(
-    state: CreateChatState,
-    onAction: (CreateChatAction) -> Unit,
+fun ManageChatScreen(
+    headerText: String,
+    primaryButtonText: String,
+    state: ManageChatState,
+    onAction: (ManageChatAction) -> Unit,
 ) {
     val configuration = currentDeviceConfiguration()
     val isKeyboardVisible by isKeyboardVisible()
@@ -101,9 +66,9 @@ fun CreateChatScreen(
         ) {
             Column {
                 DialogSheetHeaderRow(
-                    title = stringResource(Res.string.create_chat),
+                    title = headerText,
                     onCloseClick = {
-                        onAction(CreateChatAction.OnDismissDialog)
+                        onAction(ManageChatAction.OnDismissDialog)
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -116,11 +81,11 @@ fun CreateChatScreen(
             keyboardType = KeyboardType.Email,
             onFocusChanged = {},
             onDebouncedValueChange = {
-                onAction(CreateChatAction.OnDebounceSearchTextField)
+                onAction(ManageChatAction.OnDebounceSearchTextField)
             },
             actionText = stringResource(Res.string.add),
             onActionClick = { participant ->
-                onAction(CreateChatAction.OnAddClick(participant))
+                onAction(ManageChatAction.OnAddClick(participant))
             },
             isLoading = state.isSearching,
             error = state.searchError,
@@ -162,10 +127,16 @@ fun CreateChatScreen(
             modifier = Modifier
                 .fillMaxWidth(),
         )
-        if (state.selectedChatParticipants.isNotEmpty() && state.currentSearchResult != null) {
+        if (
+            (state.existingChatParticipants.isNotEmpty() && state.currentSearchResult != null)
+            ||
+            (state.existingChatParticipants.isEmpty() && state.selectedChatParticipants.isNotEmpty() && state.currentSearchResult != null)
+        ) {
             HelpQuestHorizontalDivider()
         }
+
         ParticipantsSelectionSection(
+            existingParticipants = state.existingChatParticipants,
             selectedParticipants = state.selectedChatParticipants,
             modifier = Modifier
                 .fillMaxWidth()
@@ -178,9 +149,9 @@ fun CreateChatScreen(
                 DialogSheetButtonSection(
                     primaryButton = {
                         HelpQuestButton(
-                            text = stringResource(Res.string.create_chat),
+                            text = primaryButtonText,
                             onClick = {
-                                onAction(CreateChatAction.OnCreateChatClick)
+                                onAction(ManageChatAction.OnPrimaryActionClick)
                             },
                             enabled = state.selectedChatParticipants.isNotEmpty(),
                             isLoading = state.isCreatingChat
@@ -190,7 +161,7 @@ fun CreateChatScreen(
                         HelpQuestButton(
                             text = stringResource(Res.string.cancel),
                             onClick = {
-                                onAction(CreateChatAction.OnDismissDialog)
+                                onAction(ManageChatAction.OnDismissDialog)
                             },
                             style = HelpQuestButtonStyle.SECONDARY
                         )
@@ -209,8 +180,10 @@ fun CreateChatScreen(
 )
 private fun CreateChatScreenLightPreview() {
     HelpQuestTheme {
-        CreateChatScreen(
-            state = CreateChatState(),
+        ManageChatScreen(
+            headerText = "Create Chat",
+            primaryButtonText = "Create Chat",
+            state = ManageChatState(),
             onAction = {}
         )
     }
@@ -223,8 +196,10 @@ private fun CreateChatScreenLightPreview() {
 )
 private fun CreateChatScreenDarkPreview() {
     HelpQuestTheme(darkTheme = true) {
-        CreateChatScreen(
-            state = CreateChatState(),
+        ManageChatScreen(
+            headerText = "Create Chat",
+            primaryButtonText = "Create Chat",
+            state = ManageChatState(),
             onAction = {}
         )
     }

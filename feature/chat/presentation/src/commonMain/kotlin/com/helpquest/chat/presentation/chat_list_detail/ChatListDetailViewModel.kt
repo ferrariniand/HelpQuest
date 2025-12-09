@@ -48,13 +48,15 @@ class ChatListDetailViewModel : ViewModel() {
                 }
             }
 
-            ChatListDetailAction.OnDismissCurrentDialog -> {
+            is ChatListDetailAction.OnDismissCurrentDialog -> {
                 _state.update {
                     it.copy(
                         dialogState = DialogState.Hidden
                     )
                 }
-                eventChannel.trySend(ChatListDetailEvent.DialogDismissed)
+                if (action.isCreateChatDialog) {
+                    eventChannel.trySend(ChatListDetailEvent.CreateChatDialogDismissed)
+                }
             }
 
             ChatListDetailAction.OnManageChatClick -> {
