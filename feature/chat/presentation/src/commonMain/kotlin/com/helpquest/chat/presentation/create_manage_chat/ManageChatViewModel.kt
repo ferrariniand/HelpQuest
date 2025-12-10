@@ -1,4 +1,4 @@
-@file:OptIn(FlowPreview::class)
+@file:OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 
 package com.helpquest.chat.presentation.create_manage_chat
 
@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
-import com.helpquest.chat.presentation.create_chat.CreateChatEvent
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
@@ -18,28 +17,50 @@ import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.toUiText
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.error_participant_already_added
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreateChatViewModel(
+class ManageChatViewModel(
     private val chatParticipantService: ChatParticipantService,
     private val repository: ChatRepository,
     initialState: ManageChatState = ManageChatState()
 ) : ViewModel() {
 
+    private val _chatId = MutableStateFlow<String?>(null)
+
     private var hasLoadedInitialData = false
 
-    private val eventChannel = Channel<CreateChatEvent>()
+    private val eventChannel = Channel<ManageChatEvent>()
     val events = eventChannel.receiveAsFlow()
+
+    private val activeParticipantsFlow = _chatId
+        .flatMapLatest { chatId ->
+            if (chatId != null) {
+                repository
+                    .getActiveParticipantsByChatId(chatId)
+            } else emptyFlow()
+        }
+
     private val _state = MutableStateFlow(initialState)
-    val state = _state
+    val state = combine(
+        _state,
+        activeParticipantsFlow,
+    ) { currentState, participants ->
+        currentState.copy(
+            existingChatParticipants = participants.map { it.toParticipantUi() },
+        )
+    }
         .onStart {
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
@@ -49,14 +70,19 @@ class CreateChatViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = initialState
+            initialValue = ManageChatState()
         )
+
 
     fun onAction(action: ManageChatAction) {
         when (action) {
             ManageChatAction.OnDebounceSearchTextField -> performSearch()
             is ManageChatAction.OnAddClick -> addParticipant(action.participant)
-            ManageChatAction.OnPrimaryActionClick -> createChat()
+            ManageChatAction.OnPrimaryActionClick -> addParticipantsToChat()
+            is ManageChatAction.OnSelectChat -> {
+                _chatId.update { action.chatId }
+            }
+
             ManageChatAction.OnDismissDialog -> {
                 _state.value.queryTextState.clearText()
                 _state.update {
@@ -68,7 +94,6 @@ class CreateChatViewModel(
                     )
                 }
             }
-            else -> Unit
         }
     }
 
@@ -165,10 +190,16 @@ class CreateChatViewModel(
             return
         }
 
-        val isAlreadyPartOfChat = state.value.selectedChatParticipants.any {
+        val isAlreadyInChat = state.value.existingChatParticipants.any {
             it.id == participant.id
         }
-        if (isAlreadyPartOfChat) {
+        val isAlreadySelected = state.value.selectedChatParticipants.any {
+            it.id == participant.id
+        }
+        val updatedParticipants = if (isAlreadyInChat || isAlreadySelected) {
+            state.value.selectedChatParticipants
+        } else state.value.selectedChatParticipants + participant
+        if (isAlreadyInChat || isAlreadySelected) {
             _state.update {
                 it.copy(
                     searchError = UiText.Resource(Res.string.error_participant_already_added),
@@ -176,7 +207,7 @@ class CreateChatViewModel(
             }
         } else {
             val searchedParticipants = state.value.currentSearchResult?.getSearchResultOrNull()
-            val selectedParticipants = state.value.selectedChatParticipants + participant
+            val selectedParticipants = updatedParticipants
             val participantAvailabilityMap =
                 updateParticipantAvailability(searchedParticipants, selectedParticipants)
 
@@ -203,12 +234,14 @@ class CreateChatViewModel(
         }
     }
 
-    private fun createChat() {
+    private fun addParticipantsToChat() {
+        val chatId = _chatId.value ?: return
         val selectedParticipants = state.value.selectedChatParticipants
         if (selectedParticipants.isEmpty()) {
             return
         }
         val selectedUserIds = selectedParticipants.map { it.id }
+
 
         val previousCanAddParticipant = state.value.canAddParticipant
 
@@ -222,7 +255,7 @@ class CreateChatViewModel(
             }
 
             repository
-                .createChat(selectedUserIds)
+                .addParticipantsToChat(chatId, selectedUserIds)
                 .onSuccess { chat ->
                     _state.update {
                         it.copy(
@@ -235,7 +268,7 @@ class CreateChatViewModel(
                     }
                     _state.value.queryTextState.clearText()
 
-                    eventChannel.send(CreateChatEvent.OnChatCreated(chat))
+                    eventChannel.send(ManageChatEvent.OnMembersAdded)
                 }
                 .onFailure { error ->
                     _state.update {
@@ -248,5 +281,4 @@ class CreateChatViewModel(
                 }
         }
     }
-
 }

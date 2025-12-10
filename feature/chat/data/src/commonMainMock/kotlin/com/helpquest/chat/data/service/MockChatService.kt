@@ -143,4 +143,28 @@ class MockChatService() : ChatService {
             Result.Success(Unit)
         }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
+
+    override suspend fun addParticipantsToChat(
+        chatId: String,
+        userIds: List<String>
+    ): Result<Chat, DataError.Remote> {
+        val newParticipants = mutableListOf<Participant>()
+        userIds.forEach { currentUserId ->
+            allPossibleParticipants.find { it.userId == currentUserId }?.let { foundParticipant ->
+                newParticipants.add(foundParticipant)
+            }
+        }
+
+        return chatList.find { it.id == chatId }?.let { chat ->
+            val totalParticipants = chat.participants + newParticipants
+            Result.Success(
+                Chat(
+                    id = chatId,
+                    participants = totalParticipants,
+                    lastActivityAt = chat.lastActivityAt,
+                    lastMessage = chat.lastMessage
+                )
+            )
+        } ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
 }

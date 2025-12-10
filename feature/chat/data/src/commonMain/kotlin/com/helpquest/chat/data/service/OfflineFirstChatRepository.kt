@@ -5,6 +5,7 @@ import com.helpquest.chat.data.mappers.toChatEntity
 import com.helpquest.chat.data.mappers.toChatInfo
 import com.helpquest.chat.data.mappers.toChatParticipantEntity
 import com.helpquest.chat.data.mappers.toLastMessageView
+import com.helpquest.chat.data.mappers.toParticipant
 import com.helpquest.chat.database.ChatDatabase
 import com.helpquest.chat.database.entities.ChatInfoEntity
 import com.helpquest.chat.database.entities.ChatParticipantEntity
@@ -13,6 +14,7 @@ import com.helpquest.chat.domain.models.Chat
 import com.helpquest.chat.domain.models.ChatInfo
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.domain.service.ChatService
+import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -63,6 +65,13 @@ class OfflineFirstChatRepository(
                 )
             }
             .map { it.toChatInfo() }
+    }
+
+    override fun getActiveParticipantsByChatId(chatId: String): Flow<List<Participant>> {
+        return db.chatDao.getActiveParticipantsByChatId(chatId)
+            .map { participants ->
+                participants.map { it.toParticipant() }
+            }
     }
 
     override suspend fun fetchChats(): Result<List<Chat>, DataError.Remote> {
@@ -119,6 +128,22 @@ class OfflineFirstChatRepository(
             .leaveChat(chatId)
             .onSuccess {
                 db.chatDao.deleteChatById(chatId)
+            }
+    }
+
+    override suspend fun addParticipantsToChat(
+        chatId: String,
+        userIds: List<String>
+    ): Result<Chat, DataError.Remote> {
+        return chatService
+            .addParticipantsToChat(chatId, userIds)
+            .onSuccess { chat ->
+                db.chatDao.upsertChatWithParticipantsAndCrossRefs(
+                    chat = chat.toChatEntity(),
+                    participants = chat.participants.map { it.toChatParticipantEntity() },
+                    participantDao = db.chatParticipantDao,
+                    crossRefDao = db.chatParticipantsCrossRefDao
+                )
             }
     }
 

@@ -95,6 +95,7 @@ fun ManageChatScreen(
             },
             actionEnabledCondition = { participant ->
                 state.selectedChatParticipants.contains(participant).not()
+                        && state.existingChatParticipants.contains(participant).not()
             },
             resultItemContent = { participant ->
                 HelpQuestAvatar(
@@ -127,13 +128,6 @@ fun ManageChatScreen(
             modifier = Modifier
                 .fillMaxWidth(),
         )
-        if (
-            (state.existingChatParticipants.isNotEmpty() && state.currentSearchResult != null)
-            ||
-            (state.existingChatParticipants.isEmpty() && state.selectedChatParticipants.isNotEmpty() && state.currentSearchResult != null)
-        ) {
-            HelpQuestHorizontalDivider()
-        }
 
         ParticipantsSelectionSection(
             existingParticipants = state.existingChatParticipants,
@@ -154,7 +148,7 @@ fun ManageChatScreen(
                                 onAction(ManageChatAction.OnPrimaryActionClick)
                             },
                             enabled = state.selectedChatParticipants.isNotEmpty(),
-                            isLoading = state.isCreatingChat
+                            isLoading = state.isSubmitting
                         )
                     },
                     secondaryButton = {
@@ -166,7 +160,7 @@ fun ManageChatScreen(
                             style = HelpQuestButtonStyle.SECONDARY
                         )
                     },
-                    error = state.createChatError?.asString(),
+                    error = state.submitError?.asString(),
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

@@ -21,11 +21,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
-import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
+import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDividerWithTitle
 import com.helpquest.core.designsystem.components.result_layouts.Loader
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import helpquest.core.designsystem.generated.resources.Res
+import helpquest.core.designsystem.generated.resources.search_results
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun <T> MultipleSearchSection(
@@ -85,7 +88,11 @@ fun <T> MultipleSearchSection(
                     )
             )
         }
-        HelpQuestHorizontalDivider()
+        if (searchResult != null) {
+            HelpQuestHorizontalDividerWithTitle(
+                title = stringResource(Res.string.search_results),
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(

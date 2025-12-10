@@ -1,6 +1,7 @@
 package com.helpquest.chat.presentation.create_manage_chat
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.dialogs.HelpQuestAdaptiveDialogSheetLayout
@@ -13,6 +14,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ManageChatRoot(
+    chatId: String?,
     onDismiss: () -> Unit,
     onMembersAdded: () -> Unit,
     viewModel: ManageChatViewModel = koinViewModel()
@@ -23,6 +25,10 @@ fun ManageChatRoot(
         when (event) {
             is ManageChatEvent.OnMembersAdded -> onMembersAdded()
         }
+    }
+
+    LaunchedEffect(chatId) {
+        viewModel.onAction(ManageChatAction.OnSelectChat(chatId))
     }
 
     HelpQuestAdaptiveDialogSheetLayout(

@@ -7,4 +7,5 @@ sealed interface ManageChatAction {
     data class OnAddClick(val participant: ParticipantUi) : ManageChatAction
     data object OnDismissDialog : ManageChatAction
     data object OnPrimaryActionClick : ManageChatAction
+    data class OnSelectChat(val chatId: String?) : ManageChatAction
 }

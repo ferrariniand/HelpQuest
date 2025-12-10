@@ -20,13 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
-import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
+import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDividerWithTitle
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardVisible
+import helpquest.core.designsystem.generated.resources.Res
+import helpquest.core.designsystem.generated.resources.chat_members
+import helpquest.core.designsystem.generated.resources.new_participants
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ColumnScope.ParticipantsSelectionSection(
@@ -63,6 +67,14 @@ fun ColumnScope.ParticipantsSelectionSection(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
+            if (existingParticipants.isNotEmpty()) {
+                item {
+                    HelpQuestHorizontalDividerWithTitle(
+                        title = stringResource(Res.string.chat_members),
+                    )
+                }
+            }
+
             items(
                 items = existingParticipants,
                 key = { "existing_${it.id}" }
@@ -75,9 +87,11 @@ fun ColumnScope.ParticipantsSelectionSection(
                 )
             }
 
-            if (existingParticipants.isNotEmpty() && selectedParticipants.isNotEmpty()) {
+            if (selectedParticipants.isNotEmpty()) {
                 item {
-                    HelpQuestHorizontalDivider()
+                    HelpQuestHorizontalDividerWithTitle(
+                        title = stringResource(Res.string.new_participants),
+                    )
                 }
             }
 
