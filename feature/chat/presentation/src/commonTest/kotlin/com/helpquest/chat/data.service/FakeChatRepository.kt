@@ -37,6 +37,12 @@ class FakeChatRepository : ChatRepository {
         username = "secondo",
         profilePictureUrl = "test",
     )
+
+    val participant3 = Participant(
+        userId = "id3",
+        username = "terzo",
+        profilePictureUrl = "test",
+    )
     val chatId = Random.nextInt().toString()
     val messageId = Random.nextInt().toString()
 
@@ -87,6 +93,7 @@ class FakeChatRepository : ChatRepository {
     var chatList = mutableListOf(chat, chat2)
     val chatListFlow = MutableStateFlow(chatList)
     var chatInfoList = mutableListOf(chatInfo, chatInfo2)
+    var chatActiveParticipantList = mutableListOf(participant, participant2)
 
     var fetchChatsResult: Result<List<Chat>, DataError.Remote> =
         Result.Success(chatList)
@@ -96,6 +103,16 @@ class FakeChatRepository : ChatRepository {
 
     var createChatResult: Result<Chat, DataError.Remote> =
         Result.Success(chat)
+
+    var addParticipantsResult: Result<Chat, DataError.Remote> =
+        Result.Success(
+            Chat(
+                id = chat.id,
+                participants = chat.participants + participant3,
+                lastActivityAt = chat.lastActivityAt,
+                lastMessage = chat.lastMessage
+            )
+        )
 
     var leaveChatResult: EmptyResult<DataError.Remote> =
         Result.Success(chat).asEmptyResult()
@@ -107,6 +124,10 @@ class FakeChatRepository : ChatRepository {
     override fun getChatInfoById(chatId: String): Flow<ChatInfo> {
         return flowOf(chatInfoList).map { list -> list.find { it.chat.id == chatId } }
             .filterNotNull()
+    }
+
+    override fun getActiveParticipantsByChatId(chatId: String): Flow<List<Participant>> {
+        return flowOf(chatActiveParticipantList)
     }
 
     override suspend fun fetchChats(): Result<List<Chat>, DataError.Remote> {
@@ -129,5 +150,12 @@ class FakeChatRepository : ChatRepository {
                     Result.Success(Unit)
                 }?.asEmptyResult()
             }
+    }
+
+    override suspend fun addParticipantsToChat(
+        chatId: String,
+        userIds: List<String>
+    ): Result<Chat, DataError.Remote> {
+        return addParticipantsResult
     }
 }

@@ -23,8 +23,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -49,7 +49,7 @@ class ManageChatViewModel(
             if (chatId != null) {
                 repository
                     .getActiveParticipantsByChatId(chatId)
-            } else emptyFlow()
+            } else flowOf(emptyList())
         }
 
     private val _state = MutableStateFlow(initialState)
@@ -168,16 +168,21 @@ class ManageChatViewModel(
     private fun checkParticipantAvailability(
         participants: List<ParticipantUi>
     ): Map<ParticipantUi, Boolean> = participants.associateWith {
-        !state.value.selectedChatParticipants.contains(it)
+        !state.value.selectedChatParticipants.contains(it) && !state.value.existingChatParticipants.contains(
+            it
+        )
     }
 
     private fun updateParticipantAvailability(
         searchedParticipants: List<ParticipantUi>?,
+        existingParticipants: List<ParticipantUi>,
         selectedParticipants: List<ParticipantUi>
     ): Map<ParticipantUi, Boolean> {
         return searchedParticipants?.let {
             it.associateWith { participant ->
-                !selectedParticipants.contains(participant)
+                !selectedParticipants.contains(participant) && !existingParticipants.contains(
+                    participant
+                )
             }
         } ?: emptyMap()
     }
@@ -196,9 +201,6 @@ class ManageChatViewModel(
         val isAlreadySelected = state.value.selectedChatParticipants.any {
             it.id == participant.id
         }
-        val updatedParticipants = if (isAlreadyInChat || isAlreadySelected) {
-            state.value.selectedChatParticipants
-        } else state.value.selectedChatParticipants + participant
         if (isAlreadyInChat || isAlreadySelected) {
             _state.update {
                 it.copy(
@@ -207,9 +209,13 @@ class ManageChatViewModel(
             }
         } else {
             val searchedParticipants = state.value.currentSearchResult?.getSearchResultOrNull()
-            val selectedParticipants = updatedParticipants
+            val selectedParticipants = state.value.selectedChatParticipants + participant
             val participantAvailabilityMap =
-                updateParticipantAvailability(searchedParticipants, selectedParticipants)
+                updateParticipantAvailability(
+                    searchedParticipants,
+                    state.value.existingChatParticipants,
+                    selectedParticipants
+                )
 
 
             //if all the searched participants are already added (all the elements of the map are false)

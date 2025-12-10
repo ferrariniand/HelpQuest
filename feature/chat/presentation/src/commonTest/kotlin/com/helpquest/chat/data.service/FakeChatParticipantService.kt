@@ -14,8 +14,15 @@ class FakeChatParticipantService : ChatParticipantService {
 
         )
 
+    val participant3 = Participant(
+        userId = "id3",
+        username = "terzo",
+        profilePictureUrl = "test",
+
+        )
+
     var searchParticipantResult: Result<List<Participant>, DataError.Remote> =
-        Result.Success(listOf(participant))
+        Result.Success(listOf(participant3))
 
     override suspend fun searchParticipant(query: String): Result<List<Participant>, DataError.Remote> {
         return searchParticipantResult

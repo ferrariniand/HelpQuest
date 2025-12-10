@@ -6,7 +6,9 @@ import com.helpquest.chat.domain.models.Chat
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.service.ChatService
+import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.Participant
+import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -28,6 +30,54 @@ class FakeChatService : ChatService {
         userId = "id2",
         username = "secondo",
         profilePictureUrl = "test",
+    )
+
+    val participantFull = Participant(
+        userId = "id1",
+        username = "primo",
+        profilePictureUrl = "test",
+        showParticipantIdentity = true,
+        participantClass = Class.VILLAGER,
+    )
+
+    val participantNoClass = Participant(
+        userId = "id2",
+        username = "secondo",
+        profilePictureUrl = "test",
+        showParticipantIdentity = true,
+    )
+
+    val participantNoImage = Participant(
+        userId = "id3",
+        username = "terzo",
+        profilePictureUrl = null,
+        showParticipantIdentity = true,
+        participantClass = Class.TECH_WIZARD,
+        participantSubClass = SubClass.SOFTWARE_MAGE,
+    )
+
+    val participantDontShowID = Participant(
+        userId = "id4",
+        username = "quarto",
+        profilePictureUrl = "test",
+        showParticipantIdentity = false,
+        participantClass = Class.VILLAGER,
+    )
+
+    val participantNoImageDontShowID = Participant(
+        userId = "id5",
+        username = "quinto",
+        profilePictureUrl = null,
+        showParticipantIdentity = false,
+        participantClass = Class.VILLAGER,
+    )
+
+    val allPossibleParticipants = listOf(
+        participantFull,
+        participantNoClass,
+        participantNoImage,
+        participantDontShowID,
+        participantNoImageDontShowID
     )
     val chatId = Random.nextInt().toString()
     val messageId = Random.nextInt().toString()
@@ -83,5 +133,29 @@ class FakeChatService : ChatService {
             chatList.remove(it)
             Result.Success(Unit)
         }?.asEmptyResult() ?: Result.Failure(DataError.Remote.NOT_FOUND)
+    }
+
+    override suspend fun addParticipantsToChat(
+        chatId: String,
+        userIds: List<String>
+    ): Result<Chat, DataError.Remote> {
+        val newParticipants = mutableListOf<Participant>()
+        userIds.forEach { currentUserId ->
+            allPossibleParticipants.find { it.userId == currentUserId }?.let { foundParticipant ->
+                newParticipants.add(foundParticipant)
+            }
+        }
+
+        return chatList.find { it.id == chatId }?.let { chat ->
+            val totalParticipants = chat.participants + newParticipants
+            Result.Success(
+                Chat(
+                    id = chatId,
+                    participants = totalParticipants,
+                    lastActivityAt = chat.lastActivityAt,
+                    lastMessage = chat.lastMessage
+                )
+            )
+        } ?: Result.Failure(DataError.Remote.NOT_FOUND)
     }
 }

@@ -15,10 +15,10 @@ import com.helpquest.chat.data.service.FakeChatParticipantService
 import com.helpquest.chat.data.service.FakeChatRepository
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
-import com.helpquest.chat.presentation.create_chat.CreateChatEvent
-import com.helpquest.chat.presentation.create_manage_chat.CreateChatViewModel
 import com.helpquest.chat.presentation.create_manage_chat.ManageChatAction
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatEvent
 import com.helpquest.chat.presentation.create_manage_chat.ManageChatState
+import com.helpquest.chat.presentation.create_manage_chat.ManageChatViewModel
 import com.helpquest.chat.presentation.di.chatPresentationModule
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
 import com.helpquest.core.domain.util.DataError
@@ -44,7 +44,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 
-class CreateChatViewModelTest : KoinTest {
+class ManageChatViewModelTest : KoinTest {
 
     private val fakeChatParticipantService by inject<FakeChatParticipantService>()
     private val fakeChatRepository by inject<FakeChatRepository>()
@@ -54,7 +54,7 @@ class CreateChatViewModelTest : KoinTest {
         singleOf(::FakeChatRepository) bind ChatRepository::class
     }
 
-    private lateinit var viewModel: CreateChatViewModel
+    private lateinit var viewModel: ManageChatViewModel
 
     @BeforeTest
     fun setup() {
@@ -74,6 +74,87 @@ class CreateChatViewModelTest : KoinTest {
     }
 
     @Test
+    fun `OnSelectChat with valid value and null value`() = runBlocking {
+        // When OnSelectChat action is called with a valid value verify the existing chat participants are valid
+        // When OnSelectChat action is called with a null value, verify the existing chat participants are cleared.
+        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val stateValidExistingParticipants = ManageChatState(
+            queryTextState = TextFieldState(
+                initialText = "primo"
+            ),
+            currentSearchResult = SearchResult.Success(
+                listOf(participant)
+            ),
+            existingChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id2",
+                    username = "secondo",
+                    imageUrl = "test",
+                    initials = "SE",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
+            selectedChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id1",
+                    username = "primo",
+                    imageUrl = "test",
+                    initials = "PR",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
+            canAddParticipant = mapOf(participant to true)
+        )
+        viewModel = ManageChatViewModel(
+            fakeChatParticipantService,
+            fakeChatRepository,
+            initialState = stateValidExistingParticipants
+        )
+        viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
+
+            val beforeState = viewModel.state.first()
+
+            assertThat(beforeState.canAddParticipant.size).isEqualTo(1)
+            assertThat(beforeState.isSearching).isFalse()
+            assertThat(beforeState.isSubmitting).isFalse()
+            assertThat(beforeState.currentSearchResult).isEqualTo(
+                SearchResult.Success(
+                    listOf(fakeChatParticipantService.participant.toParticipantUi())
+                )
+            )
+            assertThat(beforeState.searchError).isNull()
+            assertThat(beforeState.submitError).isNull()
+            assertThat(beforeState.existingChatParticipants.size).isEqualTo(2)
+            assertThat(beforeState.selectedChatParticipants.size).isEqualTo(1)
+            assertThat(beforeState.queryTextState.text).isEqualTo("primo")
+
+            viewModel.onAction(ManageChatAction.OnSelectChat(null))
+
+            val resultState = viewModel.state.first()
+
+            assertThat(resultState.canAddParticipant.size).isEqualTo(1)
+            assertThat(resultState.isSearching).isFalse()
+            assertThat(resultState.isSubmitting).isFalse()
+            assertThat(resultState.currentSearchResult).isEqualTo(
+                SearchResult.Success(
+                    listOf(fakeChatParticipantService.participant.toParticipantUi())
+                )
+            )
+            assertThat(resultState.searchError).isNull()
+            assertThat(resultState.submitError).isNull()
+            assertThat(resultState.existingChatParticipants.size).isEqualTo(0)
+            assertThat(resultState.selectedChatParticipants.size).isEqualTo(1)
+            assertThat(resultState.queryTextState.text).isEqualTo("primo")
+
+            cancelAndConsumeRemainingEvents()
+
+        }
+    }
+
+    @Test
     fun `OnDebounceSearchTextField with blank query`() = runBlocking {
         // When OnDebounceSearchTextField action is called with a blank or empty search query, verify the state is updated to clear the search result and disable adding participants.
         val stateEmptyQuery = ManageChatState(
@@ -81,12 +162,13 @@ class CreateChatViewModelTest : KoinTest {
                 initialText = ""
             ),
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateEmptyQuery
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
@@ -104,12 +186,13 @@ class CreateChatViewModelTest : KoinTest {
                 initialText = "terzo"
             ),
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuery
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
@@ -139,12 +222,13 @@ class CreateChatViewModelTest : KoinTest {
         )
         fakeChatParticipantService.searchParticipantResult =
             Result.Failure(DataError.Remote.NOT_FOUND)
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateNotFoundQuery
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
@@ -168,12 +252,13 @@ class CreateChatViewModelTest : KoinTest {
         )
         fakeChatParticipantService.searchParticipantResult =
             Result.Failure(DataError.Remote.UNKNOWN)
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuery
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnDebounceSearchTextField)
             val resultState = viewModel.state.first()
 
@@ -188,23 +273,30 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnAddClick with a valid search result`() = runBlocking {
         // When a participant is found and OnAddClick is triggered, verify the participant is added to selectedChatParticipants, the search query is cleared, and canAddParticipant is set to false.
-        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val participant = ParticipantUi(
+            id = "id3",
+            username = "terzo",
+            initials = "TR",
+            imageUrl = "test"
+        )
         val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
-                initialText = "primo"
+                initialText = "terzo"
             ),
             currentSearchResult = SearchResult.Success(
                 listOf(participant)
             ),
+            existingChatParticipants = emptyList(),
             selectedChatParticipants = emptyList(),
             canAddParticipant = mapOf(participant to true)
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
@@ -232,12 +324,13 @@ class CreateChatViewModelTest : KoinTest {
             selectedChatParticipants = listOf(participant),
             canAddParticipant = mapOf(participant to true)
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
@@ -270,12 +363,13 @@ class CreateChatViewModelTest : KoinTest {
             selectedChatParticipants = emptyList(),
             canAddParticipant = emptyMap()
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnAddClick(participant))
             val resultState = viewModel.state.first()
 
@@ -304,6 +398,16 @@ class CreateChatViewModelTest : KoinTest {
             currentSearchResult = SearchResult.Success(
                 listOf(participant)
             ),
+            existingChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id2",
+                    username = "secondo",
+                    imageUrl = "test",
+                    initials = "SE",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
             selectedChatParticipants = listOf(
                 ParticipantUi(
                     id = "id1",
@@ -316,18 +420,20 @@ class CreateChatViewModelTest : KoinTest {
             ),
             canAddParticipant = mapOf(participant to true)
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnDismissDialog)
             val resultState = viewModel.state.first()
 
             assertThat(resultState.canAddParticipant).isEmpty()
             assertThat(resultState.isSearching).isFalse()
             assertThat(resultState.currentSearchResult).isNull()
+            assertThat(resultState.existingChatParticipants.size).isEqualTo(2)
             assertThat(resultState.selectedChatParticipants.size).isEqualTo(1)
             assertThat(resultState.queryTextState.text).isEqualTo("")
             cancelAndConsumeRemainingEvents()
@@ -342,15 +448,26 @@ class CreateChatViewModelTest : KoinTest {
                 initialText = "primo"
             ),
             currentSearchResult = null,
+            existingChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id2",
+                    username = "secondo",
+                    imageUrl = "test",
+                    initials = "SE",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
             selectedChatParticipants = emptyList(),
             canAddParticipant = emptyMap()
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
             val resultState = viewModel.state.first()
 
@@ -358,6 +475,7 @@ class CreateChatViewModelTest : KoinTest {
             assertThat(resultState.isSearching).isFalse()
             assertThat(resultState.isSubmitting).isFalse()
             assertThat(resultState.currentSearchResult).isNull()
+            assertThat(resultState.existingChatParticipants.size).isEqualTo(2)
             assertThat(resultState.selectedChatParticipants.size).isEqualTo(0)
             assertThat(resultState.queryTextState.text).isEqualTo("primo")
             cancelAndConsumeRemainingEvents()
@@ -375,16 +493,27 @@ class CreateChatViewModelTest : KoinTest {
             currentSearchResult = SearchResult.Success(
                 listOf(participant)
             ),
+            existingChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id2",
+                    username = "secondo",
+                    imageUrl = "test",
+                    initials = "SE",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
             selectedChatParticipants = listOf(participant),
             canAddParticipant = mapOf(participant to true)
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
             viewModel.events.test {
+                viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
                 viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
                 val successState = viewModel.state.first()
                 val collectedEvent = awaitItem()
@@ -395,12 +524,11 @@ class CreateChatViewModelTest : KoinTest {
                 assertThat(successState.currentSearchResult).isNull()
                 assertThat(successState.searchError).isNull()
                 assertThat(successState.submitError).isNull()
+                assertThat(successState.existingChatParticipants.size).isEqualTo(2)
                 assertThat(successState.selectedChatParticipants).isEmpty()
                 assertThat(successState.queryTextState.text).isEqualTo("")
                 assertThat(collectedEvent).isEqualTo(
-                    CreateChatEvent.OnChatCreated(
-                        fakeChatRepository.chat
-                    )
+                    ManageChatEvent.OnMembersAdded
                 )
                 cancelAndConsumeRemainingEvents()
             }
@@ -418,16 +546,27 @@ class CreateChatViewModelTest : KoinTest {
             currentSearchResult = SearchResult.Success(
                 listOf(participant)
             ),
+            existingChatParticipants = listOf(
+                ParticipantUi(
+                    id = "id2",
+                    username = "secondo",
+                    imageUrl = "test",
+                    initials = "SE",
+                    showParticipantIdentity = false,
+                    classImageUrl = "class",
+                )
+            ),
             selectedChatParticipants = listOf(participant),
             canAddParticipant = mapOf(participant to true)
         )
-        viewModel = CreateChatViewModel(
+        viewModel = ManageChatViewModel(
             fakeChatParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
         viewModel.state.test {
-            fakeChatRepository.createChatResult = Result.Failure(DataError.Remote.UNKNOWN)
+            fakeChatRepository.addParticipantsResult = Result.Failure(DataError.Remote.UNKNOWN)
+            viewModel.onAction(ManageChatAction.OnSelectChat(fakeChatRepository.chatId))
             viewModel.onAction(ManageChatAction.OnPrimaryActionClick)
             val resultState = viewModel.state.first()
 
@@ -440,6 +579,7 @@ class CreateChatViewModelTest : KoinTest {
                     listOf(participant)
                 )
             )
+            assertThat(resultState.existingChatParticipants.size).isEqualTo(2)
             assertThat(resultState.selectedChatParticipants.size).isEqualTo(1)
             assertThat(resultState.queryTextState.text).isEqualTo("primo")
             cancelAndConsumeRemainingEvents()
