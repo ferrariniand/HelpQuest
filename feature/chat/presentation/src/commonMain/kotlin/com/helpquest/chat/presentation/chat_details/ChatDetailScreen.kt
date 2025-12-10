@@ -33,6 +33,7 @@ import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.designsystem.components.containers_layouts.DynamicRoundedCornerColumn
 import com.helpquest.core.designsystem.components.containers_layouts.SnackbarScaffold
+import com.helpquest.core.designsystem.components.for_scrollables.EmptyListSection
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
@@ -41,6 +42,12 @@ import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import helpquest.feature.chat.presentation.generated.resources.Res
+import helpquest.feature.chat.presentation.generated.resources.empty_chat
+import helpquest.feature.chat.presentation.generated.resources.no_chat_selected
+import helpquest.feature.chat.presentation.generated.resources.select_a_chat
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
@@ -133,68 +140,78 @@ fun ChatDetailScreen(
                         .weight(1f)
                         .fillMaxWidth()
                 ) {
-                    GenericPageHeaderSection {
-                        ChatDetailHeader(
-                            chatUi = state.chatUi,
-                            isBackVisible = showBackButton,
-                            isChatOptionsDropDownOpen = state.isChatOptionsOpen,
-                            onChatOptionsClick = {
-                                onAction(ChatDetailAction.OnChatOptionsClick)
-                            },
-                            onDismissChatOptions = {
-                                onAction(ChatDetailAction.OnDismissChatOptions)
-                            },
-                            onManageChatClick = {
-                                onAction(ChatDetailAction.OnChatMembersClick)
-                            },
-                            onLeaveChatClick = {
-                                onAction(ChatDetailAction.OnLeaveChatClick)
-                            },
-                            onBackClick = {
-                                onAction(ChatDetailAction.OnBackClick)
-                            },
-                            modifier = Modifier.fillMaxWidth()
+                    if (state.chatUi == null) {
+                        EmptyListSection(
+                            title = stringResource(Res.string.no_chat_selected),
+                            description = stringResource(Res.string.select_a_chat),
+                            icon = painterResource(Res.drawable.empty_chat),
+                            modifier = Modifier
+                                .fillMaxSize()
                         )
-                    }
+                    } else {
+                        GenericPageHeaderSection {
+                            ChatDetailHeader(
+                                chatUi = state.chatUi,
+                                isBackVisible = showBackButton,
+                                isChatOptionsDropDownOpen = state.isChatOptionsOpen,
+                                onChatOptionsClick = {
+                                    onAction(ChatDetailAction.OnChatOptionsClick)
+                                },
+                                onDismissChatOptions = {
+                                    onAction(ChatDetailAction.OnDismissChatOptions)
+                                },
+                                onManageChatClick = {
+                                    onAction(ChatDetailAction.OnChatMembersClick)
+                                },
+                                onLeaveChatClick = {
+                                    onAction(ChatDetailAction.OnLeaveChatClick)
+                                },
+                                onBackClick = {
+                                    onAction(ChatDetailAction.OnBackClick)
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
 
-                    MessageList(
-                        messages = state.messages,
-                        listState = messageListState,
-                        onMessageLongClick = { message ->
-                            onAction(ChatDetailAction.OnMessageLongClick(message))
-                        },
-                        onMessageRetryClick = { message ->
-                            onAction(ChatDetailAction.OnRetryClick(message))
-                        },
-                        onDismissMessageMenu = {
-                            onAction(ChatDetailAction.OnDismissMessageMenu)
-                        },
-                        onDeleteMessageClick = { message ->
-                            onAction(ChatDetailAction.OnDeleteMessageClick(message))
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    )
-
-                    AnimatedVisibility(
-                        visible = !configuration.isWideScreen && state.chatUi != null
-                    ) {
-                        //Send Message Box is inside the same rounded box of the Message list
-                        SendMessageBox(
-                            messageTextFieldState = state.messageTextFieldState,
-                            isTextInputEnabled = state.canSendMessage,
-                            connectionState = state.connectionState,
-                            onSendClick = {
-                                onAction(ChatDetailAction.OnSendMessageClick)
+                        MessageList(
+                            messages = state.messages,
+                            listState = messageListState,
+                            onMessageLongClick = { message ->
+                                onAction(ChatDetailAction.OnMessageLongClick(message))
+                            },
+                            onMessageRetryClick = { message ->
+                                onAction(ChatDetailAction.OnRetryClick(message))
+                            },
+                            onDismissMessageMenu = {
+                                onAction(ChatDetailAction.OnDismissMessageMenu)
+                            },
+                            onDeleteMessageClick = { message ->
+                                onAction(ChatDetailAction.OnDeleteMessageClick(message))
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(
-                                    vertical = 8.dp,
-                                    horizontal = 16.dp
-                                )
+                                .weight(1f)
                         )
+
+                        AnimatedVisibility(
+                            visible = !configuration.isWideScreen
+                        ) {
+                            //Send Message Box is inside the same rounded box of the Message list
+                            SendMessageBox(
+                                messageTextFieldState = state.messageTextFieldState,
+                                isTextInputEnabled = state.canSendMessage,
+                                connectionState = state.connectionState,
+                                onSendClick = {
+                                    onAction(ChatDetailAction.OnSendMessageClick)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        vertical = 8.dp,
+                                        horizontal = 16.dp
+                                    )
+                            )
+                        }
                     }
                 }
 
