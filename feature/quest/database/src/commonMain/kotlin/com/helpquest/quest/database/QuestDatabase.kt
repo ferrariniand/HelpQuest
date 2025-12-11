@@ -25,14 +25,14 @@ import com.helpquest.quest.database.entities.QuestParticipantEntity
     ],
     version = 1,
 )
-@ConstructedBy(QuestLogDatabaseConstructor::class)
-abstract class QuestLogDatabase : RoomDatabase() {
+@ConstructedBy(QuestDatabaseConstructor::class)
+abstract class QuestDatabase : RoomDatabase() {
     abstract val questLogDao: QuestLogDao
     abstract val questParticipantDao: QuestParticipantDao
     abstract val questActivityDao: QuestActivityDao
     abstract val questParticipantsCrossRefDao: QuestParticipantsCrossRefDao
 
     companion object {
-        const val DB_NAME = "helpquest.questlog.db"
+        const val DB_NAME = "helpquest.quest.db"
     }
 }

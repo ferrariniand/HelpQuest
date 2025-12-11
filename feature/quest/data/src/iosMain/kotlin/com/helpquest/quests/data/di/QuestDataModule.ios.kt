@@ -1,8 +1,8 @@
 package com.helpquest.quests.data.di
 
-import com.helpquest.quest.database.QuestLogDatabaseFactory
+import com.helpquest.quest.database.QuestDatabaseFactory
 import org.koin.dsl.module
 
 actual val platformQuestDataModule = module {
-    single { QuestLogDatabaseFactory() }
+    single { QuestDatabaseFactory() }
 }

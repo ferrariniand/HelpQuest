@@ -7,7 +7,7 @@ import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.onSuccess
-import com.helpquest.quest.database.QuestLogDatabase
+import com.helpquest.quest.database.QuestDatabase
 import com.helpquest.quest.database.entities.QuestInfoEntity
 import com.helpquest.quest.database.entities.QuestParticipantEntity
 import com.helpquest.quest.database.entities.QuestWithParticipants
@@ -30,7 +30,7 @@ import kotlinx.coroutines.supervisorScope
 
 class OfflineFirstQuestRepository(
     private val questService: QuestService,
-    private val db: QuestLogDatabase
+    private val db: QuestDatabase
 ) : QuestRepository {
     override fun getQuestLog(): Flow<List<Quest>> {
         return db.questLogDao.getQuestsWithParticipants()

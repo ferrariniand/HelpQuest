@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.RoomDatabase
 import com.helpquest.core.database.createAndroidDatabase
 
-actual class QuestLogDatabaseFactory(
+actual class QuestDatabaseFactory(
     private val context: Context
 ) {
-    actual fun create(): RoomDatabase.Builder<QuestLogDatabase> =
-        createAndroidDatabase(context, QuestLogDatabase.DB_NAME)
+    actual fun create(): RoomDatabase.Builder<QuestDatabase> =
+        createAndroidDatabase(context, QuestDatabase.DB_NAME)
 
 }

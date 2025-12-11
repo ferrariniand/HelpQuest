@@ -1,7 +1,7 @@
 package com.helpquest.quests.data.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.helpquest.quest.database.QuestLogDatabaseFactory
+import com.helpquest.quest.database.QuestDatabaseFactory
 import com.helpquest.quests.data.service.KtorQuestService
 import com.helpquest.quests.data.service.OfflineFirstQuestRepository
 import com.helpquest.quests.domain.service.QuestRepository
@@ -18,7 +18,7 @@ val questDataModule = module {
     singleOf(::KtorQuestService) bind QuestService::class
     singleOf(::OfflineFirstQuestRepository) bind QuestRepository::class
     single {
-        get<QuestLogDatabaseFactory>()
+        get<QuestDatabaseFactory>()
             .create()
             .setDriver(BundledSQLiteDriver())
             .build()
