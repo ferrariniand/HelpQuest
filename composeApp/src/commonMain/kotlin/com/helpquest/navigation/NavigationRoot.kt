@@ -10,6 +10,8 @@ import com.helpquest.chat.presentation.navigation.ChatGraphRoutes
 import com.helpquest.chat.presentation.navigation.chatGraph
 import com.helpquest.home.presentation.HomepageRoot
 import com.helpquest.home.presentation.navigation.HomepageGraphRoutes
+import com.helpquest.quests.presentation.navigation.QuestGraphRoutes
+import com.helpquest.quests.presentation.navigation.questGraph
 
 @Composable
 fun NavigationRoot(
@@ -38,12 +40,18 @@ fun NavigationRoot(
                 onProfileSettingsClick = {
 
                 },
-                onFabButtonClick = {
+                onChatFabButtonClick = {
                     navController.navigate(ChatGraphRoutes.Graph)
+                },
+                onQuestFabButtonClick = {
+                    navController.navigate(QuestGraphRoutes.Graph)
                 }
             )
         }
         chatGraph(
+            navController = navController
+        )
+        questGraph(
             navController = navController
         )
     }

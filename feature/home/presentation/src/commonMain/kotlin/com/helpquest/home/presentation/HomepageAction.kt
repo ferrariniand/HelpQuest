@@ -7,5 +7,6 @@ sealed interface HomepageAction {
     data object OnLogoutClick : HomepageAction
     data object OnConfirmLogout : HomepageAction
     data object OnDismissLogoutDialog : HomepageAction
-    data object OnFabButtonClick : HomepageAction
+    data object OnChatFabButtonClick : HomepageAction
+    data object OnQuestFabButtonClick : HomepageAction
 }

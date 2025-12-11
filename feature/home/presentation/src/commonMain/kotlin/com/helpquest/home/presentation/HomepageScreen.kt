@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -39,7 +40,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomepageRoot(
     onLogout: () -> Unit,
     onProfileSettingsClick: () -> Unit,
-    onFabButtonClick: () -> Unit,
+    onChatFabButtonClick: () -> Unit,
+    onQuestFabButtonClick: () -> Unit,
     viewModel: HomepageViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -58,7 +60,8 @@ fun HomepageRoot(
             when (action) {
                 HomepageAction.OnConfirmLogout -> onLogout()
                 HomepageAction.OnProfileSettingsClick -> onProfileSettingsClick()
-                HomepageAction.OnFabButtonClick -> onFabButtonClick()
+                HomepageAction.OnChatFabButtonClick -> onChatFabButtonClick()
+                HomepageAction.OnQuestFabButtonClick -> onQuestFabButtonClick()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -117,7 +120,7 @@ fun HomepageScreen(
                                 horizontal = 8.dp
                             ),
                         verticalArrangement = Arrangement.spacedBy(
-                            4.dp,
+                            20.dp,
                             Alignment.CenterVertically
                         ),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -125,11 +128,24 @@ fun HomepageScreen(
                         HelpQuestFloatingActionButton(
                             modifier = Modifier.size(100.dp),
                             onClick = {
-                                onAction(HomepageAction.OnFabButtonClick)
+                                onAction(HomepageAction.OnChatFabButtonClick)
                             }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.MailOutline,
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp),
+                            )
+                        }
+
+                        HelpQuestFloatingActionButton(
+                            modifier = Modifier.size(100.dp),
+                            onClick = {
+                                onAction(HomepageAction.OnQuestFabButtonClick)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.List,
                                 contentDescription = null,
                                 modifier = Modifier.size(40.dp),
                             )

@@ -49,6 +49,7 @@ class QuestLogViewModel(
             }
 
             is QuestLogAction.OnLeaveQuestClick -> onLeaveQuestClick(action.questId)
+            is QuestLogAction.OnDeleteQuestClick -> onDeleteQuestClick(action.questId)
             else -> Unit
         }
     }
@@ -56,13 +57,18 @@ class QuestLogViewModel(
     private fun onLeaveQuestClick(questId: String) {
 
         //TODO add loading state for the single item "leave quest"
+        _state.update {
+            it.copy(
+                isQuestOptionsOpen = false
+            )
+        }
 
         viewModelScope.launch {
             repository
                 .leaveQuest(questId)
                 .onSuccess {
                     //TODO update quest Log List??? maybe is automatically updated from DB
-                    eventChannel.send(QuestLogEvent.OnQuestLeft)
+                    eventChannel.send(QuestLogEvent.OnQuestLeftOrDeleted)
                 }
                 .onFailure { error ->
                     eventChannel.send(
@@ -71,6 +77,31 @@ class QuestLogViewModel(
                         )
                     )
                 }
+        }
+    }
+
+    private fun onDeleteQuestClick(questId: String) {
+
+        _state.update {
+            it.copy(
+                isQuestOptionsOpen = false
+            )
+        }
+
+        viewModelScope.launch {
+//            repository
+//                .deleteQuest(questId)
+//                .onSuccess {
+//
+//                    eventChannel.send(QuestLogEvent.OnQuestLeftOrDeleted)
+//                }
+//                .onFailure { error ->
+//                    eventChannel.send(
+//                        QuestLogEvent.OnError(
+//                            error.toUiText()
+//                        )
+//                    )
+//                }
         }
     }
 }

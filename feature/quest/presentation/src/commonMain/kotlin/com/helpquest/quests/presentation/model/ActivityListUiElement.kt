@@ -11,9 +11,9 @@ sealed class ActivityListUiElement(open val id: String) {
         val content: String,
         val actor: ParticipantUi,
         val ActivityStatus: QuestActivityStatus,
-        val isMenuOpen: Boolean,
+        val isMenuOpen: Boolean = false,
         val formattedStartTime: UiText,
-        val formattedEndTime: UiText?,
+        val formattedEndTime: UiText? = null,
     ) : ActivityListUiElement(id = id)
 
 

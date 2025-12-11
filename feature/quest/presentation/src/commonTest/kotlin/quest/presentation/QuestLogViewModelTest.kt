@@ -8,13 +8,18 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.helpquest.core.domain.auth.SessionStorage
+import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.mappers.toParticipantUi
+import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.test.auth.FakeSessionStorage
+import com.helpquest.quests.domain.models.QuestActivity
+import com.helpquest.quests.domain.models.QuestActivityStatus
+import com.helpquest.quests.domain.models.QuestStatus
 import com.helpquest.quests.domain.service.QuestRepository
 import com.helpquest.quests.presentation.di.questPresentationModule
-import com.helpquest.quests.presentation.model.QuestLogItemUi
+import com.helpquest.quests.presentation.model.QuestUi
 import com.helpquest.quests.presentation.quest_log.QuestLogAction
 import com.helpquest.quests.presentation.quest_log.QuestLogEvent
 import com.helpquest.quests.presentation.quest_log.QuestLogState
@@ -37,6 +42,7 @@ import quest.data.service.FakeQuestRepository
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class QuestLogViewModelTest : KoinTest {
 
@@ -77,12 +83,40 @@ class QuestLogViewModelTest : KoinTest {
         viewModel.state.test {
             viewModel.onAction(
                 QuestLogAction.OnQuestClick(
-                    QuestLogItemUi(
+                    quest = QuestUi(
                         questId = fakeQuestRepository.quest2.questId,
-                        localParticipant = fakeSessionStorage.fakeAuthInfo.user.toParticipantUi(),
-                        otherParticipants = listOf(fakeQuestRepository.participant2.toParticipantUi()),
-                        lastActivity = null,
-                        lastActivityActorUsername = null,
+                        participants = listOf(
+                            ParticipantUi(
+                                id = "1",
+                                username = "Philipp",
+                                initials = "PH",
+                            ),
+                            ParticipantUi(
+                                id = "2",
+                                username = "Cinderella",
+                                initials = "CI",
+                            ),
+                            ParticipantUi(
+                                id = "3",
+                                username = "Josh",
+                                initials = "JO",
+                            )
+                        ),
+                        questTitle = "First Quest",
+                        questDescription = "the description of this quest",
+                        questCategory = Category.TECHNOLOGY,
+                        questStatus = QuestStatus.IN_REFINEMENT,
+                        questCreatorId = "1",
+                        lastActivity = QuestActivity(
+                            activityId = "1",
+                            questId = "1",
+                            actorId = "1",
+                            content = "This is a last quest activity that was created by Philipp " +
+                                    "and goes over multiple lines to showcase the ellipsis",
+                            activityStatus = QuestActivityStatus.IN_PROGRESS,
+                            startActivityAt = Clock.System.now(),
+                        ),
+                        createdAt = Clock.System.now(),
                     )
                 )
             )
@@ -96,15 +130,43 @@ class QuestLogViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnLeaveQuestClick success case`() = runBlocking {
-        // When `OnLeaveQuestClick` is called and `repository.leaveQuest` succeeds, verify that `_chatId` becomes null, state is cleared, text fields are cleared, and `OnQuestLeft` event is sent.
+        // When `OnLeaveQuestClick` is called and `repository.leaveQuest` succeeds, verify that `_chatId` becomes null, state is cleared, text fields are cleared, and `OnQuestLeftOrDeleted` event is sent.
         val expectedStateBeforeUpdate = QuestLogState(
             quests = listOf(
-                QuestLogItemUi(
+                QuestUi(
                     questId = fakeQuestRepository.quest2.questId,
-                    localParticipant = fakeSessionStorage.fakeAuthInfo.user.toParticipantUi(),
-                    otherParticipants = listOf(fakeQuestRepository.participant2.toParticipantUi()),
-                    lastActivity = null,
-                    lastActivityActorUsername = null,
+                    participants = listOf(
+                        ParticipantUi(
+                            id = "1",
+                            username = "Philipp",
+                            initials = "PH",
+                        ),
+                        ParticipantUi(
+                            id = "2",
+                            username = "Cinderella",
+                            initials = "CI",
+                        ),
+                        ParticipantUi(
+                            id = "3",
+                            username = "Josh",
+                            initials = "JO",
+                        )
+                    ),
+                    questTitle = "First Quest",
+                    questDescription = "the description of this quest",
+                    questCategory = Category.TECHNOLOGY,
+                    questStatus = QuestStatus.IN_REFINEMENT,
+                    questCreatorId = "1",
+                    lastActivity = QuestActivity(
+                        activityId = "1",
+                        questId = "1",
+                        actorId = "1",
+                        content = "This is a last quest activity that was created by Philipp " +
+                                "and goes over multiple lines to showcase the ellipsis",
+                        activityStatus = QuestActivityStatus.IN_PROGRESS,
+                        startActivityAt = Clock.System.now(),
+                    ),
+                    createdAt = Clock.System.now(),
                 )
             ),
             selectedQuestId = fakeQuestRepository.quest2.questId,
@@ -117,12 +179,40 @@ class QuestLogViewModelTest : KoinTest {
             viewModel.events.test {
                 viewModel.onAction(
                     QuestLogAction.OnQuestClick(
-                        QuestLogItemUi(
+                        quest = QuestUi(
                             questId = fakeQuestRepository.quest2.questId,
-                            localParticipant = fakeSessionStorage.fakeAuthInfo.user.toParticipantUi(),
-                            otherParticipants = listOf(fakeQuestRepository.participant2.toParticipantUi()),
-                            lastActivity = null,
-                            lastActivityActorUsername = null,
+                            participants = listOf(
+                                ParticipantUi(
+                                    id = "1",
+                                    username = "Philipp",
+                                    initials = "PH",
+                                ),
+                                ParticipantUi(
+                                    id = "2",
+                                    username = "Cinderella",
+                                    initials = "CI",
+                                ),
+                                ParticipantUi(
+                                    id = "3",
+                                    username = "Josh",
+                                    initials = "JO",
+                                )
+                            ),
+                            questTitle = "First Quest",
+                            questDescription = "the description of this quest",
+                            questCategory = Category.TECHNOLOGY,
+                            questStatus = QuestStatus.IN_REFINEMENT,
+                            questCreatorId = "1",
+                            lastActivity = QuestActivity(
+                                activityId = "1",
+                                questId = "1",
+                                actorId = "1",
+                                content = "This is a last quest activity that was created by Philipp " +
+                                        "and goes over multiple lines to showcase the ellipsis",
+                                activityStatus = QuestActivityStatus.IN_PROGRESS,
+                                startActivityAt = Clock.System.now(),
+                            ),
+                            createdAt = Clock.System.now(),
                         )
                     )
                 )
@@ -137,7 +227,7 @@ class QuestLogViewModelTest : KoinTest {
 
                 assertThat(successState.quests).isEmpty()
                 assertThat(collectedEvent).isEqualTo(
-                    QuestLogEvent.OnQuestLeft
+                    QuestLogEvent.OnQuestLeftOrDeleted
                 )
                 cancelAndConsumeRemainingEvents()
             }
@@ -150,12 +240,40 @@ class QuestLogViewModelTest : KoinTest {
         // If `repository.leaveQuest` fails during an `OnLeaveQuestClick` action, confirm that an `OnError` event is sent and the UI state remains unchanged.
         val expectedStateBeforeUpdate = QuestLogState(
             quests = listOf(
-                QuestLogItemUi(
+                QuestUi(
                     questId = fakeQuestRepository.quest2.questId,
-                    localParticipant = fakeSessionStorage.fakeAuthInfo.user.toParticipantUi(),
-                    otherParticipants = listOf(fakeQuestRepository.participant2.toParticipantUi()),
-                    lastActivity = null,
-                    lastActivityActorUsername = null,
+                    participants = listOf(
+                        ParticipantUi(
+                            id = "1",
+                            username = "Philipp",
+                            initials = "PH",
+                        ),
+                        ParticipantUi(
+                            id = "2",
+                            username = "Cinderella",
+                            initials = "CI",
+                        ),
+                        ParticipantUi(
+                            id = "3",
+                            username = "Josh",
+                            initials = "JO",
+                        )
+                    ),
+                    questTitle = "First Quest",
+                    questDescription = "the description of this quest",
+                    questCategory = Category.TECHNOLOGY,
+                    questStatus = QuestStatus.IN_REFINEMENT,
+                    questCreatorId = "1",
+                    lastActivity = QuestActivity(
+                        activityId = "1",
+                        questId = "1",
+                        actorId = "1",
+                        content = "This is a last quest activity that was created by Philipp " +
+                                "and goes over multiple lines to showcase the ellipsis",
+                        activityStatus = QuestActivityStatus.IN_PROGRESS,
+                        startActivityAt = Clock.System.now(),
+                    ),
+                    createdAt = Clock.System.now(),
                 )
             ),
             selectedQuestId = fakeQuestRepository.quest2.questId,
@@ -169,12 +287,40 @@ class QuestLogViewModelTest : KoinTest {
             viewModel.events.test {
                 viewModel.onAction(
                     QuestLogAction.OnQuestClick(
-                        QuestLogItemUi(
+                        quest = QuestUi(
                             questId = fakeQuestRepository.quest2.questId,
-                            localParticipant = fakeSessionStorage.fakeAuthInfo.user.toParticipantUi(),
-                            otherParticipants = listOf(fakeQuestRepository.participant2.toParticipantUi()),
-                            lastActivity = null,
-                            lastActivityActorUsername = null,
+                            participants = listOf(
+                                ParticipantUi(
+                                    id = "1",
+                                    username = "Philipp",
+                                    initials = "PH",
+                                ),
+                                ParticipantUi(
+                                    id = "2",
+                                    username = "Cinderella",
+                                    initials = "CI",
+                                ),
+                                ParticipantUi(
+                                    id = "3",
+                                    username = "Josh",
+                                    initials = "JO",
+                                )
+                            ),
+                            questTitle = "First Quest",
+                            questDescription = "the description of this quest",
+                            questCategory = Category.TECHNOLOGY,
+                            questStatus = QuestStatus.IN_REFINEMENT,
+                            questCreatorId = "1",
+                            lastActivity = QuestActivity(
+                                activityId = "1",
+                                questId = "1",
+                                actorId = "1",
+                                content = "This is a last quest activity that was created by Philipp " +
+                                        "and goes over multiple lines to showcase the ellipsis",
+                                activityStatus = QuestActivityStatus.IN_PROGRESS,
+                                startActivityAt = Clock.System.now(),
+                            ),
+                            createdAt = Clock.System.now(),
                         )
                     )
                 )

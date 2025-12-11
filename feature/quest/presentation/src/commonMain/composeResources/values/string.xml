@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="create_quest">Create Quest</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="email_or_username">Email or Username</string>
+    <string name="you">You</string>
+    <string name="no_quests">No quests</string>
+    <string name="no_quests_subtitle">There are no open quests in your area</string>
+    <string name="no_activities">No activities</string>
+    <string name="no_activities_subtitle">Start a new quest to add activities</string>
+    <string name="no_quest_selected">No quest selected</string>
+    <string name="failed">Failed</string>
+    <string name="retry">Retry</string>
+    <string name="go_back">Go back</string>
+    <string name="open_quest_options_menu">Open quest options menu</string>
+    <string name="quest_members">Quest members</string>
+    <string name="leave_quest">Leave quest</string>
+    <string name="error_participant_not_found">No participant found</string>
+    <string name="error_participant_already_added">Participant already added</string>
+</resources>

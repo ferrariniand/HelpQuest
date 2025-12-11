@@ -1,0 +1,20 @@
+package com.helpquest.quests.presentation.mappers
+
+import com.helpquest.core.presentation.mappers.toParticipantUi
+import com.helpquest.quests.domain.models.Quest
+import com.helpquest.quests.presentation.model.QuestUi
+
+
+fun Quest.toQuestUi(): QuestUi {
+    return QuestUi(
+        questId = questId,
+        questTitle = questTitle,
+        questDescription = questDescription,
+        questCreatorId = questCreatorId,
+        createdAt = createdAt,
+        questCategory = questCategory,
+        participants = participants.map { it.toParticipantUi() },
+        questStatus = questStatus,
+        lastActivity = lastActivity
+    )
+}

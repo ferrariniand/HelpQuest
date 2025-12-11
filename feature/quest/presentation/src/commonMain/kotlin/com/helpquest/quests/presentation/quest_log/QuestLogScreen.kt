@@ -30,7 +30,7 @@ fun QuestLogRoot(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            QuestLogEvent.OnQuestLeft -> {
+            QuestLogEvent.OnQuestLeftOrDeleted -> {
                 //TODO Maybe Not needed
             }
 
