@@ -13,11 +13,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-expect val platformCoreDataModule: Module
 
-val coreDataModule = module {
-    includes(platformCoreDataModule)
-    single<HelpQuestLogger> { KermitLogger }
+val variantCoreDataModule = module {
     single {
         MockHttpClientFactory(get(), get(), get()).create(get())
     }
