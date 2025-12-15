@@ -5,8 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import com.helpquest.core.data.auth.DATA_STORE_FILE_NAME
 import com.helpquest.core.data.auth.createDataStore
 import com.helpquest.core.data.lifecycle.AppLifecycleObserver
+import com.helpquest.core.data.networking.ConnectivityObserver
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 actual val platformCoreDataModule = module {
@@ -14,5 +16,7 @@ actual val platformCoreDataModule = module {
     single<DataStore<Preferences>> {
         createDataStore(DATA_STORE_FILE_NAME)
     }
-    single { ::AppLifecycleObserver }
+    singleOf(::AppLifecycleObserver)
+    singleOf(::ConnectivityObserver)
+
 }

@@ -1,4 +1,5 @@
 import com.helpquest.convention.configureBuildVariants
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.convention.kmp.library)
@@ -76,5 +77,15 @@ kotlin {
     }
     //TODO: understand if should be created a different case for just MOCK and DEV or for each variant (all the others)
     configureBuildVariants()
+
+    targets.withType<KotlinNativeTarget> {
+        compilations.getByName("main") {
+            cinterops {
+                create("network") {
+                    defFile(file("src/nativeInterop/cinterop/network.def"))
+                }
+            }
+        }
+    }
 
 }
