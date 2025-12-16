@@ -1,4 +1,4 @@
-package com.helpquest.core.data.dto.request
+package com.helpquest.core.data.dto.request.auth
 
 import kotlinx.serialization.Serializable
 

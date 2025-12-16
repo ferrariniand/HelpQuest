@@ -1,10 +1,10 @@
 package com.helpquest.core.data.auth
 
 import com.helpquest.core.data.dto.AuthInfoDto
-import com.helpquest.core.data.dto.request.EmailRequest
-import com.helpquest.core.data.dto.request.LoginRequest
-import com.helpquest.core.data.dto.request.RegisterRequest
-import com.helpquest.core.data.dto.request.ResetPasswordRequest
+import com.helpquest.core.data.dto.request.auth.EmailRequest
+import com.helpquest.core.data.dto.request.auth.LoginRequest
+import com.helpquest.core.data.dto.request.auth.RegisterRequest
+import com.helpquest.core.data.dto.request.auth.ResetPasswordRequest
 import com.helpquest.core.data.mappers.toAuthInfo
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.data.networking.post

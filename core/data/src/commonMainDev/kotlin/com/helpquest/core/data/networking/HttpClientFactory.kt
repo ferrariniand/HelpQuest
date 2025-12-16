@@ -2,7 +2,7 @@ package com.helpquest.core.data.networking
 
 import com.helpquest.core.data.BuildKonfig
 import com.helpquest.core.data.dto.AuthInfoDto
-import com.helpquest.core.data.dto.request.RefreshRequest
+import com.helpquest.core.data.dto.request.auth.RefreshRequest
 import com.helpquest.core.data.mappers.toAuthInfo
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
