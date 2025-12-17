@@ -3,6 +3,7 @@
 package com.helpquest.chat.data.mappers
 
 import com.helpquest.chat.data.dto.ChatMessageDto
+import com.helpquest.chat.data.dto.websocket.OutgoingChatWebSocketDto
 import com.helpquest.chat.database.db_view.LastMessageView
 import com.helpquest.chat.database.entities.ChatMessageEntity
 import com.helpquest.chat.domain.models.ChatMessage
@@ -67,5 +68,13 @@ fun ChatMessage.toLastMessageView(): LastMessageView {
         timestamp = createdAt.toEpochMilliseconds(),
         deliveryStatus = deliveryStatus.name,
         deliveryStatusTimestamp = deliveredAt.toEpochMilliseconds()
+    )
+}
+
+fun ChatMessage.toNewMessage(): OutgoingChatWebSocketDto.NewMessage {
+    return OutgoingChatWebSocketDto.NewMessage(
+        messageId = id,
+        chatId = chatId,
+        content = content,
     )
 }
