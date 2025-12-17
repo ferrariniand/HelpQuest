@@ -12,7 +12,8 @@ enum class QuestActivityStatus {
     IN_PROGRESS,
     ON_HOLD,
     COMPLETED,
-    DECLINED
+    DECLINED,
+    ERROR
 }
 
 data class QuestActivity(

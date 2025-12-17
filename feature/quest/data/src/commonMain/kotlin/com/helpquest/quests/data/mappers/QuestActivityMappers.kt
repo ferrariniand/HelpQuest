@@ -6,6 +6,7 @@ package com.helpquest.quests.data.mappers
 import com.helpquest.quest.database.db_view.LastActivityView
 import com.helpquest.quest.database.entities.QuestActivityEntity
 import com.helpquest.quests.data.dto.QuestActivityDto
+import com.helpquest.quests.data.dto.websocket.OutgoingQuestWebSocketDto
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
 import kotlin.time.ExperimentalTime
@@ -74,5 +75,13 @@ fun QuestActivity.toLastActivityView(): LastActivityView {
         activityStatus = activityStatus.name,
         startTimestamp = startActivityAt.toEpochMilliseconds(),
         endTimestamp = endActivityAt?.toEpochMilliseconds()
+    )
+}
+
+fun QuestActivity.toNewActivity(): OutgoingQuestWebSocketDto.NewActivity {
+    return OutgoingQuestWebSocketDto.NewActivity(
+        activityId = activityId,
+        questId = questId,
+        content = content,
     )
 }

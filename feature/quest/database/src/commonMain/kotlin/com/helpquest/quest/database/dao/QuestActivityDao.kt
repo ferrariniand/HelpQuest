@@ -26,4 +26,14 @@ interface QuestActivityDao {
 
     @Query("SELECT * FROM questactivityentity WHERE activityId = :activityId")
     suspend fun getActivityById(activityId: String): QuestActivityEntity?
+
+
+    @Query(
+        """
+        UPDATE questactivityentity
+        SET activityStatus = :status
+        WHERE activityId = :activityId
+    """
+    )
+    suspend fun updateActivityStatus(activityId: String, status: String)
 }
