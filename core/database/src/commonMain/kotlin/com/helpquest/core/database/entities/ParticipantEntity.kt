@@ -9,7 +9,8 @@ data class ParticipantEntity(
     val userId: String,
     val username: String,
     val profilePictureUrl: String?,
-    val showParticipantIdentity: Boolean,
     val classId: String?,
     val subClassId: String?,
+    val showParticipantIdentity: Boolean,
+    val isFriend: Boolean,
 )

@@ -7,6 +7,7 @@ data class Participant(
     val showParticipantIdentity: Boolean = false,
     val participantClass: Class? = null,
     val participantSubClass: SubClass? = null,
+    val isFriend: Boolean = false
 ) {
     val initials: String
         get() = username.take(2).uppercase()

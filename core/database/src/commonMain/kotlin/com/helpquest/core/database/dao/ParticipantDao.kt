@@ -14,6 +14,18 @@ interface ParticipantDao {
     @Upsert
     suspend fun upsertParticipants(participants: List<ParticipantEntity>)
 
+    @Query(
+        """
+        UPDATE participantentity
+        SET profilePictureUrl = :newUrl
+        WHERE userId = :userId
+    """
+    )
+    suspend fun updateProfilePictureUrl(userId: String, newUrl: String?)
+
+    @Query("SELECT * FROM participantentity WHERE userId = :userId")
+    suspend fun getParticipantById(userId: String): ParticipantEntity?
+
     @Query("SELECT * FROM participantentity")
     suspend fun getAllParticipants(): List<ParticipantEntity>
 }
