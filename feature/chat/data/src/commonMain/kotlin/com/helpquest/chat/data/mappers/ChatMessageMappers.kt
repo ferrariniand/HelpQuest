@@ -3,11 +3,12 @@
 package com.helpquest.chat.data.mappers
 
 import com.helpquest.chat.data.dto.ChatMessageDto
+import com.helpquest.chat.data.dto.websocket.IncomingChatWebSocketDto
 import com.helpquest.chat.data.dto.websocket.OutgoingChatWebSocketDto
-import com.helpquest.chat.database.db_view.LastMessageView
-import com.helpquest.chat.database.entities.ChatMessageEntity
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
+import com.helpquest.core.database.db_view.LastMessageView
+import com.helpquest.core.database.entities.chat.ChatMessageEntity
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -76,5 +77,16 @@ fun ChatMessage.toNewMessage(): OutgoingChatWebSocketDto.NewMessage {
         messageId = id,
         chatId = chatId,
         content = content,
+    )
+}
+
+fun IncomingChatWebSocketDto.NewMessageDto.toChatMessageEntity(): ChatMessageEntity {
+    return ChatMessageEntity(
+        messageId = id,
+        chatId = chatId,
+        senderId = senderId,
+        content = content,
+        timestamp = Instant.parse(createdAt).toEpochMilliseconds(),
+        deliveryStatus = ChatMessageDeliveryStatus.SENT.name
     )
 }

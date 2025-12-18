@@ -1,21 +1,21 @@
 package com.helpquest.quests.data.service
 
 
+import com.helpquest.core.data.mappers.toParticipantEntity
+import com.helpquest.core.database.HelpQuestDatabase
+import com.helpquest.core.database.entities.ParticipantEntity
+import com.helpquest.core.database.entities.quest.QuestInfoEntity
+import com.helpquest.core.database.entities.quest.QuestWithParticipants
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.onSuccess
-import com.helpquest.quest.database.QuestDatabase
-import com.helpquest.quest.database.entities.QuestInfoEntity
-import com.helpquest.quest.database.entities.QuestParticipantEntity
-import com.helpquest.quest.database.entities.QuestWithParticipants
 import com.helpquest.quests.data.mappers.toLastActivityView
 import com.helpquest.quests.data.mappers.toQuest
 import com.helpquest.quests.data.mappers.toQuestEntity
 import com.helpquest.quests.data.mappers.toQuestInfo
-import com.helpquest.quests.data.mappers.toQuestParticipantEntity
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestInfo
 import com.helpquest.quests.domain.service.QuestRepository
@@ -30,7 +30,7 @@ import kotlinx.coroutines.supervisorScope
 
 class OfflineFirstQuestRepository(
     private val questService: QuestService,
-    private val db: QuestDatabase
+    private val db: HelpQuestDatabase
 ) : QuestRepository {
     override fun getQuestLog(): Flow<List<Quest>> {
         return db.questLogDao.getQuestsWithParticipants()
@@ -81,14 +81,14 @@ class OfflineFirstQuestRepository(
                 val questsWithParticipants = quests.map { quest ->
                     QuestWithParticipants(
                         quest = quest.toQuestEntity(),
-                        participants = quest.participants.map { it.toQuestParticipantEntity() },
+                        participants = quest.participants.map { it.toParticipantEntity() },
                         lastActivity = quest.lastActivity?.toLastActivityView()
                     )
                 }
 
                 db.questLogDao.upsertQuestsWithParticipantsAndCrossRefs(
                     quests = questsWithParticipants,
-                    participantDao = db.questParticipantDao,
+                    participantDao = db.participantDao,
                     crossRefDao = db.questParticipantsCrossRefDao,
                     activityDao = db.questActivityDao
                 )
@@ -106,8 +106,8 @@ class OfflineFirstQuestRepository(
             .onSuccess { quest ->
                 db.questLogDao.upsertQuestWithParticipantsAndCrossRefs(
                     quest = quest.toQuestEntity(),
-                    participants = quest.participants.map { it.toQuestParticipantEntity() },
-                    participantDao = db.questParticipantDao,
+                    participants = quest.participants.map { it.toParticipantEntity() },
+                    participantDao = db.participantDao,
                     crossRefDao = db.questParticipantsCrossRefDao
                 )
             }
@@ -130,8 +130,8 @@ class OfflineFirstQuestRepository(
             .onSuccess { quest ->
                 db.questLogDao.upsertQuestWithParticipantsAndCrossRefs(
                     quest = quest.toQuestEntity(),
-                    participants = quest.participants.map { it.toQuestParticipantEntity() },
-                    participantDao = db.questParticipantDao,
+                    participants = quest.participants.map { it.toParticipantEntity() },
+                    participantDao = db.participantDao,
                     crossRefDao = db.questParticipantsCrossRefDao
                 )
             }
@@ -145,7 +145,7 @@ class OfflineFirstQuestRepository(
             }
     }
 
-    private suspend fun List<QuestParticipantEntity>.onlyActive(questId: String): List<QuestParticipantEntity> {
+    private suspend fun List<ParticipantEntity>.onlyActive(questId: String): List<ParticipantEntity> {
         val activeParticipantIds = db
             .questLogDao
             .getActiveParticipantsByQuestId(questId)

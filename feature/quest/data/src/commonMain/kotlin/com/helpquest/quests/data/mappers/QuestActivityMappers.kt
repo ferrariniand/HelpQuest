@@ -3,8 +3,8 @@
 package com.helpquest.quests.data.mappers
 
 
-import com.helpquest.quest.database.db_view.LastActivityView
-import com.helpquest.quest.database.entities.QuestActivityEntity
+import com.helpquest.core.database.db_view.LastActivityView
+import com.helpquest.core.database.entities.quest.QuestActivityEntity
 import com.helpquest.quests.data.dto.QuestActivityDto
 import com.helpquest.quests.data.dto.websocket.OutgoingQuestWebSocketDto
 import com.helpquest.quests.domain.models.QuestActivity

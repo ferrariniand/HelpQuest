@@ -86,12 +86,10 @@ kotlin {
             // Quests Modules
             implementation(projects.feature.quest.domain)
             implementation(projects.feature.quest.data)
-            implementation(projects.feature.quest.database)
             implementation(projects.feature.quest.presentation)
             // Chat Modules
             implementation(projects.feature.chat.domain)
             implementation(projects.feature.chat.data)
-            implementation(projects.feature.chat.database)
             implementation(projects.feature.chat.presentation)
             // Settings Modules
             implementation(projects.feature.settings.domain)

@@ -3,16 +3,16 @@
 package com.helpquest.chat.data.mappers
 
 import com.helpquest.chat.data.dto.ChatDto
-import com.helpquest.chat.database.entities.ChatEntity
-import com.helpquest.chat.database.entities.ChatInfoEntity
-import com.helpquest.chat.database.entities.ChatWithParticipants
-import com.helpquest.chat.database.entities.MessageWithSenderEntity
 import com.helpquest.chat.domain.models.Chat
 import com.helpquest.chat.domain.models.ChatInfo
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.models.MessageWithSender
 import com.helpquest.core.data.mappers.toParticipant
+import com.helpquest.core.database.entities.chat.ChatEntity
+import com.helpquest.core.database.entities.chat.ChatInfoEntity
+import com.helpquest.core.database.entities.chat.ChatWithParticipants
+import com.helpquest.core.database.entities.chat.MessageWithSenderEntity
 import com.helpquest.core.domain.models.Participant
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant

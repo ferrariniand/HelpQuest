@@ -6,6 +6,7 @@ import com.helpquest.core.data.auth.DATA_STORE_FILE_NAME
 import com.helpquest.core.data.auth.createDataStore
 import com.helpquest.core.data.lifecycle.AppLifecycleObserver
 import com.helpquest.core.data.networking.ConnectivityObserver
+import com.helpquest.core.database.DatabaseFactory
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.darwin.Darwin
 import org.koin.core.module.dsl.singleOf
@@ -16,6 +17,7 @@ actual val platformCoreDataModule = module {
     single<DataStore<Preferences>> {
         createDataStore(DATA_STORE_FILE_NAME)
     }
+    single { DatabaseFactory() }
     singleOf(::AppLifecycleObserver)
     singleOf(::ConnectivityObserver)
 }

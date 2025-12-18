@@ -3,12 +3,12 @@
 package com.helpquest.quests.data.mappers
 
 import com.helpquest.core.data.mappers.toParticipant
+import com.helpquest.core.database.entities.quest.ActivityWithActorEntity
+import com.helpquest.core.database.entities.quest.QuestEntity
+import com.helpquest.core.database.entities.quest.QuestInfoEntity
+import com.helpquest.core.database.entities.quest.QuestWithParticipants
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.quest.database.entities.ActivityWithActorEntity
-import com.helpquest.quest.database.entities.QuestEntity
-import com.helpquest.quest.database.entities.QuestInfoEntity
-import com.helpquest.quest.database.entities.QuestWithParticipants
 import com.helpquest.quests.data.dto.QuestDto
 import com.helpquest.quests.domain.models.ActivityWithActor
 import com.helpquest.quests.domain.models.Quest

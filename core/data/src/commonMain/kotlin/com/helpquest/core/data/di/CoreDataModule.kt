@@ -4,7 +4,7 @@ package com.helpquest.core.data.di
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.helpquest.core.data.logging.KermitLogger
 import com.helpquest.core.data.networking.KtorWebSocketConnector
-import com.helpquest.core.database.CoreDatabaseFactory
+import com.helpquest.core.database.DatabaseFactory
 import com.helpquest.core.domain.logging.HelpQuestLogger
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
@@ -24,7 +24,7 @@ val coreDataModule = module {
         }
     }
     single {
-        get<CoreDatabaseFactory>()
+        get<DatabaseFactory>()
             .create()
             .setDriver(BundledSQLiteDriver())
             .build()
