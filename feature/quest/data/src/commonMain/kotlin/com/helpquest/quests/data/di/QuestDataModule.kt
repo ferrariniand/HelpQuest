@@ -3,7 +3,7 @@ package com.helpquest.quests.data.di
 import com.helpquest.quests.data.service.KtorQuestService
 import com.helpquest.quests.data.service.OfflineFirstActivityRepository
 import com.helpquest.quests.data.service.OfflineFirstQuestRepository
-import com.helpquest.quests.data.service.WebSocketQuestConnectionClient
+import com.helpquest.quests.data.service.QuestWebSocketConnectionClient
 import com.helpquest.quests.domain.service.ActivityRepository
 import com.helpquest.quests.domain.service.QuestConnectionClient
 import com.helpquest.quests.domain.service.QuestRepository
@@ -17,5 +17,5 @@ val questDataModule = module {
     singleOf(::KtorQuestService) bind QuestService::class
     singleOf(::OfflineFirstQuestRepository) bind QuestRepository::class
     singleOf(::OfflineFirstActivityRepository) bind ActivityRepository::class
-    singleOf(::WebSocketQuestConnectionClient) bind QuestConnectionClient::class
+    singleOf(::QuestWebSocketConnectionClient) bind QuestConnectionClient::class
 }

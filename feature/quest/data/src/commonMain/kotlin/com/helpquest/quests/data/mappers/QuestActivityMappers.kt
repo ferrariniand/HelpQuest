@@ -6,6 +6,7 @@ package com.helpquest.quests.data.mappers
 import com.helpquest.core.database.db_view.LastActivityView
 import com.helpquest.core.database.entities.quest.QuestActivityEntity
 import com.helpquest.quests.data.dto.QuestActivityDto
+import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketDto
 import com.helpquest.quests.data.dto.websocket.OutgoingQuestWebSocketDto
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -83,5 +84,19 @@ fun QuestActivity.toNewActivity(): OutgoingQuestWebSocketDto.NewActivity {
         activityId = activityId,
         questId = questId,
         content = content,
+    )
+}
+
+fun IncomingQuestWebSocketDto.NewActivityDto.toQuestActivityEntity(): QuestActivityEntity {
+    return QuestActivityEntity(
+        activityId = id,
+        questId = questId,
+        actorId = actorId,
+        content = content,
+        startTimestamp = Instant.parse(startActivityAt).toEpochMilliseconds(),
+        endTimestamp = endActivityAt?.let {
+            Instant.parse(it).toEpochMilliseconds()
+        },
+        activityStatus = activityStatus
     )
 }

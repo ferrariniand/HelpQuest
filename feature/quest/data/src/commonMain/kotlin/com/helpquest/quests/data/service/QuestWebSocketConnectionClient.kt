@@ -1,0 +1,113 @@
+package com.helpquest.quests.data.service
+
+
+import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
+import com.helpquest.core.data.networking.KtorWebSocketConnector
+import com.helpquest.core.database.HelpQuestDatabase
+import com.helpquest.core.domain.util.ConnectionError
+import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.onFailure
+import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketDto
+import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketType
+import com.helpquest.quests.data.mappers.toNewActivity
+import com.helpquest.quests.data.mappers.toQuestActivity
+import com.helpquest.quests.data.mappers.toQuestActivityEntity
+import com.helpquest.quests.domain.models.QuestActivity
+import com.helpquest.quests.domain.models.QuestActivityStatus
+import com.helpquest.quests.domain.service.ActivityRepository
+import com.helpquest.quests.domain.service.QuestConnectionClient
+import com.helpquest.quests.domain.service.QuestRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.serialization.json.Json
+
+class QuestWebSocketConnectionClient(
+    private val webSocketConnector: KtorWebSocketConnector,
+    private val questRepository: QuestRepository,
+    private val database: HelpQuestDatabase,
+    private val json: Json,
+    private val activityRepository: ActivityRepository,
+    private val applicationScope: CoroutineScope
+) : QuestConnectionClient {
+
+    override val questActivities = webSocketConnector
+        .messages
+        .mapNotNull { parseIncomingMessage(it) }
+        .onEach { handleIncomingMessage(it) }
+        .filterIsInstance<IncomingQuestWebSocketDto.NewActivityDto>()
+        .mapNotNull {
+            database.questActivityDao.getActivityById(it.id)?.toQuestActivity()
+        }
+        .shareIn(
+            applicationScope,
+            SharingStarted.WhileSubscribed(5000)
+        )
+
+    override val connectionState = webSocketConnector.connectionState
+
+    override suspend fun addQuestActivity(activity: QuestActivity): EmptyResult<ConnectionError> {
+        val outgoingDto = activity.toNewActivity()
+        val webSocketMessage = WebSocketMessageDto(
+            type = outgoingDto.type.name,
+            payload = json.encodeToString(outgoingDto)
+        )
+        val rawJsonPayload = json.encodeToString(webSocketMessage)
+
+        return webSocketConnector
+            .sendMessage(rawJsonPayload)
+            .onFailure { error ->
+                activityRepository.updateActivityStatus(
+                    activityId = activity.activityId,
+                    status = QuestActivityStatus.ERROR
+                )
+            }
+    }
+
+    private fun parseIncomingMessage(message: WebSocketMessageDto): IncomingQuestWebSocketDto? {
+        return when (message.type) {
+            IncomingQuestWebSocketType.NEW_ACTIVITY.name -> {
+                json.decodeFromString<IncomingQuestWebSocketDto.NewActivityDto>(message.payload)
+            }
+
+            IncomingQuestWebSocketType.ACTIVITY_DELETED.name -> {
+                json.decodeFromString<IncomingQuestWebSocketDto.ActivityDeletedDto>(message.payload)
+            }
+
+            IncomingQuestWebSocketType.QUEST_PARTICIPANTS_CHANGED.name -> {
+                json.decodeFromString<IncomingQuestWebSocketDto.QuestParticipantsChangedDto>(message.payload)
+            }
+
+            else -> null
+        }
+    }
+
+    private suspend fun handleIncomingMessage(message: IncomingQuestWebSocketDto) {
+        when (message) {
+            is IncomingQuestWebSocketDto.QuestParticipantsChangedDto -> refreshQuest(message)
+            is IncomingQuestWebSocketDto.ActivityDeletedDto -> deleteActivity(message)
+            is IncomingQuestWebSocketDto.NewActivityDto -> handleNewActivity(message)
+        }
+    }
+
+    private suspend fun refreshQuest(message: IncomingQuestWebSocketDto.QuestParticipantsChangedDto) {
+        questRepository.fetchQuestById(message.questId)
+    }
+
+    private suspend fun deleteActivity(message: IncomingQuestWebSocketDto.ActivityDeletedDto) {
+        database.questActivityDao.deleteActivityById(message.activityId)
+    }
+
+    private suspend fun handleNewActivity(message: IncomingQuestWebSocketDto.NewActivityDto) {
+        val questExists = database.questLogDao.getQuestById(message.questId) != null
+        if (!questExists) {
+            questRepository.fetchQuestById(message.questId)
+        }
+
+        val entity = message.toQuestActivityEntity()
+        database.questActivityDao.upsertActivity(entity)
+    }
+}
