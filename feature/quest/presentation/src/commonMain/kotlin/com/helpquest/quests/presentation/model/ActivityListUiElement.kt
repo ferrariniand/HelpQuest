@@ -10,7 +10,7 @@ sealed class ActivityListUiElement(open val id: String) {
         override val id: String,
         val content: String,
         val actor: ParticipantUi,
-        val ActivityStatus: QuestActivityStatus,
+        val activityStatus: QuestActivityStatus,
         val isMenuOpen: Boolean = false,
         val formattedStartTime: UiText,
         val formattedEndTime: UiText? = null,

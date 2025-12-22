@@ -63,6 +63,9 @@ fun QuestDetailRoot(
                     event.error.asStringAsync()
                 )
             }
+            QuestDetailEvent.OnNewActivity -> {
+                // TODO: Auto scroll to bottom
+            }
         }
     }
     LaunchedEffect(questId) {
@@ -268,7 +271,7 @@ private fun QuestDetailScreenActivitysLightPreview() {
                             username = "John",
                             initials = "JO"
                         ),
-                        ActivityStatus = QuestActivityStatus.IN_PROGRESS,
+                        activityStatus = QuestActivityStatus.IN_PROGRESS,
                         isMenuOpen = false,
                         formattedStartTime = UiText.DynamicString("Friday, Aug 20"),
                     )
@@ -334,7 +337,7 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                             username = "John",
                             initials = "JO"
                         ),
-                        ActivityStatus = QuestActivityStatus.IN_PROGRESS,
+                        activityStatus = QuestActivityStatus.IN_PROGRESS,
                         isMenuOpen = false,
                         formattedStartTime = UiText.DynamicString("Friday, Aug 20"),
                     )

@@ -2,15 +2,19 @@ package com.helpquest.quests.presentation.quest_board_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.helpquest.quests.domain.service.QuestConnectionClient
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class QuestBoardDetailViewModel : ViewModel() {
+class QuestBoardDetailViewModel(
+    private val connectionClient: QuestConnectionClient
+) : ViewModel() {
 
     private var hasLoadedInitialData = false
 
@@ -21,6 +25,7 @@ class QuestBoardDetailViewModel : ViewModel() {
         .onStart {
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
+                connectionClient.questActivities.launchIn(viewModelScope)
                 hasLoadedInitialData = true
             }
         }
