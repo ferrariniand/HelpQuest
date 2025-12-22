@@ -2,15 +2,19 @@ package com.helpquest.chat.presentation.chat_list_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.helpquest.chat.domain.service.ChatConnectionClient
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class ChatListDetailViewModel : ViewModel() {
+class ChatListDetailViewModel(
+    private val connectionClient: ChatConnectionClient
+) : ViewModel() {
 
     private var hasLoadedInitialData = false
 
@@ -21,6 +25,7 @@ class ChatListDetailViewModel : ViewModel() {
         .onStart {
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
+                connectionClient.chatMessages.launchIn(viewModelScope)
                 hasLoadedInitialData = true
             }
         }

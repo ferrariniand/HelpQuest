@@ -75,6 +75,9 @@ fun ChatDetailRoot(
                     event.error.asStringAsync()
                 )
             }
+            ChatDetailEvent.OnNewMessage -> {
+                // TODO: Auto scroll to bottom
+            }
         }
     }
     LaunchedEffect(chatId) {
