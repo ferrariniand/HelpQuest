@@ -1,0 +1,8 @@
+package com.helpquest.core.database.entities.quest
+
+const val ACTIVITY_STATUS_PENDING = "PENDING"
+const val ACTIVITY_STATUS_IN_PROGRESS = "IN_PROGRESS"
+const val ACTIVITY_STATUS_ON_HOLD = "ON_HOLD"
+const val ACTIVITY_STATUS_COMPLETED = "COMPLETED"
+const val ACTIVITY_STATUS_DECLINED = "DECLINED"
+const val ACTIVITY_STATUS_ERROR = "ERROR"
