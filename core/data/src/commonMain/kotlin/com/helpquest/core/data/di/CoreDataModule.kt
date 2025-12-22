@@ -3,6 +3,7 @@ package com.helpquest.core.data.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.helpquest.core.data.logging.KermitLogger
+import com.helpquest.core.data.networking.ConnectionRetryHandler
 import com.helpquest.core.data.networking.KtorWebSocketConnector
 import com.helpquest.core.database.DatabaseFactory
 import com.helpquest.core.domain.logging.HelpQuestLogger
@@ -17,6 +18,7 @@ val coreDataModule = module {
     includes(platformCoreDataModule)
     includes(variantCoreDataModule)
     single<HelpQuestLogger> { KermitLogger }
+    singleOf(::ConnectionRetryHandler)
     singleOf(::KtorWebSocketConnector)
     single {
         Json {

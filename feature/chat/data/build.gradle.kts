@@ -28,6 +28,7 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(libs.kotlinx.datetime)
 
                 implementation(projects.feature.chat.domain)
                 implementation(projects.core.database)

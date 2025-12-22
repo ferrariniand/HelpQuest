@@ -20,6 +20,7 @@ kotlin {
                 implementation(libs.material3.adaptive)
                 implementation(libs.jetbrains.lifecycle.compose)
                 implementation(libs.bundles.koin.common)
+                implementation(libs.kotlinx.datetime)
 
 
                 implementation(projects.core.domain)

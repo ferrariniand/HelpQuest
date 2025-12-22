@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.helpquest.core.data.auth.DATA_STORE_FILE_NAME
 import com.helpquest.core.data.auth.createDataStore
 import com.helpquest.core.data.lifecycle.AppLifecycleObserver
+import com.helpquest.core.data.networking.ConnectionErrorHandler
 import com.helpquest.core.data.networking.ConnectivityObserver
 import com.helpquest.core.database.DatabaseFactory
 import io.ktor.client.engine.HttpClientEngine
@@ -20,5 +21,5 @@ actual val platformCoreDataModule = module {
     single { DatabaseFactory() }
     singleOf(::AppLifecycleObserver)
     singleOf(::ConnectivityObserver)
-
+    singleOf(::ConnectionErrorHandler)
 }
