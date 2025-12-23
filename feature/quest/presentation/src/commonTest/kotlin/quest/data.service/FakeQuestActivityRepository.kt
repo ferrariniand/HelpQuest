@@ -8,6 +8,7 @@ import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.quests.domain.models.ActivityWithActor
+import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
 import com.helpquest.quests.domain.service.ActivityRepository
@@ -55,7 +56,7 @@ class FakeQuestActivityRepository : ActivityRepository {
         questId = questId,
         actorId = participant.userId,
         content = "test second activity content",
-        activityStatus = QuestActivityStatus.PENDING,
+        activityStatus = QuestActivityStatus.OPEN,
         startActivityAt = Clock.System.now(),
         endActivityAt = null
     )
@@ -74,7 +75,7 @@ class FakeQuestActivityRepository : ActivityRepository {
     val activityWithActor2 = ActivityWithActor(
         activity = activity2,
         actor = participant,
-        activityStatus = QuestActivityStatus.PENDING,
+        activityStatus = QuestActivityStatus.OPEN,
     )
 
     val activityWithActorList = mutableListOf(
@@ -91,6 +92,8 @@ class FakeQuestActivityRepository : ActivityRepository {
     var updateActivityStatusResult: EmptyResult<DataError.Local> =
         Result.Success(activity1.activityStatus).asEmptyResult()
 
+    var addActivityResult: EmptyResult<DataError> =
+        Result.Success(activity1).asEmptyResult()
 
     override suspend fun updateActivityStatus(
         activityId: String,
@@ -108,6 +111,10 @@ class FakeQuestActivityRepository : ActivityRepository {
 
     override fun getActivitiesForQuest(questId: String): Flow<List<ActivityWithActor>> {
         return flowOf(activityWithActorList)
+    }
+
+    override suspend fun addActivity(activity: OutgoingNewActivity): EmptyResult<DataError> {
+        return addActivityResult
     }
 
 }

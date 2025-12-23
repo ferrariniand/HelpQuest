@@ -4,17 +4,10 @@ package com.helpquest.quests.data.service
 import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.networking.KtorWebSocketConnector
 import com.helpquest.core.database.HelpQuestDatabase
-import com.helpquest.core.domain.util.ConnectionError
-import com.helpquest.core.domain.util.EmptyResult
-import com.helpquest.core.domain.util.onFailure
 import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketDto
 import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketType
-import com.helpquest.quests.data.mappers.toNewActivity
 import com.helpquest.quests.data.mappers.toQuestActivity
 import com.helpquest.quests.data.mappers.toQuestActivityEntity
-import com.helpquest.quests.domain.models.QuestActivity
-import com.helpquest.quests.domain.models.QuestActivityStatus
-import com.helpquest.quests.domain.service.ActivityRepository
 import com.helpquest.quests.domain.service.QuestConnectionClient
 import com.helpquest.quests.domain.service.QuestRepository
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +23,6 @@ class QuestWebSocketConnectionClient(
     private val questRepository: QuestRepository,
     private val database: HelpQuestDatabase,
     private val json: Json,
-    private val activityRepository: ActivityRepository,
     private val applicationScope: CoroutineScope
 ) : QuestConnectionClient {
 
@@ -48,24 +40,6 @@ class QuestWebSocketConnectionClient(
         )
 
     override val connectionState = webSocketConnector.connectionState
-
-    override suspend fun addQuestActivity(activity: QuestActivity): EmptyResult<ConnectionError> {
-        val outgoingDto = activity.toNewActivity()
-        val webSocketMessage = WebSocketMessageDto(
-            type = outgoingDto.type.name,
-            payload = json.encodeToString(outgoingDto)
-        )
-        val rawJsonPayload = json.encodeToString(webSocketMessage)
-
-        return webSocketConnector
-            .sendMessage(rawJsonPayload)
-            .onFailure { error ->
-                activityRepository.updateActivityStatus(
-                    activityId = activity.activityId,
-                    status = QuestActivityStatus.ERROR
-                )
-            }
-    }
 
     private fun parseIncomingMessage(message: WebSocketMessageDto): IncomingQuestWebSocketDto? {
         return when (message.type) {

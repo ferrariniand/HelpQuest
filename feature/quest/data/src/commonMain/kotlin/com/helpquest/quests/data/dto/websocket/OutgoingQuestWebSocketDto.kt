@@ -7,14 +7,13 @@ enum class OutgoingQuestWebSocketType {
 }
 
 @Serializable
-sealed class OutgoingQuestWebSocketDto(
-    val type: OutgoingQuestWebSocketType
-) {
+sealed interface OutgoingQuestWebSocketDto {
 
     @Serializable
     data class NewActivity(
         val questId: String,
         val activityId: String,
-        val content: String
-    ) : OutgoingQuestWebSocketDto(OutgoingQuestWebSocketType.NEW_ACTIVITY)
+        val content: String,
+        val type: OutgoingQuestWebSocketType = OutgoingQuestWebSocketType.NEW_ACTIVITY
+    ) : OutgoingQuestWebSocketDto
 }

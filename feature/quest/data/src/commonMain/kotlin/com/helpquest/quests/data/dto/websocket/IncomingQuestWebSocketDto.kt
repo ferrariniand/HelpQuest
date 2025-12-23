@@ -9,9 +9,7 @@ enum class IncomingQuestWebSocketType {
 }
 
 @Serializable
-sealed class IncomingQuestWebSocketDto(
-    val type: IncomingQuestWebSocketType
-) {
+sealed interface IncomingQuestWebSocketDto {
 
     @Serializable
     data class NewActivityDto(
@@ -21,17 +19,20 @@ sealed class IncomingQuestWebSocketDto(
         val actorId: String,
         val activityStatus: String,
         val startActivityAt: String,
-        val endActivityAt: String? = null
-    ) : IncomingQuestWebSocketDto(IncomingQuestWebSocketType.NEW_ACTIVITY)
+        val endActivityAt: String? = null,
+        val type: IncomingQuestWebSocketType = IncomingQuestWebSocketType.NEW_ACTIVITY
+    ) : IncomingQuestWebSocketDto
 
     @Serializable
     data class ActivityDeletedDto(
         val activityId: String,
-        val questId: String
-    ) : IncomingQuestWebSocketDto(IncomingQuestWebSocketType.ACTIVITY_DELETED)
+        val questId: String,
+        val type: IncomingQuestWebSocketType = IncomingQuestWebSocketType.ACTIVITY_DELETED
+    ) : IncomingQuestWebSocketDto
 
     @Serializable
     data class QuestParticipantsChangedDto(
-        val questId: String
-    ) : IncomingQuestWebSocketDto(IncomingQuestWebSocketType.QUEST_PARTICIPANTS_CHANGED)
+        val questId: String,
+        val type: IncomingQuestWebSocketType = IncomingQuestWebSocketType.QUEST_PARTICIPANTS_CHANGED
+    ) : IncomingQuestWebSocketDto
 }

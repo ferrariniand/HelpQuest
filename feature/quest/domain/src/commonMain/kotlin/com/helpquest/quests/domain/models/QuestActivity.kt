@@ -8,7 +8,8 @@ import kotlin.time.Instant
 
 //TODO TO DEFINE THE USAGE AND THE PROPERTIES OF THE CLASS
 enum class QuestActivityStatus {
-    PENDING,
+    CREATING,
+    OPEN,
     IN_PROGRESS,
     ON_HOLD,
     COMPLETED,

@@ -8,8 +8,10 @@ import com.helpquest.core.database.entities.quest.QuestActivityEntity
 import com.helpquest.quests.data.dto.QuestActivityDto
 import com.helpquest.quests.data.dto.websocket.IncomingQuestWebSocketDto
 import com.helpquest.quests.data.dto.websocket.OutgoingQuestWebSocketDto
+import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -98,5 +100,28 @@ fun IncomingQuestWebSocketDto.NewActivityDto.toQuestActivityEntity(): QuestActiv
             Instant.parse(it).toEpochMilliseconds()
         },
         activityStatus = activityStatus
+    )
+}
+
+fun OutgoingNewActivity.toWebSocketNewActivityDto(): OutgoingQuestWebSocketDto.NewActivity {
+    return OutgoingQuestWebSocketDto.NewActivity(
+        questId = questId,
+        activityId = activityId,
+        content = content
+    )
+}
+
+fun OutgoingQuestWebSocketDto.NewActivity.toNewActivityEntity(
+    actorId: String,
+    activityStatus: QuestActivityStatus
+): QuestActivityEntity {
+    return QuestActivityEntity(
+        activityId = activityId,
+        questId = questId,
+        content = content,
+        actorId = actorId,
+        activityStatus = activityStatus.name,
+        startTimestamp = Clock.System.now().toEpochMilliseconds(),
+        endTimestamp = null
     )
 }
