@@ -29,11 +29,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.supervisorScope
 
 class OfflineFirstChatRepository(
+    private val database: HelpQuestDatabase,
     private val chatService: ChatService,
-    private val db: HelpQuestDatabase
 ) : ChatRepository {
     override fun getChats(): Flow<List<Chat>> {
-        return db.chatDao.getChatsWithParticipants()
+        return database.chatDao.getChatsWithParticipants()
             .map { allChatWithParticipants ->
                 supervisorScope {
                     allChatWithParticipants
@@ -55,7 +55,7 @@ class OfflineFirstChatRepository(
     }
 
     override fun getChatInfoById(chatId: String): Flow<ChatInfo> {
-        return db.chatDao.getChatInfoById(chatId)
+        return database.chatDao.getChatInfoById(chatId)
             .filterNotNull()
             .map { chatInfo ->
                 ChatInfoEntity(
@@ -68,7 +68,7 @@ class OfflineFirstChatRepository(
     }
 
     override fun getActiveParticipantsByChatId(chatId: String): Flow<List<Participant>> {
-        return db.chatDao.getActiveParticipantsByChatId(chatId)
+        return database.chatDao.getActiveParticipantsByChatId(chatId)
             .map { participants ->
                 participants.map { it.toParticipant() }
             }
@@ -86,11 +86,11 @@ class OfflineFirstChatRepository(
                     )
                 }
 
-                db.chatDao.upsertChatsWithParticipantsAndCrossRefs(
+                database.chatDao.upsertChatsWithParticipantsAndCrossRefs(
                     chats = chatsWithParticipants,
-                    participantDao = db.participantDao,
-                    crossRefDao = db.chatParticipantsCrossRefDao,
-                    messageDao = db.chatMessageDao
+                    participantDao = database.participantDao,
+                    crossRefDao = database.chatParticipantsCrossRefDao,
+                    messageDao = database.chatMessageDao
                 )
             }
     }
@@ -99,11 +99,11 @@ class OfflineFirstChatRepository(
         return chatService
             .getChatById(chatId)
             .onSuccess { chat ->
-                db.chatDao.upsertChatWithParticipantsAndCrossRefs(
+                database.chatDao.upsertChatWithParticipantsAndCrossRefs(
                     chat = chat.toChatEntity(),
                     participants = chat.participants.map { it.toParticipantEntity() },
-                    participantDao = db.participantDao,
-                    crossRefDao = db.chatParticipantsCrossRefDao
+                    participantDao = database.participantDao,
+                    crossRefDao = database.chatParticipantsCrossRefDao
                 )
             }
             .asEmptyResult()
@@ -114,11 +114,11 @@ class OfflineFirstChatRepository(
         return chatService
             .createChat(otherUserIds)
             .onSuccess { chat ->
-                db.chatDao.upsertChatWithParticipantsAndCrossRefs(
+                database.chatDao.upsertChatWithParticipantsAndCrossRefs(
                     chat = chat.toChatEntity(),
                     participants = chat.participants.map { it.toParticipantEntity() },
-                    participantDao = db.participantDao,
-                    crossRefDao = db.chatParticipantsCrossRefDao
+                    participantDao = database.participantDao,
+                    crossRefDao = database.chatParticipantsCrossRefDao
                 )
             }
     }
@@ -127,7 +127,7 @@ class OfflineFirstChatRepository(
         return chatService
             .leaveChat(chatId)
             .onSuccess {
-                db.chatDao.deleteChatById(chatId)
+                database.chatDao.deleteChatById(chatId)
             }
     }
 
@@ -138,17 +138,17 @@ class OfflineFirstChatRepository(
         return chatService
             .addParticipantsToChat(chatId, userIds)
             .onSuccess { chat ->
-                db.chatDao.upsertChatWithParticipantsAndCrossRefs(
+                database.chatDao.upsertChatWithParticipantsAndCrossRefs(
                     chat = chat.toChatEntity(),
                     participants = chat.participants.map { it.toParticipantEntity() },
-                    participantDao = db.participantDao,
-                    crossRefDao = db.chatParticipantsCrossRefDao
+                    participantDao = database.participantDao,
+                    crossRefDao = database.chatParticipantsCrossRefDao
                 )
             }
     }
 
     private suspend fun List<ParticipantEntity>.onlyActive(chatId: String): List<ParticipantEntity> {
-        val activeParticipantIds = db
+        val activeParticipantIds = database
             .chatDao
             .getActiveParticipantsByChatId(chatId)
             .first()

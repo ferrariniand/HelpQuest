@@ -7,13 +7,12 @@ enum class IncomingCoreWebSocketType {
 }
 
 @Serializable
-sealed class IncomingCoreWebSocketDto(
-    val type: IncomingCoreWebSocketType
-) {
+sealed interface IncomingCoreWebSocketDto {
 
     @Serializable
     data class ProfilePictureUpdated(
         val userId: String,
-        val newUrl: String?
-    ) : IncomingCoreWebSocketDto(IncomingCoreWebSocketType.PROFILE_PICTURE_UPDATED)
+        val newUrl: String?,
+        val type: IncomingCoreWebSocketType = IncomingCoreWebSocketType.PROFILE_PICTURE_UPDATED
+    ) : IncomingCoreWebSocketDto
 }

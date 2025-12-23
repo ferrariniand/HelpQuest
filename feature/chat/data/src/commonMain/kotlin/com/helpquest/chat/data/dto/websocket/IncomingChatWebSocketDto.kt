@@ -9,9 +9,7 @@ enum class IncomingChatWebSocketType {
 }
 
 @Serializable
-sealed class IncomingChatWebSocketDto(
-    val type: IncomingChatWebSocketType
-) {
+sealed interface IncomingChatWebSocketDto {
 
     @Serializable
     data class NewMessageDto(
@@ -19,17 +17,20 @@ sealed class IncomingChatWebSocketDto(
         val chatId: String,
         val content: String,
         val senderId: String,
-        val createdAt: String
-    ) : IncomingChatWebSocketDto(IncomingChatWebSocketType.NEW_MESSAGE)
+        val createdAt: String,
+        val type: IncomingChatWebSocketType = IncomingChatWebSocketType.NEW_MESSAGE
+    ) : IncomingChatWebSocketDto
 
     @Serializable
     data class MessageDeletedDto(
         val messageId: String,
-        val chatId: String
-    ) : IncomingChatWebSocketDto(IncomingChatWebSocketType.MESSAGE_DELETED)
+        val chatId: String,
+        val type: IncomingChatWebSocketType = IncomingChatWebSocketType.MESSAGE_DELETED
+    ) : IncomingChatWebSocketDto
 
     @Serializable
     data class ChatParticipantsChangedDto(
-        val chatId: String
-    ) : IncomingChatWebSocketDto(IncomingChatWebSocketType.CHAT_PARTICIPANTS_CHANGED)
+        val chatId: String,
+        val type: IncomingChatWebSocketType = IncomingChatWebSocketType.CHAT_PARTICIPANTS_CHANGED
+    ) : IncomingChatWebSocketDto
 }

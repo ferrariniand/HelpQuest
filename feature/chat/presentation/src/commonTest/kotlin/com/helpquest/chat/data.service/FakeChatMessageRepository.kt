@@ -5,6 +5,7 @@ package com.helpquest.chat.data.service
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.models.MessageWithSender
+import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.chat.domain.service.MessageRepository
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
@@ -91,6 +92,9 @@ class FakeChatMessageRepository : MessageRepository {
     var updateMessageDeliveryStatusResult: EmptyResult<DataError.Local> =
         Result.Success(message1.deliveryStatus).asEmptyResult()
 
+    var sendMessageResult: EmptyResult<DataError> =
+        Result.Success(message1).asEmptyResult()
+
 
     override suspend fun updateMessageDeliveryStatus(
         messageId: String,
@@ -108,6 +112,10 @@ class FakeChatMessageRepository : MessageRepository {
 
     override fun getMessagesForChat(chatId: String): Flow<List<MessageWithSender>> {
         return flowOf(messageWithSenderList)
+    }
+
+    override suspend fun sendMessage(message: OutgoingNewMessage): EmptyResult<DataError> {
+        return sendMessageResult
     }
 
 }

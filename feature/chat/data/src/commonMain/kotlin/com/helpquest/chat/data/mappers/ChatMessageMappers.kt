@@ -7,8 +7,10 @@ import com.helpquest.chat.data.dto.websocket.IncomingChatWebSocketDto
 import com.helpquest.chat.data.dto.websocket.OutgoingChatWebSocketDto
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
+import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.core.database.db_view.LastMessageView
 import com.helpquest.core.database.entities.chat.ChatMessageEntity
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -88,5 +90,27 @@ fun IncomingChatWebSocketDto.NewMessageDto.toChatMessageEntity(): ChatMessageEnt
         content = content,
         timestamp = Instant.parse(createdAt).toEpochMilliseconds(),
         deliveryStatus = ChatMessageDeliveryStatus.SENT.name
+    )
+}
+
+fun OutgoingNewMessage.toWebSocketNewMessageDto(): OutgoingChatWebSocketDto.NewMessage {
+    return OutgoingChatWebSocketDto.NewMessage(
+        chatId = chatId,
+        messageId = messageId,
+        content = content
+    )
+}
+
+fun OutgoingChatWebSocketDto.NewMessage.toNewMessageEntity(
+    senderId: String,
+    deliveryStatus: ChatMessageDeliveryStatus
+): ChatMessageEntity {
+    return ChatMessageEntity(
+        messageId = messageId,
+        chatId = chatId,
+        content = content,
+        senderId = senderId,
+        deliveryStatus = deliveryStatus.name,
+        timestamp = Clock.System.now().toEpochMilliseconds()
     )
 }
