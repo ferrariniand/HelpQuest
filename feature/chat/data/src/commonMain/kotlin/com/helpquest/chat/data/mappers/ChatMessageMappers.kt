@@ -101,7 +101,7 @@ fun OutgoingNewMessage.toWebSocketNewMessageDto(): OutgoingChatWebSocketDto.NewM
     )
 }
 
-fun OutgoingChatWebSocketDto.NewMessage.toNewMessageEntity(
+fun OutgoingNewMessage.toNewMessageEntity(
     senderId: String,
     deliveryStatus: ChatMessageDeliveryStatus
 ): ChatMessageEntity {

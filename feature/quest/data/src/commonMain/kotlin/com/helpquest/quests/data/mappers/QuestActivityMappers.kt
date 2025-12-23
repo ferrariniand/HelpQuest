@@ -111,7 +111,7 @@ fun OutgoingNewActivity.toWebSocketNewActivityDto(): OutgoingQuestWebSocketDto.N
     )
 }
 
-fun OutgoingQuestWebSocketDto.NewActivity.toNewActivityEntity(
+fun OutgoingNewActivity.toNewActivityEntity(
     actorId: String,
     activityStatus: QuestActivityStatus
 ): QuestActivityEntity {

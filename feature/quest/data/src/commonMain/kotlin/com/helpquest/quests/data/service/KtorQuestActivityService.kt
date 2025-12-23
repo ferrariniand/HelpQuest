@@ -1,17 +1,26 @@
 package com.helpquest.quests.data.service
 
+import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
+import com.helpquest.core.data.networking.KtorWebSocketConnector
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.map
 import com.helpquest.quests.data.dto.QuestActivityDto
+import com.helpquest.quests.data.dto.websocket.OutgoingQuestWebSocketDto
 import com.helpquest.quests.data.mappers.toQuestActivity
+import com.helpquest.quests.data.mappers.toWebSocketNewActivityDto
+import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.service.QuestActivityService
 import io.ktor.client.HttpClient
+import kotlinx.serialization.json.Json
 
 class KtorQuestActivityService(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val json: Json,
+    private val webSocketConnector: KtorWebSocketConnector,
 ) : QuestActivityService {
     override suspend fun fetchActivities(
         questId: String,
@@ -29,5 +38,18 @@ class KtorQuestActivityService(
                 activityDto.toQuestActivity()
             }
         }
+    }
+
+    override suspend fun addActivity(activity: OutgoingNewActivity): EmptyResult<DataError.Connection> {
+        val dto = activity.toWebSocketNewActivityDto()
+        return webSocketConnector.sendMessage(dto.toJsonPayload())
+    }
+
+    private fun OutgoingQuestWebSocketDto.NewActivity.toJsonPayload(): String {
+        val webSocketMessage = WebSocketMessageDto(
+            type = type.name,
+            payload = json.encodeToString(this)
+        )
+        return json.encodeToString(webSocketMessage)
     }
 }

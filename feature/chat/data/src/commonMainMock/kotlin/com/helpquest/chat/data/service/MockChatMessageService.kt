@@ -1,8 +1,10 @@
 package com.helpquest.chat.data.service
 
 import com.helpquest.chat.domain.models.ChatMessage
+import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.chat.domain.service.ChatMessageService
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 
 class MockChatMessageService(
@@ -23,4 +25,9 @@ class MockChatMessageService(
         )
         return Result.Success(messageList)
     }
+
+    override suspend fun sendMessage(message: OutgoingNewMessage): EmptyResult<DataError.Connection> {
+        return Result.Success(Unit)
+    }
+
 }

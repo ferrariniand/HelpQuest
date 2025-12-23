@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.serialization.json.Json
 
-class CoreWebSocketConnectionClient(
+class WebSocketCoreConnectionClient(
     private val webSocketConnector: KtorWebSocketConnector,
     private val database: HelpQuestDatabase,
     private val sessionStorage: SessionStorage,
