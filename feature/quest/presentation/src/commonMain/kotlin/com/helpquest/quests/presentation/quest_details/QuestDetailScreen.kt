@@ -179,7 +179,7 @@ fun QuestDetailScreen(
 //                                .fillMaxWidth()
 //                                .weight(1f)
 //                        )
-
+                        //TODO IF the user is in the list of the participants -> SHOW THE ADD ACTIVITY BUTTON that brings to the AddActivity DialogSheet
                     }
                 }
 
