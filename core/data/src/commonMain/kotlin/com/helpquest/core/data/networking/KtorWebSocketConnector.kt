@@ -8,8 +8,8 @@ import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.lifecycle.AppLifecycleObserver
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
-import com.helpquest.core.domain.util.ConnectionError
 import com.helpquest.core.domain.util.ConnectionState
+import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import io.ktor.client.HttpClient
@@ -213,11 +213,11 @@ class KtorWebSocketConnector(
         }
     }
 
-    suspend fun sendMessage(message: String): EmptyResult<ConnectionError> {
+    suspend fun sendMessage(message: String): EmptyResult<DataError.Connection> {
         val connectionState = connectionState.value
 
         if (currentSession == null || connectionState != ConnectionState.CONNECTED) {
-            return Result.Failure(ConnectionError.NOT_CONNECTED)
+            return Result.Failure(DataError.Connection.NOT_CONNECTED)
         }
 
         return try {
@@ -226,7 +226,7 @@ class KtorWebSocketConnector(
         } catch (e: Exception) {
             coroutineContext.ensureActive()
             logger.error("Unable to send WebSocket message", e)
-            Result.Failure(ConnectionError.MESSAGE_SEND_FAILED)
+            Result.Failure(DataError.Connection.MESSAGE_SEND_FAILED)
         }
     }
 }
