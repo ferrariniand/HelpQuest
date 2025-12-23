@@ -202,7 +202,7 @@ fun ChatDetailScreen(
                             //Send Message Box is inside the same rounded box of the Message list
                             SendMessageBox(
                                 messageTextFieldState = state.messageTextFieldState,
-                                isTextInputEnabled = state.canSendMessage,
+                                isSendButtonEnabled = state.canSendMessage,
                                 connectionState = state.connectionState,
                                 onSendClick = {
                                     onAction(ChatDetailAction.OnSendMessageClick)
@@ -231,7 +231,7 @@ fun ChatDetailScreen(
                     ) {
                         SendMessageBox(
                             messageTextFieldState = state.messageTextFieldState,
-                            isTextInputEnabled = state.canSendMessage,
+                            isSendButtonEnabled = state.canSendMessage,
                             connectionState = state.connectionState,
                             onSendClick = {
                                 onAction(ChatDetailAction.OnSendMessageClick)

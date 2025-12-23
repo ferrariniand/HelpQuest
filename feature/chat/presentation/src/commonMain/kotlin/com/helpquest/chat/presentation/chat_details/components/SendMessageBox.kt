@@ -37,7 +37,7 @@ import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 @Composable
 fun SendMessageBox(
     messageTextFieldState: TextFieldState,
-    isTextInputEnabled: Boolean,
+    isSendButtonEnabled: Boolean,
     connectionState: ConnectionState,
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -47,7 +47,6 @@ fun SendMessageBox(
         state = messageTextFieldState,
         modifier = modifier,
         placeholder = stringResource(Res.string.send_a_message),
-        enabled = isTextInputEnabled,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Send
         ),
@@ -75,7 +74,7 @@ fun SendMessageBox(
             HelpQuestButton(
                 text = stringResource(Res.string.send),
                 onClick = onSendClick,
-                enabled = isConnected && isTextInputEnabled
+                enabled = isConnected && isSendButtonEnabled
             )
         }
     )
@@ -93,7 +92,7 @@ fun MessageBoxConnectedLightPreview() {
         ) {
             SendMessageBox(
                 messageTextFieldState = rememberTextFieldState(),
-                isTextInputEnabled = true,
+                isSendButtonEnabled = true,
                 connectionState = ConnectionState.CONNECTED,
                 onSendClick = {},
                 modifier = Modifier
@@ -118,7 +117,7 @@ fun MessageBoxConnectedDarkPreview() {
         ) {
             SendMessageBox(
                 messageTextFieldState = rememberTextFieldState(),
-                isTextInputEnabled = true,
+                isSendButtonEnabled = true,
                 connectionState = ConnectionState.CONNECTED,
                 onSendClick = {},
                 modifier = Modifier
@@ -140,7 +139,7 @@ fun MessageBoxDisconnectedLightPreview() {
         ) {
             SendMessageBox(
                 messageTextFieldState = rememberTextFieldState(),
-                isTextInputEnabled = false,
+                isSendButtonEnabled = false,
                 connectionState = ConnectionState.DISCONNECTED,
                 onSendClick = {},
                 modifier = Modifier
@@ -165,7 +164,7 @@ fun MessageBoxDisconnectedDarkPreview() {
         ) {
             SendMessageBox(
                 messageTextFieldState = rememberTextFieldState(),
-                isTextInputEnabled = false,
+                isSendButtonEnabled = false,
                 connectionState = ConnectionState.DISCONNECTED,
                 onSendClick = {},
                 modifier = Modifier
