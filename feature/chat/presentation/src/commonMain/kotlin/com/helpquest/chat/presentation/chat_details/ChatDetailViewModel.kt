@@ -12,6 +12,7 @@ import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.domain.service.MessageRepository
 import com.helpquest.chat.presentation.mappers.toChatUi
 import com.helpquest.chat.presentation.mappers.toMessageListUiElement
+import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.util.ConnectionState
 import com.helpquest.core.domain.util.onFailure
@@ -83,7 +84,8 @@ class ChatDetailViewModel(
         }
 
         currentState.copy(
-            chatUi = chatInfo.chat.toChatUi(authInfo.user.id)
+            chatUi = chatInfo.chat.toChatUi(authInfo.user.id),
+            messages = chatInfo.messages.map { it.toMessageListUiElement(authInfo.user.id) }
         )
     }
 
@@ -115,6 +117,7 @@ class ChatDetailViewModel(
             ChatDetailAction.OnDismissChatOptions -> updateChatOptionsState(isOpen = false)
             ChatDetailAction.OnLeaveChatClick -> onLeaveChatClick()
             ChatDetailAction.OnSendMessageClick -> sendMessage()
+            is ChatDetailAction.OnRetryClick -> retrySendMessage(action.message)
             else -> Unit
         }
     }
@@ -140,6 +143,16 @@ class ChatDetailViewModel(
                     // Clear the cache for this chat after sending
                     messageDraftCache.remove(currentChatId)
                 }
+                .onFailure { error ->
+                    eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
+                }
+        }
+    }
+
+    private fun retrySendMessage(message: MessageListUiElement.LocalUserMessage) {
+        viewModelScope.launch {
+            messageRepository
+                .retrySendMessage(message.id)
                 .onFailure { error ->
                     eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
                 }
@@ -176,17 +189,6 @@ class ChatDetailViewModel(
                 messageRepository.getMessagesForChat(chatId)
             } else emptyFlow()
         }
-            .combine(sessionStorage.observeAuthInfo()) { messages, authInfo ->
-                if (authInfo == null) {
-                    return@combine messages
-                }
-                _state.update {
-                    it.copy(
-                        messages = messages.map { it.toMessageListUiElement(authInfo.user.id) }
-                    )
-                }
-                messages
-            }
 
         val isNearBottom = state.map { it.isNearBottom }.distinctUntilChanged()
 

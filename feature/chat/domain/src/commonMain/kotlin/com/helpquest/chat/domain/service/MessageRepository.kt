@@ -24,4 +24,6 @@ interface MessageRepository {
 
     suspend fun sendMessage(message: OutgoingNewMessage): EmptyResult<DataError>
 
+    suspend fun retrySendMessage(messageId: String): EmptyResult<DataError>
+
 }

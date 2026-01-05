@@ -91,11 +91,40 @@ class OfflineFirstMessageRepository(
                 .sendMessage(message)
                 .onFailure { error ->
                     applicationScope.launch {
-                        database.chatMessageDao.upsertMessage(
-                            message.toNewMessageEntity(
-                                senderId = localUser.id,
-                                deliveryStatus = ChatMessageDeliveryStatus.FAILED
-                            )
+                        database.chatMessageDao.updateDeliveryStatus(
+                            messageId = entity.messageId,
+                            timestamp = Clock.System.now().toEpochMilliseconds(),
+                            status = ChatMessageDeliveryStatus.FAILED.name
+                        )
+                    }.join()
+                }
+        }
+    }
+
+    override suspend fun retrySendMessage(messageId: String): EmptyResult<DataError> {
+        return safeDatabaseUpdate {
+            val message = database.chatMessageDao.getMessageById(messageId)
+                ?: return Result.Failure(DataError.Local.NOT_FOUND)
+
+            database.chatMessageDao.updateDeliveryStatus(
+                messageId = messageId,
+                timestamp = Clock.System.now().toEpochMilliseconds(),
+                status = ChatMessageDeliveryStatus.SENDING.name
+            )
+
+            val outgoingNewMessage = OutgoingNewMessage(
+                chatId = message.chatId,
+                messageId = messageId,
+                content = message.content
+            )
+            return chatMessageService
+                .sendMessage(outgoingNewMessage)
+                .onFailure {
+                    applicationScope.launch {
+                        database.chatMessageDao.updateDeliveryStatus(
+                            messageId = messageId,
+                            timestamp = Clock.System.now().toEpochMilliseconds(),
+                            status = ChatMessageDeliveryStatus.FAILED.name
                         )
                     }.join()
                 }
