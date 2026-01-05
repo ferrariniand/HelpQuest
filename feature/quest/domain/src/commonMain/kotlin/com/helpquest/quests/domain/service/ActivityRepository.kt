@@ -25,4 +25,6 @@ interface ActivityRepository {
 
     suspend fun addActivity(activity: OutgoingNewActivity): EmptyResult<DataError>
 
+    suspend fun retryAddActivity(activityId: String): EmptyResult<DataError>
+
 }

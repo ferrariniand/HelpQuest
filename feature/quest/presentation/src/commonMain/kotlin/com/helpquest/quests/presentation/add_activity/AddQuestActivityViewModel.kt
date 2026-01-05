@@ -14,6 +14,7 @@ import com.helpquest.core.presentation.util.toUiText
 import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.service.ActivityRepository
 import com.helpquest.quests.domain.service.QuestConnectionClient
+import com.helpquest.quests.presentation.model.ActivityListUiElement
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -68,6 +69,7 @@ class AddQuestActivityViewModel(
     fun onAction(action: AddQuestActivityAction) {
         when (action) {
             AddQuestActivityAction.OnCreateActivityClick -> createActivity()
+            is AddQuestActivityAction.OnRetryClick -> retryCreate(action.activity)
             else -> TODO("Handle actions")
         }
     }
@@ -91,6 +93,16 @@ class AddQuestActivityViewModel(
                 .onSuccess {
                     state.value.activityTextFieldState.clearText()
                 }
+                .onFailure { error ->
+                    eventChannel.send(AddQuestActivityEvent.OnError(error.toUiText()))
+                }
+        }
+    }
+
+    private fun retryCreate(activity: ActivityListUiElement.ActivityItem) {
+        viewModelScope.launch {
+            activityRepository
+                .retryAddActivity(activity.id)
                 .onFailure { error ->
                     eventChannel.send(AddQuestActivityEvent.OnError(error.toUiText()))
                 }

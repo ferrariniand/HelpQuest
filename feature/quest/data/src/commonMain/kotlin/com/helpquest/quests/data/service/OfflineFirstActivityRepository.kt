@@ -86,11 +86,37 @@ class OfflineFirstActivityRepository(
                 .addActivity(activity)
                 .onFailure { error ->
                     applicationScope.launch {
-                        database.questActivityDao.upsertActivity(
-                            activity.toNewActivityEntity(
-                                actorId = localUser.id,
-                                activityStatus = QuestActivityStatus.ERROR
+                        database.questActivityDao.updateActivityStatus(
+                            activityId = entity.activityId,
+                            status = QuestActivityStatus.ERROR.name
                             )
+                    }.join()
+                }
+        }
+    }
+
+    override suspend fun retryAddActivity(activityId: String): EmptyResult<DataError> {
+        return safeDatabaseUpdate {
+            val activity = database.questActivityDao.getActivityById(activityId)
+                ?: return Result.Failure(DataError.Local.NOT_FOUND)
+
+            database.questActivityDao.updateActivityStatus(
+                activityId = activityId,
+                status = QuestActivityStatus.CREATING.name
+            )
+
+            val outgoingNewActivity = OutgoingNewActivity(
+                questId = activity.questId,
+                activityId = activityId,
+                content = activity.content
+            )
+            return questActivityService
+                .addActivity(outgoingNewActivity)
+                .onFailure {
+                    applicationScope.launch {
+                        database.questActivityDao.updateActivityStatus(
+                            activityId = activityId,
+                            status = QuestActivityStatus.ERROR.name
                         )
                     }.join()
                 }
