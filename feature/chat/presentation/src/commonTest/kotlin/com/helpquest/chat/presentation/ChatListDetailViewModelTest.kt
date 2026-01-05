@@ -7,6 +7,8 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.helpquest.chat.data.service.FakeChatConnectionClient
+import com.helpquest.chat.domain.service.ChatConnectionClient
 import com.helpquest.chat.presentation.chat_list_detail.ChatListDetailAction
 import com.helpquest.chat.presentation.chat_list_detail.ChatListDetailEvent
 import com.helpquest.chat.presentation.chat_list_detail.ChatListDetailViewModel
@@ -20,20 +22,32 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import org.koin.mp.KoinPlatform.stopKoin
 import org.koin.test.KoinTest
+import org.koin.test.inject
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class ChatListDetailViewModelTest : KoinTest {
 
+
+    private val fakeChatConnectionClient by inject<FakeChatConnectionClient>()
+
     private lateinit var viewModel: ChatListDetailViewModel
+
+    val overrideChatDataModule = module {
+        singleOf(::FakeChatConnectionClient) bind ChatConnectionClient::class
+    }
 
     @BeforeTest
     fun setup() {
         startKoin {
             modules(
+                overrideChatDataModule,
                 chatPresentationModule,
             )
         }
@@ -49,14 +63,14 @@ class ChatListDetailViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnChatClick updates state`() = runBlocking {
-        // Verify that when `OnChatClick` action is triggered with a specific chatId, the `selectedChatId` in the state flow is correctly updated to that chatId.
-        viewModel = ChatListDetailViewModel()
+        // Verify that when `OnSelectChat` action is triggered with a specific chatId, the `selectedChatId` in the state flow is correctly updated to that chatId.
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
             assertThat(initState.dialogState).isEqualTo(DialogState.Hidden)
 
-            viewModel.onAction(ChatListDetailAction.OnChatClick(chatId = "id"))
+            viewModel.onAction(ChatListDetailAction.OnSelectChat(chatId = "id"))
             val resultState = viewModel.state.first()
 
             assertThat(resultState.selectedChatId).isEqualTo("id")
@@ -69,7 +83,7 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnCreateChatClick updates dialog state`() = runBlocking {
         // Verify that `OnManageChatClick` action updates the `dialogState` in the state flow to `DialogState.CreateChat`.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
@@ -88,7 +102,7 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnDismissCurrentDialog updates dialog state and sends event`() = runBlocking {
         // Verify that `OnDismissCurrentDialog` action updates the `dialogState` in the state flow to `DialogState.Hidden`.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
@@ -117,7 +131,7 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnDismissCurrentDialog updates dialog state`() = runBlocking {
         // Verify that `OnDismissCurrentDialog` action updates the `dialogState` in the state flow to `DialogState.Hidden`.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
@@ -142,13 +156,13 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnManageChatClick with selected chat`() = runBlocking {
         // Given the state has a non-null `selectedChatId`, verify that `OnManageChatClick` action updates the `dialogState` to `DialogState.ManageChat` with the correct chatId.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
             assertThat(initState.dialogState).isEqualTo(DialogState.Hidden)
 
-            viewModel.onAction(ChatListDetailAction.OnChatClick(chatId = "id"))
+            viewModel.onAction(ChatListDetailAction.OnSelectChat(chatId = "id"))
             val resultStateChatClick = viewModel.state.first()
 
             assertThat(resultStateChatClick.selectedChatId).isEqualTo("id")
@@ -165,7 +179,7 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnManageChatClick with no selected chat`() = runBlocking {
         // Given the state has a null `selectedChatId`, verify that `OnManageChatClick` action does not change the `dialogState` and no update is emitted.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()
@@ -183,7 +197,7 @@ class ChatListDetailViewModelTest : KoinTest {
     @Test
     fun `onAction OnProfileSettingsClick updates dialog state`() = runBlocking {
         // Verify that `OnProfileSettingsClick` action updates the `dialogState` in the state flow to `DialogState.Profile`.
-        viewModel = ChatListDetailViewModel()
+        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
         viewModel.state.test {
             val initState = awaitItem()
             assertThat(initState.selectedChatId).isNull()

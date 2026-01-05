@@ -22,6 +22,9 @@ class MockChatMessageService(
             mockResponse.message2.copy(
                 chatId = chatId
             ),
+            mockResponse.message3.copy(
+                chatId = chatId
+            ),
         )
         return Result.Success(messageList)
     }

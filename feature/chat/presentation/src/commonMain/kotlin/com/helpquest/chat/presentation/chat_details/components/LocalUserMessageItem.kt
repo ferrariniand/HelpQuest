@@ -49,7 +49,6 @@ fun LocalUserMessageItem(
     ) {
         Box(
             modifier = Modifier
-                .weight(1f)
                 .padding(start = 56.dp)
         ) {
             HelpQuestChatBubble(

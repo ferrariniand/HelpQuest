@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.chat.presentation.chat_list.components.ChatListHeader
 import com.helpquest.chat.presentation.chat_list.components.ChatListItemUi
-import com.helpquest.chat.presentation.model.ChatUi
 import com.helpquest.core.designsystem.components.buttons.HelpQuestFloatingActionButton
 import com.helpquest.core.designsystem.components.for_scrollables.EmptyListSection
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
@@ -47,8 +46,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatListRoot(
-    chatId: String?,
-    onChatClick: (ChatUi) -> Unit,
+    selectedChatId: String?,
+    onSelectChat: (String?) -> Unit,
     onCreateChatClick: () -> Unit,
     onProfileSettingsClick: () -> Unit,
     viewModel: ChatListViewModel = koinViewModel()
@@ -64,18 +63,17 @@ fun ChatListRoot(
     val snackbarHostState = remember { SnackbarHostState() }
 
 
-    LaunchedEffect(chatId) {
-        viewModel.onAction(ChatListAction.OnSelectChat(chatId))
+    LaunchedEffect(selectedChatId) {
+        viewModel.onAction(ChatListAction.OnSelectChat(selectedChatId))
     }
 
     ChatListScreen(
         state = state,
         onAction = { action ->
             when (action) {
-                is ChatListAction.OnChatClick -> onChatClick(action.chat)
+                is ChatListAction.OnSelectChat -> onSelectChat(action.chatId)
                 ChatListAction.OnCreateChatClick -> onCreateChatClick()
                 ChatListAction.OnProfileSettingsClick -> onProfileSettingsClick()
-                else -> Unit
             }
             viewModel.onAction(action)
         },
@@ -158,7 +156,7 @@ fun ChatListScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        onAction(ChatListAction.OnChatClick(chatUi))
+                                        onAction(ChatListAction.OnSelectChat(chatUi.id))
                                     }
                             )
                             HelpQuestHorizontalDivider()

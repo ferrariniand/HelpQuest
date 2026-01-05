@@ -4,6 +4,8 @@ package com.helpquest.chat.data.di
 import com.helpquest.chat.data.service.KtorChatMessageService
 import com.helpquest.chat.data.service.KtorChatParticipantService
 import com.helpquest.chat.data.service.KtorChatService
+import com.helpquest.chat.data.service.WebSocketChatConnectionClient
+import com.helpquest.chat.domain.service.ChatConnectionClient
 import com.helpquest.chat.domain.service.ChatMessageService
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatService
@@ -17,4 +19,5 @@ val variantChatDataModule = module {
     singleOf(::KtorChatParticipantService) bind ChatParticipantService::class
     singleOf(::KtorChatService) bind ChatService::class
     singleOf(::KtorChatMessageService) bind ChatMessageService::class
+    singleOf(::WebSocketChatConnectionClient) bind ChatConnectionClient::class
 }

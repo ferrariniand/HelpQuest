@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -46,6 +47,8 @@ import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.empty_chat
 import helpquest.feature.chat.presentation.generated.resources.no_chat_selected
 import helpquest.feature.chat.presentation.generated.resources.select_a_chat
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -84,10 +87,16 @@ fun ChatDetailRoot(
         viewModel.onAction(ChatDetailAction.OnSelectChat(chatId))
     }
 
+    val scope = rememberCoroutineScope()
     BackHandler(
         enabled = showBackButton
     ) {
-        viewModel.onAction(ChatDetailAction.OnSelectChat(null))
+        scope.launch {
+            // Add artificial delay to prevent detail back animation from showing
+            // an unselected chat the moment we go back
+            delay(300)
+            viewModel.onAction(ChatDetailAction.OnSelectChat(null))
+        }
         onBack()
     }
 

@@ -4,7 +4,9 @@
     <string name="offline">Offline</string>
     <string name="reconnecting">Reconnecting...</string>
     <string name="today">Today</string>
+    <string name="today_with_time">Today, %1$s</string>
     <string name="yesterday">Yesterday</string>
+    <string name="yesterday_with_time">Yesterday, %1$s</string>
     <string name="error_disk_full">Oops, it looks like your storage is full!</string>
     <string name="error_not_found">Couldn't find the requested item</string>
     <string name="error_unknown_short">Unknown error</string>

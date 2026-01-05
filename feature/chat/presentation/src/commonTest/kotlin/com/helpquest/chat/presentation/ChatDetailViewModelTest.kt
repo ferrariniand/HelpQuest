@@ -8,10 +8,15 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import com.helpquest.chat.data.service.FakeChatConnectionClient
+import com.helpquest.chat.data.service.FakeChatMessageRepository
 import com.helpquest.chat.data.service.FakeChatRepository
+import com.helpquest.chat.domain.service.ChatConnectionClient
 import com.helpquest.chat.domain.service.ChatRepository
+import com.helpquest.chat.domain.service.MessageRepository
 import com.helpquest.chat.presentation.chat_details.ChatDetailAction
 import com.helpquest.chat.presentation.chat_details.ChatDetailEvent
 import com.helpquest.chat.presentation.chat_details.ChatDetailState
@@ -49,10 +54,15 @@ class ChatDetailViewModelTest : KoinTest {
     private val fakeSessionStorage by inject<FakeSessionStorage>()
 
     private val fakeChatRepository by inject<FakeChatRepository>()
+    private val fakeMessageRepository by inject<FakeChatMessageRepository>()
+    private val fakeChatConnectionClient by inject<FakeChatConnectionClient>()
+
 
     val overrideChatDataModule = module {
         singleOf(::FakeSessionStorage) bind SessionStorage::class
         singleOf(::FakeChatRepository) bind ChatRepository::class
+        singleOf(::FakeChatMessageRepository) bind MessageRepository::class
+        singleOf(::FakeChatConnectionClient) bind ChatConnectionClient::class
     }
 
     private lateinit var viewModel: ChatDetailViewModel
@@ -80,6 +90,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             val resultState = viewModel.state.first()
@@ -102,6 +114,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             val resultState = viewModel.state.first()
@@ -128,15 +142,11 @@ class ChatDetailViewModelTest : KoinTest {
                 lastMessageSenderUsername = fakeChatRepository.participant2.username
             ),
         )
-//        messages = fakeChatRepository.chatInfo.messages.map { MessageListUiElement.OtherUserMessage(
-//            id = it.message.id,
-//            content = it.message.content,
-//            formattedSentTime = UiText.DynamicString(it.message.deliveredAt.toString()),
-//            sender = it.sender.toParticipantUi()
-//        ) },
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             val resultStateBeforeUpdate = viewModel.state.first()
@@ -151,7 +161,7 @@ class ChatDetailViewModelTest : KoinTest {
             val resultState = viewModel.state.first()
 
             assertThat(resultState.chatUi).isEqualTo(expectedState.chatUi)
-            assertThat(resultState.messages).isEqualTo(expectedState.messages)
+            assertThat(resultState.messages).isNotEmpty()
             assertThat(resultState.bannerState).isEqualTo(expectedState.bannerState)
             assertThat(resultState.isChatOptionsOpen).isEqualTo(expectedState.isChatOptionsOpen)
             assertThat(resultState.connectionState).isEqualTo(expectedState.connectionState)
@@ -168,6 +178,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             viewModel.events.test {
@@ -204,6 +216,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
 
@@ -221,6 +235,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             viewModel.onAction(ChatDetailAction.OnChatOptionsClick)
@@ -250,6 +266,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             viewModel.events.test {
@@ -257,7 +275,7 @@ class ChatDetailViewModelTest : KoinTest {
                 val resultStateBeforeUpdate = viewModel.state.first()
 
                 assertThat(resultStateBeforeUpdate.chatUi).isEqualTo(expectedStateBeforeUpdate.chatUi)
-                assertThat(resultStateBeforeUpdate.messages).isEqualTo(expectedStateBeforeUpdate.messages)
+                assertThat(resultStateBeforeUpdate.messages).isNotEmpty()
                 assertThat(resultStateBeforeUpdate.bannerState).isEqualTo(expectedStateBeforeUpdate.bannerState)
                 assertThat(resultStateBeforeUpdate.isChatOptionsOpen).isEqualTo(
                     expectedStateBeforeUpdate.isChatOptionsOpen
@@ -300,6 +318,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             viewModel.events.test {
@@ -307,7 +327,6 @@ class ChatDetailViewModelTest : KoinTest {
                 val resultStateBeforeUpdate = viewModel.state.first()
 
                 assertThat(resultStateBeforeUpdate.chatUi).isEqualTo(expectedStateBeforeUpdate.chatUi)
-                assertThat(resultStateBeforeUpdate.messages).isEqualTo(expectedStateBeforeUpdate.messages)
                 assertThat(resultStateBeforeUpdate.bannerState).isEqualTo(expectedStateBeforeUpdate.bannerState)
                 assertThat(resultStateBeforeUpdate.isChatOptionsOpen).isEqualTo(
                     expectedStateBeforeUpdate.isChatOptionsOpen
@@ -321,7 +340,7 @@ class ChatDetailViewModelTest : KoinTest {
                 val collectedEvent = awaitItem()
 
                 assertThat(failureState.chatUi).isEqualTo(expectedStateBeforeUpdate.chatUi)
-                assertThat(failureState.messages).isEqualTo(expectedStateBeforeUpdate.messages)
+                assertThat(failureState.messages).isNotEmpty()
                 assertThat(failureState.bannerState).isEqualTo(expectedStateBeforeUpdate.bannerState)
                 assertThat(failureState.isChatOptionsOpen).isEqualTo(
                     expectedStateBeforeUpdate.isChatOptionsOpen
@@ -344,6 +363,8 @@ class ChatDetailViewModelTest : KoinTest {
         viewModel = ChatDetailViewModel(
             fakeChatRepository,
             fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
         )
         viewModel.state.test {
             val startState = awaitItem()

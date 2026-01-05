@@ -71,6 +71,7 @@ object MockChatResponseElements {
     val chatId2 = Random.nextInt().toString()
     val messageId1 = Random.nextInt().toString()
     val messageId2 = Random.nextInt().toString()
+    val messageId3 = Random.nextInt().toString()
     val message1 = ChatMessage(
         id = messageId1,
         chatId = chatId1,
@@ -84,17 +85,27 @@ object MockChatResponseElements {
         id = messageId2,
         chatId = chatId1,
         content = "this is the second message sent in the chat",
-        createdAt = Clock.System.now(),
+        createdAt = Clock.System.now().minus(20, DateTimeUnit.HOUR),
         senderId = participantFull.userId,
         deliveryStatus = ChatMessageDeliveryStatus.SENT,
-        deliveredAt = Clock.System.now(),
+        deliveredAt = Clock.System.now().minus(20, DateTimeUnit.HOUR),
+    )
+
+    val message3 = ChatMessage(
+        id = messageId3,
+        chatId = chatId1,
+        content = "message 3",
+        createdAt = Clock.System.now().minus(2, DateTimeUnit.HOUR),
+        senderId = participantFull.userId,
+        deliveryStatus = ChatMessageDeliveryStatus.SENT,
+        deliveredAt = Clock.System.now().minus(2, DateTimeUnit.HOUR),
     )
 
     val chat1 = Chat(
         id = chatId1,
         participants = participantList,
         lastActivityAt = Clock.System.now(),
-        lastMessage = message1
+        lastMessage = message3
     )
 
     val chat2 = Chat(

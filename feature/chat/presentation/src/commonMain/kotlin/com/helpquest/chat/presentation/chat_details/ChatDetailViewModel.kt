@@ -49,6 +49,9 @@ class ChatDetailViewModel(
 
     private var hasLoadedInitialData = false
 
+    // Cache for storing draft messages per chat
+    private val messageDraftCache = mutableMapOf<String, String>()
+
     private val _chatId = MutableStateFlow<String?>(null)
 
     private val chatInfoFlow = _chatId
@@ -61,8 +64,10 @@ class ChatDetailViewModel(
 
     private val _state = MutableStateFlow(ChatDetailState())
 
+    private val messageTextFieldChange =
+        snapshotFlow { _state.value.messageTextFieldState.text.toString() }
 
-    private val canSendMessage = snapshotFlow { _state.value.messageTextFieldState.text.toString() }
+    private val canSendMessage = messageTextFieldChange
         .map { it.isBlank() }
         .combine(connectionClient.connectionState) { isMessageBlank, connectionState ->
             !isMessageBlank && connectionState == ConnectionState.CONNECTED
@@ -92,6 +97,7 @@ class ChatDetailViewModel(
                 /** Load initial data here **/
                 observeConnectionState()
                 observeChatMessages()
+                observeMessageTextFieldChanges()
                 observeCanSendMessage()
                 hasLoadedInitialData = true
             }
@@ -131,11 +137,23 @@ class ChatDetailViewModel(
                 .sendMessage(message)
                 .onSuccess {
                     state.value.messageTextFieldState.clearText()
+                    // Clear the cache for this chat after sending
+                    messageDraftCache.remove(currentChatId)
                 }
                 .onFailure { error ->
                     eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
                 }
         }
+    }
+
+    private fun observeMessageTextFieldChanges() {
+        messageTextFieldChange
+            .onEach { text ->
+                _chatId.value?.let { chatId ->
+                    messageDraftCache[chatId] = text
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeCanSendMessage() {
@@ -211,6 +229,11 @@ class ChatDetailViewModel(
                 repository.fetchChatById(chatId)
                     .onSuccess {
                         _chatId.update { chatId }
+                        // Restore the draft from the cache for the new chat
+                        val draft = messageDraftCache[chatId] ?: ""
+                        state.value.messageTextFieldState.edit {
+                            replace(0, length, draft)
+                        }
                     }
                     .onFailure { error ->
                         eventChannel.send(
@@ -220,7 +243,9 @@ class ChatDetailViewModel(
                         )
                     }
             } ?: run {
-                _chatId.update { chatId }
+                _chatId.update { null }
+                // Clear the text field when no chat is selected
+                state.value.messageTextFieldState.clearText()
             }
         }
     }
@@ -247,6 +272,8 @@ class ChatDetailViewModel(
                 .leaveChat(chatId)
                 .onSuccess {
                     _state.value.messageTextFieldState.clearText()
+                    // Also clear the draft from the cache when leaving
+                    messageDraftCache.remove(chatId)
 
                     _chatId.update { null }
                     _state.update {

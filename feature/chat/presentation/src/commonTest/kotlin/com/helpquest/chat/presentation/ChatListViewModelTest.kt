@@ -190,17 +190,15 @@ class ChatListViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnChatClick updates state`() = runBlocking {
-        // Call `onAction` with `OnChatClick` and verify that the `state` Flow emits a new state with the `selectedChatId` updated to the ID from the `ChatUi` object.
+        // Call `onAction` with `OnSelectChat` and verify that the `state` Flow emits a new state with the `selectedChatId` updated to the ID from the `ChatUi` object.
         viewModel = ChatListViewModel(
             fakeChatRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
             viewModel.onAction(
-                ChatListAction.OnChatClick(
-                    fakeChatRepository.chat2.toChatUi(
-                        fakeSessionStorage.fakeAuthInfo.user.id
-                    )
+                ChatListAction.OnSelectChat(
+                    fakeChatRepository.chat2.id
                 )
             )
             val resultState = viewModel.state.first()

@@ -1,6 +1,5 @@
 package com.helpquest.chat.data.service
 
-
 import com.helpquest.chat.data.dto.websocket.IncomingChatWebSocketDto
 import com.helpquest.chat.data.dto.websocket.IncomingChatWebSocketType
 import com.helpquest.chat.data.mappers.toChatMessage
@@ -36,7 +35,7 @@ class WebSocketChatConnectionClient(
         }
         .shareIn(
             applicationScope,
-            SharingStarted.WhileSubscribed(5000)
+            SharingStarted.Companion.WhileSubscribed(5000)
         )
 
     override val connectionState = webSocketConnector.connectionState

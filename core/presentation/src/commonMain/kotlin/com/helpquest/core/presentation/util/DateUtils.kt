@@ -1,8 +1,12 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.helpquest.core.presentation.util
 
 import helpquest.core.presentation.generated.resources.Res
 import helpquest.core.presentation.generated.resources.today
+import helpquest.core.presentation.generated.resources.today_with_time
 import helpquest.core.presentation.generated.resources.yesterday
+import helpquest.core.presentation.generated.resources.yesterday_with_time
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -11,6 +15,7 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 object DateUtils {
@@ -36,20 +41,29 @@ object DateUtils {
         }
     }
 
-    fun formatTime(
+    private fun formatTimeString(
         instant: Instant,
         isUsing24HourFormat: Boolean = true,
-    ): UiText {
+    ): String {
         val timeZone = TimeZone.currentSystemDefault()
         val messageDateTime = instant.toLocalDateTime(timeZone)
 
         val timeFormat = if (isUsing24HourFormat) timeFormat24H else timeFormat12H
 
-        val formattedTime = messageDateTime.format(timeFormat)
-
-        return UiText.DynamicString(formattedTime)
+        return messageDateTime.format(timeFormat)
     }
 
+    fun formatTime(
+        instant: Instant,
+        isUsing24HourFormat: Boolean = true,
+    ): UiText {
+        return UiText.DynamicString(
+            formatTimeString(
+                instant = instant,
+                isUsing24HourFormat = isUsing24HourFormat
+            )
+        )
+    }
 
     fun formatDateTime(
         instant: Instant,
@@ -62,20 +76,20 @@ object DateUtils {
         val todayDate = clock.now().toLocalDateTime(timeZone).date
         val yesterdayDate = todayDate.minus(1, DateTimeUnit.DAY)
 
-        // 1. Choose the date format part
+        // Choose the date format part
         val dateFormat = if (isUsingEuropeDateFormat) europeDateFormat else usDateFormat
 
-        // 2. Choose the time format part
-        val timeFormat = if (isUsing24HourFormat) timeFormat24H else timeFormat12H
-
         val formattedDate = messageDateTime.format(dateFormat)
-        val formattedTime = messageDateTime.format(timeFormat)
-        val formattedDateTime = "$formattedDate $formattedTime"
+        val formattedTime = formatTimeString(
+            instant = instant,
+            isUsing24HourFormat = isUsing24HourFormat
+        )
+        val formattedDateTime = "$formattedDate, $formattedTime"
 
 
         return when (messageDateTime.date) {
-            todayDate -> UiText.Resource(Res.string.today)
-            yesterdayDate -> UiText.Resource(Res.string.yesterday)
+            todayDate -> UiText.Resource(Res.string.today_with_time, arrayOf(formattedTime))
+            yesterdayDate -> UiText.Resource(Res.string.yesterday_with_time, arrayOf(formattedTime))
             else -> UiText.DynamicString(formattedDateTime)
         }
     }

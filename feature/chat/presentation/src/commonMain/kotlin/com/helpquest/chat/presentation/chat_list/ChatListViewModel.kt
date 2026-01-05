@@ -61,13 +61,6 @@ class ChatListViewModel(
                     )
                 }
             }
-            is ChatListAction.OnChatClick -> {
-                _state.update {
-                    it.copy(
-                        selectedChatId = action.chat.id
-                    )
-                }
-            }
             else -> Unit
         }
     }

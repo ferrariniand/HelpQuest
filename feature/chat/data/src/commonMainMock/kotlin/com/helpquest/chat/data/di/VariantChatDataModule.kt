@@ -4,6 +4,8 @@ import com.helpquest.chat.data.service.MockChatParticipantService
 import com.helpquest.chat.data.service.MockChatService
 import com.helpquest.chat.data.service.MockChatMessageService
 import com.helpquest.chat.data.service.MockChatResponseElements
+import com.helpquest.chat.data.service.MockChatConnectionClient
+import com.helpquest.chat.domain.service.ChatConnectionClient
 import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatService
 import com.helpquest.chat.domain.service.ChatMessageService
@@ -18,5 +20,7 @@ val variantChatDataModule = module {
     singleOf(::MockChatParticipantService) bind ChatParticipantService::class
     singleOf(::MockChatService) bind ChatService::class
     singleOf(::MockChatMessageService) bind ChatMessageService::class
+
+    singleOf(::MockChatConnectionClient) bind ChatConnectionClient::class
 
 }
