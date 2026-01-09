@@ -106,6 +106,7 @@ interface QuestLogDao {
                     QuestActivityEntity(
                         activityId = activityId,
                         questId = questId,
+                        creatorId = creatorId,
                         actorId = actorId,
                         content = content,
                         activityStatus = activityStatus,

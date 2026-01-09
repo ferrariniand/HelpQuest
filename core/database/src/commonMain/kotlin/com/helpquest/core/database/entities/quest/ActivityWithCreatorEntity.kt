@@ -4,12 +4,12 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.helpquest.core.database.entities.ParticipantEntity
 
-data class ActivityWithActorEntity(
+data class ActivityWithCreatorEntity(
     @Embedded
     val activity: QuestActivityEntity,
     @Relation(
-        parentColumn = "actorId",
+        parentColumn = "creatorId",
         entityColumn = "userId"
     )
-    val actor: ParticipantEntity
+    val creator: ParticipantEntity
 )

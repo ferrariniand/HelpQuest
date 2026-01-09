@@ -7,7 +7,7 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
-import com.helpquest.quests.domain.models.ActivityWithActor
+import com.helpquest.quests.domain.models.ActivityWithCreator
 import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -45,6 +45,7 @@ class FakeQuestActivityRepository : ActivityRepository {
     val activity1 = QuestActivity(
         activityId = activityId1,
         questId = questId,
+        creatorId = participant2.userId,
         actorId = participant2.userId,
         content = "test first activity content",
         activityStatus = QuestActivityStatus.IN_PROGRESS,
@@ -54,6 +55,7 @@ class FakeQuestActivityRepository : ActivityRepository {
     val activity2 = QuestActivity(
         activityId = activityId2,
         questId = questId,
+        creatorId = participant.userId,
         actorId = participant.userId,
         content = "test second activity content",
         activityStatus = QuestActivityStatus.OPEN,
@@ -66,21 +68,21 @@ class FakeQuestActivityRepository : ActivityRepository {
         activity2
     )
 
-    val activityWithActor1 = ActivityWithActor(
+    val activityWithCreator1 = ActivityWithCreator(
         activity = activity1,
-        actor = participant2,
+        creator = participant2,
         activityStatus = QuestActivityStatus.IN_PROGRESS,
     )
 
-    val activityWithActor2 = ActivityWithActor(
+    val activityWithCreator2 = ActivityWithCreator(
         activity = activity2,
-        actor = participant,
+        creator = participant,
         activityStatus = QuestActivityStatus.OPEN,
     )
 
     val activityWithActorList = mutableListOf(
-        activityWithActor1,
-        activityWithActor2
+        activityWithCreator1,
+        activityWithCreator2
     )
 
 
@@ -112,7 +114,7 @@ class FakeQuestActivityRepository : ActivityRepository {
         return fetchActivitiesResult
     }
 
-    override fun getActivitiesForQuest(questId: String): Flow<List<ActivityWithActor>> {
+    override fun getActivitiesForQuest(questId: String): Flow<List<ActivityWithCreator>> {
         return flowOf(activityWithActorList)
     }
 

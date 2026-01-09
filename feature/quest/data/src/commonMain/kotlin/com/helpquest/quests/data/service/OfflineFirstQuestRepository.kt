@@ -68,7 +68,7 @@ class OfflineFirstQuestRepository(
                 QuestInfoEntity(
                     quest = questInfo.quest,
                     participants = questInfo.participants.onlyActive(questInfo.quest.questId),
-                    activitiesWithActors = questInfo.activitiesWithActors
+                    activitiesWithCreators = questInfo.activitiesWithCreators
                 )
             }
             .map { it.toQuestInfo() }

@@ -37,7 +37,7 @@ data class QuestInfoEntity(
         entityColumn = "questId",
         entity = QuestActivityEntity::class
     )
-    val activitiesWithActors: List<ActivityWithActorEntity>
+    val activitiesWithCreators: List<ActivityWithCreatorEntity>
 )
 
 

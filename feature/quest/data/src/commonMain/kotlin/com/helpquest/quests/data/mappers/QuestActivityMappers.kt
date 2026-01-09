@@ -20,6 +20,7 @@ fun QuestActivityDto.toQuestActivity(): QuestActivity {
         activityId = activityId,
         questId = questId,
         content = content,
+        creatorId = creatorId,
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.parse(startTimestamp),
@@ -34,6 +35,7 @@ fun QuestActivityEntity.toQuestActivity(): QuestActivity {
         activityId = activityId,
         questId = questId,
         content = content,
+        creatorId = creatorId,
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.fromEpochMilliseconds(startTimestamp),
@@ -48,6 +50,7 @@ fun LastActivityView.toQuestActivity(): QuestActivity {
         activityId = activityId,
         questId = questId,
         content = content,
+        creatorId = creatorId,
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.fromEpochMilliseconds(startTimestamp),
@@ -61,6 +64,7 @@ fun QuestActivity.toQuestActivityEntity(): QuestActivityEntity {
     return QuestActivityEntity(
         activityId = activityId,
         questId = questId,
+        creatorId = creatorId,
         actorId = actorId,
         content = content,
         activityStatus = activityStatus.name,
@@ -73,6 +77,7 @@ fun QuestActivity.toLastActivityView(): LastActivityView {
     return LastActivityView(
         activityId = activityId,
         questId = questId,
+        creatorId = creatorId,
         actorId = actorId,
         content = content,
         activityStatus = activityStatus.name,
@@ -93,6 +98,7 @@ fun IncomingQuestWebSocketDto.NewActivityDto.toQuestActivityEntity(): QuestActiv
     return QuestActivityEntity(
         activityId = id,
         questId = questId,
+        creatorId = creatorId,
         actorId = actorId,
         content = content,
         startTimestamp = Instant.parse(startActivityAt).toEpochMilliseconds(),
@@ -112,14 +118,15 @@ fun OutgoingNewActivity.toWebSocketNewActivityDto(): OutgoingQuestWebSocketDto.N
 }
 
 fun OutgoingNewActivity.toNewActivityEntity(
-    actorId: String,
+    creatorId: String,
     activityStatus: QuestActivityStatus
 ): QuestActivityEntity {
     return QuestActivityEntity(
         activityId = activityId,
         questId = questId,
         content = content,
-        actorId = actorId,
+        creatorId = creatorId,
+        actorId = null,
         activityStatus = activityStatus.name,
         startTimestamp = Clock.System.now().toEpochMilliseconds(),
         endTimestamp = null

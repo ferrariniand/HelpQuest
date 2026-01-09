@@ -23,7 +23,8 @@ data class QuestActivityEntity(
     @PrimaryKey
     val activityId: String,
     val questId: String,
-    val actorId: String,
+    val creatorId: String,
+    val actorId: String?,
     val content: String,
     val activityStatus: String,
     val startTimestamp: Long,

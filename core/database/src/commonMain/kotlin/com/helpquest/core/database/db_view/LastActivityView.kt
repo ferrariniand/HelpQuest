@@ -20,7 +20,8 @@ import androidx.room.DatabaseView
 data class LastActivityView(
     val activityId: String,
     val questId: String,
-    val actorId: String,
+    val creatorId: String,
+    val actorId: String?,
     val content: String,
     val activityStatus: String,
     val startTimestamp: Long,

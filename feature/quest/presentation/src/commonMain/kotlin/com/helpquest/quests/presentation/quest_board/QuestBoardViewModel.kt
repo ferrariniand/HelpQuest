@@ -54,14 +54,6 @@ class QuestBoardViewModel(
                 }
             }
 
-            is QuestBoardAction.OnQuestClick -> {
-                _state.update {
-                    it.copy(
-                        selectedQuestId = action.quest.questId
-                    )
-                }
-            }
-
             else -> Unit
         }
     }

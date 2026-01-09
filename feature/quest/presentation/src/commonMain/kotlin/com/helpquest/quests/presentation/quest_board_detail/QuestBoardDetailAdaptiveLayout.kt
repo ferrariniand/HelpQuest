@@ -60,7 +60,7 @@ fun QuestBoardDetailAdaptiveLayout(
 
     LaunchedEffect(detailPane, sharedState.selectedQuestId) {
         if (detailPane == PaneAdaptedValue.Hidden && sharedState.selectedQuestId != null) {
-            questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnQuestClick(null))
+            questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnSelectQuest(null))
         }
     }
 
@@ -72,9 +72,9 @@ fun QuestBoardDetailAdaptiveLayout(
         listPane = {
             AnimatedPane {
                 QuestBoardRoot(
-                    questId = sharedState.selectedQuestId,
-                    onQuestClick = {
-                        questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnQuestClick(it.questId))
+                    selectedQuestId = sharedState.selectedQuestId,
+                    onSelectQuest = {
+                        questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnSelectQuest(it))
                         scope.launch {
                             scaffoldNavigator.navigateTo(
                                 ListDetailPaneScaffoldRole.Detail
@@ -120,7 +120,7 @@ fun QuestBoardDetailAdaptiveLayout(
 //            },
 //            onQuestCreated = { quest ->
 //                questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnDismissCurrentDialog)
-//                questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnQuestClick(quest.questId))
+//                questBoardDetailViewModel.onAction(QuestBoardDetailAction.OnSelectQuest(quest.questId))
 //                scope.launch {
 //                    scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
 //                }

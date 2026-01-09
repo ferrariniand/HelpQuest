@@ -101,7 +101,7 @@ fun QuestDetailScreen(
     onAction: (QuestDetailAction) -> Unit,
 ) {
     val configuration = currentDeviceConfiguration()
-    val messageListState = rememberLazyListState()
+    val activityListState = rememberLazyListState()
 
     SnackbarScaffold(
         snackbarHostState = snackbarState,
@@ -254,6 +254,7 @@ private fun QuestDetailScreenActivitysLightPreview() {
                     lastActivity = QuestActivity(
                         activityId = "1",
                         questId = "1",
+                        creatorId = "1",
                         actorId = "1",
                         content = "This is a last quest activity that was created by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
@@ -266,6 +267,11 @@ private fun QuestDetailScreenActivitysLightPreview() {
                     ActivityListUiElement.ActivityItem(
                         id = Uuid.random().toString(),
                         content = "Hello world!",
+                        creator = ParticipantUi(
+                            id = Uuid.random().toString(),
+                            username = "John",
+                            initials = "JO"
+                        ),
                         actor = ParticipantUi(
                             id = Uuid.random().toString(),
                             username = "John",
@@ -320,6 +326,7 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                     lastActivity = QuestActivity(
                         activityId = "1",
                         questId = "1",
+                        creatorId = "1",
                         actorId = "1",
                         content = "This is a last quest activity that was created by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
@@ -332,6 +339,11 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                     ActivityListUiElement.ActivityItem(
                         id = Uuid.random().toString(),
                         content = "Hello world!",
+                        creator = ParticipantUi(
+                            id = Uuid.random().toString(),
+                            username = "John",
+                            initials = "JO"
+                        ),
                         actor = ParticipantUi(
                             id = Uuid.random().toString(),
                             username = "John",

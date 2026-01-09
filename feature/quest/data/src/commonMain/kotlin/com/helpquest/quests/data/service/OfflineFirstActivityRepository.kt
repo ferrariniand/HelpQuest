@@ -9,10 +9,10 @@ import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
-import com.helpquest.quests.data.mappers.toActivityWitActor
+import com.helpquest.quests.data.mappers.toActivityWitCreator
 import com.helpquest.quests.data.mappers.toNewActivityEntity
 import com.helpquest.quests.data.mappers.toQuestActivityEntity
-import com.helpquest.quests.domain.models.ActivityWithActor
+import com.helpquest.quests.domain.models.ActivityWithCreator
 import com.helpquest.quests.domain.models.OutgoingNewActivity
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -61,12 +61,12 @@ class OfflineFirstActivityRepository(
             }
     }
 
-    override fun getActivitiesForQuest(questId: String): Flow<List<ActivityWithActor>> {
+    override fun getActivitiesForQuest(questId: String): Flow<List<ActivityWithCreator>> {
         return database
             .questActivityDao
-            .getActivitiesWithActorsByQuestId(questId)
+            .getActivitiesWithCreatorsByQuestId(questId)
             .map { activities ->
-                activities.map { it.toActivityWitActor() }
+                activities.map { it.toActivityWitCreator() }
             }
     }
 
@@ -77,7 +77,7 @@ class OfflineFirstActivityRepository(
                 ?: return Result.Failure(DataError.Local.NOT_FOUND)
 
             val entity = activity.toNewActivityEntity(
-                actorId = localUser.id,
+                creatorId = localUser.id,
                 activityStatus = QuestActivityStatus.CREATING
             )
             database.questActivityDao.upsertActivity(entity)

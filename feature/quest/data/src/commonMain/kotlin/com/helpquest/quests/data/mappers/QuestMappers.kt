@@ -3,14 +3,14 @@
 package com.helpquest.quests.data.mappers
 
 import com.helpquest.core.data.mappers.toParticipant
-import com.helpquest.core.database.entities.quest.ActivityWithActorEntity
+import com.helpquest.core.database.entities.quest.ActivityWithCreatorEntity
 import com.helpquest.core.database.entities.quest.QuestEntity
 import com.helpquest.core.database.entities.quest.QuestInfoEntity
 import com.helpquest.core.database.entities.quest.QuestWithParticipants
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.quests.data.dto.QuestDto
-import com.helpquest.quests.domain.models.ActivityWithActor
+import com.helpquest.quests.domain.models.ActivityWithCreator
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -89,10 +89,10 @@ fun Quest.toQuestEntity(): QuestEntity {
     )
 }
 
-fun ActivityWithActorEntity.toActivityWitActor(): ActivityWithActor {
-    return ActivityWithActor(
+fun ActivityWithCreatorEntity.toActivityWitCreator(): ActivityWithCreator {
+    return ActivityWithCreator(
         activity = activity.toQuestActivity(),
-        actor = actor.toParticipant(),
+        creator = creator.toParticipant(),
         activityStatus = QuestActivityStatus.valueOf(activity.activityStatus)
     )
 }
@@ -102,6 +102,6 @@ fun QuestInfoEntity.toQuestInfo(): QuestInfo {
         quest = quest.toQuest(
             participants = participants.map { it.toParticipant() }
         ),
-        activities = activitiesWithActors.map { it.toActivityWitActor() }
+        activities = activitiesWithCreators.map { it.toActivityWitCreator() }
     )
 }

@@ -75,8 +75,8 @@ class QuestLogViewModelTest : KoinTest {
 
 
     @Test
-    fun `onAction OnQuestClick updates state`() = runBlocking {
-        // Call `onAction` with `OnQuestClick` and verify that the `state` Flow emits a new state with the `selectedQuestId` updated to the provided ID.
+    fun `onAction OnSelectQuest updates state`() = runBlocking {
+        // Call `onAction` with `OnSelectQuest` and verify that the `state` Flow emits a new state with the `selectedQuestId` updated to the provided ID.
         viewModel = QuestLogViewModel(
             fakeQuestRepository,
         )
@@ -110,6 +110,7 @@ class QuestLogViewModelTest : KoinTest {
                         lastActivity = QuestActivity(
                             activityId = "1",
                             questId = "1",
+                            creatorId = "1",
                             actorId = "1",
                             content = "This is a last quest activity that was created by Philipp " +
                                     "and goes over multiple lines to showcase the ellipsis",
@@ -160,6 +161,7 @@ class QuestLogViewModelTest : KoinTest {
                     lastActivity = QuestActivity(
                         activityId = "1",
                         questId = "1",
+                        creatorId = "1",
                         actorId = "1",
                         content = "This is a last quest activity that was created by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
@@ -206,6 +208,7 @@ class QuestLogViewModelTest : KoinTest {
                             lastActivity = QuestActivity(
                                 activityId = "1",
                                 questId = "1",
+                                creatorId = "1",
                                 actorId = "1",
                                 content = "This is a last quest activity that was created by Philipp " +
                                         "and goes over multiple lines to showcase the ellipsis",
@@ -267,6 +270,7 @@ class QuestLogViewModelTest : KoinTest {
                     lastActivity = QuestActivity(
                         activityId = "1",
                         questId = "1",
+                        creatorId = "1",
                         actorId = "1",
                         content = "This is a last quest activity that was created by Philipp " +
                                 "and goes over multiple lines to showcase the ellipsis",
@@ -314,6 +318,7 @@ class QuestLogViewModelTest : KoinTest {
                             lastActivity = QuestActivity(
                                 activityId = "1",
                                 questId = "1",
+                                creatorId = "1",
                                 actorId = "1",
                                 content = "This is a last quest activity that was created by Philipp " +
                                         "and goes over multiple lines to showcase the ellipsis",

@@ -46,6 +46,7 @@ class FakeQuestService : QuestService {
         lastActivity = QuestActivity(
             activityId = activityId,
             questId = questId,
+            creatorId = participant2.userId,
             actorId = participant2.userId,
             content = "test activity content",
             activityStatus = QuestActivityStatus.IN_PROGRESS,

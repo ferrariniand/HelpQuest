@@ -37,7 +37,7 @@ class QuestBoardDetailViewModel(
 
     fun onAction(action: QuestBoardDetailAction) {
         when (action) {
-            is QuestBoardDetailAction.OnQuestClick -> {
+            is QuestBoardDetailAction.OnSelectQuest -> {
                 _state.update {
                     it.copy(
                         selectedQuestId = action.questId

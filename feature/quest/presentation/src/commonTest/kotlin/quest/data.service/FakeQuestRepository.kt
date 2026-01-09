@@ -9,7 +9,7 @@ import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.onSuccess
-import com.helpquest.quests.domain.models.ActivityWithActor
+import com.helpquest.quests.domain.models.ActivityWithCreator
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.domain.models.QuestActivity
 import com.helpquest.quests.domain.models.QuestActivityStatus
@@ -44,6 +44,7 @@ class FakeQuestRepository : QuestRepository {
     val activity = QuestActivity(
         activityId = activityId,
         questId = questId,
+        creatorId = participant2.userId,
         actorId = participant2.userId,
         content = "test activity content",
         activityStatus = QuestActivityStatus.IN_PROGRESS,
@@ -51,9 +52,9 @@ class FakeQuestRepository : QuestRepository {
         endActivityAt = null
     )
 
-    val activityWithActor = ActivityWithActor(
+    val activityWithCreator = ActivityWithCreator(
         activity = activity,
-        actor = participant2,
+        creator = participant2,
         activityStatus = QuestActivityStatus.IN_PROGRESS,
     )
     val quest = Quest(
@@ -70,7 +71,7 @@ class FakeQuestRepository : QuestRepository {
 
     val questInfo = QuestInfo(
         quest = quest,
-        activities = listOf(activityWithActor, activityWithActor, activityWithActor)
+        activities = listOf(activityWithCreator, activityWithCreator, activityWithCreator)
     )
 
     val quest2 = Quest(

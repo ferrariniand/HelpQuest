@@ -5,7 +5,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.helpquest.core.database.entities.quest.ACTIVITY_STATUS_ERROR
-import com.helpquest.core.database.entities.quest.ActivityWithActorEntity
+import com.helpquest.core.database.entities.quest.ActivityWithCreatorEntity
 import com.helpquest.core.database.entities.quest.QuestActivityEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -62,7 +62,7 @@ interface QuestActivityDao {
     fun getActivitiesByQuestId(questId: String): Flow<List<QuestActivityEntity>>
 
     @Query("SELECT * FROM questactivityentity WHERE questId = :questId ORDER BY startTimestamp DESC")
-    fun getActivitiesWithActorsByQuestId(questId: String): Flow<List<ActivityWithActorEntity>>
+    fun getActivitiesWithCreatorsByQuestId(questId: String): Flow<List<ActivityWithCreatorEntity>>
 
     @Query("SELECT * FROM questactivityentity WHERE activityId = :activityId")
     suspend fun getActivityById(activityId: String): QuestActivityEntity?

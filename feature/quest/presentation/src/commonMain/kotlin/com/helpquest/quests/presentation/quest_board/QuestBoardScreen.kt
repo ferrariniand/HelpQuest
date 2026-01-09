@@ -25,10 +25,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestFloatingActionButton
+import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.ObserveAsEvents
-import com.helpquest.quests.presentation.model.QuestUi
 import helpquest.feature.quest.presentation.generated.resources.Res
 import helpquest.feature.quest.presentation.generated.resources.create_quest
 import org.jetbrains.compose.resources.stringResource
@@ -37,8 +37,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun QuestBoardRoot(
-    questId: String?,
-    onQuestClick: (QuestUi) -> Unit,
+    selectedQuestId: String?,
+    onSelectQuest: (String?) -> Unit,
     onCreateQuestClick: () -> Unit,
     onProfileSettingsClick: () -> Unit,
     viewModel: QuestBoardViewModel = koinViewModel()
@@ -54,15 +54,15 @@ fun QuestBoardRoot(
     val snackbarHostState = remember { SnackbarHostState() }
 
 
-    LaunchedEffect(questId) {
-        viewModel.onAction(QuestBoardAction.OnSelectQuest(questId))
+    LaunchedEffect(selectedQuestId) {
+        viewModel.onAction(QuestBoardAction.OnSelectQuest(selectedQuestId))
     }
 
     QuestBoardScreen(
         state = state,
         onAction = { action ->
             when (action) {
-                is QuestBoardAction.OnQuestClick -> onQuestClick(action.quest)
+                is QuestBoardAction.OnSelectQuest -> onSelectQuest(action.questId)
                 QuestBoardAction.OnCreateQuestClick -> onCreateQuestClick()
                 QuestBoardAction.OnProfileSettingsClick -> onProfileSettingsClick()
                 else -> Unit
@@ -114,6 +114,7 @@ fun QuestBoardScreen(
 
                 state.quests.isEmpty() -> {
                     //TODO EmptyListSection
+                    HelpQuestHorizontalDivider()
                 }
 
                 else -> {
@@ -132,10 +133,10 @@ fun QuestBoardScreen(
 //                                modifier = Modifier
 //                                    .fillMaxWidth()
 //                                    .clickable {
-//                                        onAction(QuestBoardAction.OnQuestClick(questUi))
+//                                        onAction(QuestBoardAction.OnSelectQuest(questUi))
 //                                    }
 //                            )
-//                            HelpQuestHorizontalDivider()
+                            HelpQuestHorizontalDivider()
                         }
                     }
                 }

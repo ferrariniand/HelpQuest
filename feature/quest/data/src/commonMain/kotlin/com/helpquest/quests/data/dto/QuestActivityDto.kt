@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 data class QuestActivityDto(
     val activityId: String,
     val questId: String,
-    val actorId: String,
+    val creatorId: String,
+    val actorId: String?,
     val content: String,
     val activityStatus: String,
     val startTimestamp: String,
