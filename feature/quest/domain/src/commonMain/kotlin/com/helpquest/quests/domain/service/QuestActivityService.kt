@@ -13,4 +13,7 @@ interface QuestActivityService {
     ): Result<List<QuestActivity>, DataError.Remote>
 
     suspend fun addActivity(activity: OutgoingNewActivity): EmptyResult<DataError.Connection>
+
+    suspend fun deleteActivity(activityId: String): EmptyResult<DataError.Remote>
+
 }

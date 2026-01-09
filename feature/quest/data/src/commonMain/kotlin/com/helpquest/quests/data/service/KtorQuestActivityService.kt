@@ -2,6 +2,7 @@ package com.helpquest.quests.data.service
 
 import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.networking.KtorWebSocketConnector
+import com.helpquest.core.data.networking.delete
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
@@ -43,6 +44,12 @@ class KtorQuestActivityService(
     override suspend fun addActivity(activity: OutgoingNewActivity): EmptyResult<DataError.Connection> {
         val dto = activity.toWebSocketNewActivityDto()
         return webSocketConnector.sendMessage(dto.toJsonPayload())
+    }
+
+    override suspend fun deleteActivity(activityId: String): EmptyResult<DataError.Remote> {
+        return httpClient.delete(
+            route = "/activities/$activityId"
+        )
     }
 
     private fun OutgoingQuestWebSocketDto.NewActivity.toJsonPayload(): String {

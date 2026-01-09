@@ -122,4 +122,27 @@ class OfflineFirstActivityRepository(
                 }
         }
     }
+
+    override suspend fun deleteActivity(
+        activityId: String,
+        activityStatus: QuestActivityStatus
+    ): EmptyResult<DataError> {
+        return if (activityStatus == QuestActivityStatus.ERROR) {
+            //if activity is not sent to the server, should be removed just locally
+            return safeDatabaseUpdate {
+                applicationScope.launch {
+                    database.questActivityDao.deleteActivityById(activityId)
+                }.join()
+            }
+        } else {
+            questActivityService
+                .deleteActivity(activityId)
+                .onSuccess {
+                    applicationScope.launch {
+                        database.questActivityDao.deleteActivityById(activityId)
+                    }.join()
+                }
+
+        }
+    }
 }

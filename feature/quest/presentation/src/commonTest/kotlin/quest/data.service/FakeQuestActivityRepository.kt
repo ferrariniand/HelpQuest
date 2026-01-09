@@ -100,6 +100,9 @@ class FakeQuestActivityRepository : ActivityRepository {
     var retryAddActivityResult: EmptyResult<DataError> =
         Result.Success(activity1).asEmptyResult()
 
+    var deleteActivityResult: EmptyResult<DataError> =
+        Result.Success(activity1).asEmptyResult()
+
     override suspend fun updateActivityStatus(
         activityId: String,
         status: QuestActivityStatus
@@ -124,6 +127,13 @@ class FakeQuestActivityRepository : ActivityRepository {
 
     override suspend fun retryAddActivity(activityId: String): EmptyResult<DataError> {
         return retryAddActivityResult
+    }
+
+    override suspend fun deleteActivity(
+        activityId: String,
+        activityStatus: QuestActivityStatus
+    ): EmptyResult<DataError> {
+        return deleteActivityResult
     }
 
 }
