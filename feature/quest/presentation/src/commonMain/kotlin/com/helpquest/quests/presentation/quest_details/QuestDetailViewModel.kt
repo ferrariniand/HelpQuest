@@ -15,6 +15,7 @@ import com.helpquest.quests.domain.service.QuestConnectionClient
 import com.helpquest.quests.domain.service.QuestRepository
 import com.helpquest.quests.presentation.mappers.toActivityListUiElement
 import com.helpquest.quests.presentation.mappers.toQuestUi
+import com.helpquest.quests.presentation.model.ActivityListUiElement
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,6 +96,9 @@ class QuestDetailViewModel(
             is QuestDetailAction.OnSelectQuest -> switchQuest(action.questId)
             QuestDetailAction.OnQuestDetailsOptionsClick -> updateQuestOptionsState(isOpen = true)
             QuestDetailAction.OnDismissQuestOptions -> updateQuestOptionsState(isOpen = false)
+            is QuestDetailAction.OnDeleteActivityClick -> deleteActivity(action.activity)
+            is QuestDetailAction.OnActivityLongClick -> onActivityLongClick(action.activity)
+            QuestDetailAction.OnDismissActivityMenu -> onDismissActivityMenu()
             else -> Unit
         }
     }
@@ -178,4 +182,29 @@ class QuestDetailViewModel(
         }
     }
 
+    private fun onActivityLongClick(activity: ActivityListUiElement.ActivityItem) {
+        _state.update {
+            it.copy(
+                activityWithOpenMenu = activity
+            )
+        }
+    }
+
+    private fun onDismissActivityMenu() {
+        _state.update {
+            it.copy(
+                activityWithOpenMenu = null
+            )
+        }
+    }
+
+    private fun deleteActivity(activity: ActivityListUiElement.ActivityItem) {
+        viewModelScope.launch {
+            activityRepository
+                .deleteActivity(activity.id, activity.activityStatus)
+                .onFailure { error ->
+                    eventChannel.send(QuestDetailEvent.OnError(error.toUiText()))
+                }
+        }
+    }
 }
