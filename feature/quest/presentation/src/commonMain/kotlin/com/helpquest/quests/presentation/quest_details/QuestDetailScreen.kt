@@ -165,6 +165,7 @@ fun QuestDetailScreen(
                         //TODO BODY
 //                        ActivityList(
 //                            activities = state.activities,
+//                            activityWithOpenMenu = state.activityWithOpenMenu,
 //                            listState = activityListState,
 //                            onActivityLongClick = { activity ->
 //                                onAction(QuestDetailAction.OnActivityLongClick(activity))
@@ -278,7 +279,6 @@ private fun QuestDetailScreenActivitysLightPreview() {
                             initials = "JO"
                         ),
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
-                        isMenuOpen = false,
                         formattedStartTime = UiText.DynamicString("Friday, Aug 20"),
                     )
                 }
@@ -350,7 +350,6 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                             initials = "JO"
                         ),
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
-                        isMenuOpen = false,
                         formattedStartTime = UiText.DynamicString("Friday, Aug 20"),
                     )
                 }

@@ -15,7 +15,6 @@ fun MessageWithSender.toMessageListUiElement(
             id = message.id,
             content = message.content,
             deliveryStatus = message.deliveryStatus,
-            isMenuOpen = false,
             formattedSentTime = DateUtils.formatDateTime(instant = message.createdAt)
         )
     } else {

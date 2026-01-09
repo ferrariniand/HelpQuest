@@ -11,6 +11,7 @@ data class ChatDetailState(
     val chatUi: ChatUi? = null,
     val isLoading: Boolean = false,
     val messages: List<MessageListUiElement> = emptyList(),
+    val messageWithOpenMenu: MessageListUiElement.LocalUserMessage? = null,
     val error: UiText? = null,
     val messageTextFieldState: TextFieldState = TextFieldState(),
     val canSendMessage: Boolean = false,

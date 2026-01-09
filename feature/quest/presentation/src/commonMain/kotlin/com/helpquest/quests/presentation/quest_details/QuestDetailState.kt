@@ -12,6 +12,7 @@ data class QuestDetailState(
     val localParticipant: ParticipantUi? = null,
     val isLoading: Boolean = false,
     val activities: List<ActivityListUiElement> = emptyList(),
+    val activityWithOpenMenu: ActivityListUiElement.ActivityItem? = null,
     val error: UiText? = null,
     val bannerState: BannerState = BannerState(),
     val isQuestOptionsOpen: Boolean = false,

@@ -14,7 +14,6 @@ fun ActivityWithCreator.toActivityListUiElement(): ActivityListUiElement {
         //TODO HOW TO GET ACTOR???
         actor = null,
         activityStatus = activity.activityStatus,
-        isMenuOpen = false,
         formattedStartTime = DateUtils.formatDateTime(instant = activity.startActivityAt),
         formattedEndTime = activity.endActivityAt?.let {
             DateUtils.formatDateTime(instant = it)

@@ -35,6 +35,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun LocalUserMessageItem(
     message: MessageListUiElement.LocalUserMessage,
+    messageWithOpenMenu: MessageListUiElement.LocalUserMessage?,
     onMessageLongClick: () -> Unit,
     onDismissMessageMenu: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -67,7 +68,7 @@ fun LocalUserMessageItem(
             )
 
             HelpQuestDropDownMenu(
-                isOpen = message.isMenuOpen,
+                isOpen = messageWithOpenMenu?.id == message.id,
                 onDismiss = onDismissMessageMenu,
                 items = listOf(
                     DropDownItem(
@@ -103,9 +104,9 @@ fun LocalUserMessageItemPreview() {
                 id = "1",
                 content = "Hello world, this is a preview message that spans multiple lines",
                 deliveryStatus = ChatMessageDeliveryStatus.SENT,
-                isMenuOpen = true,
                 formattedSentTime = UiText.DynamicString("Friday 2:20pm")
             ),
+            messageWithOpenMenu = null,
             onRetryClick = {},
             onMessageLongClick = {},
             onDismissMessageMenu = {},
