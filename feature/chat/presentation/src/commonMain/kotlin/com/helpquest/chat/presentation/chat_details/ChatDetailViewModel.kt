@@ -145,6 +145,9 @@ class ChatDetailViewModel(
                 }
                 .onFailure { error ->
                     eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
+                    state.value.messageTextFieldState.clearText()
+                    // Clear the cache for this chat after sending
+                    messageDraftCache.remove(currentChatId)
                 }
         }
     }

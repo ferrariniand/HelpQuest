@@ -26,4 +26,9 @@ interface MessageRepository {
 
     suspend fun retrySendMessage(messageId: String): EmptyResult<DataError>
 
+    suspend fun deleteMessage(
+        messageId: String,
+        deliveryStatus: ChatMessageDeliveryStatus
+    ): EmptyResult<DataError>
+
 }

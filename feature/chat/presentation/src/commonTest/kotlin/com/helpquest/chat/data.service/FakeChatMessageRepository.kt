@@ -98,6 +98,9 @@ class FakeChatMessageRepository : MessageRepository {
     var retryMessageResult: EmptyResult<DataError> =
         Result.Success(message1).asEmptyResult()
 
+    var deleteMessageResult: EmptyResult<DataError> =
+        Result.Success(message1).asEmptyResult()
+
     override suspend fun updateMessageDeliveryStatus(
         messageId: String,
         status: ChatMessageDeliveryStatus
@@ -122,6 +125,13 @@ class FakeChatMessageRepository : MessageRepository {
 
     override suspend fun retrySendMessage(messageId: String): EmptyResult<DataError> {
         return retryMessageResult
+    }
+
+    override suspend fun deleteMessage(
+        messageId: String,
+        deliveryStatus: ChatMessageDeliveryStatus
+    ): EmptyResult<DataError> {
+        return deleteMessageResult
     }
 
 }

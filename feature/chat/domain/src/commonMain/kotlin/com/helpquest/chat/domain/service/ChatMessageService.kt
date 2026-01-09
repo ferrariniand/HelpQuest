@@ -14,4 +14,6 @@ interface ChatMessageService {
     ): Result<List<ChatMessage>, DataError.Remote>
 
     suspend fun sendMessage(message: OutgoingNewMessage): EmptyResult<DataError.Connection>
+
+    suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote>
 }

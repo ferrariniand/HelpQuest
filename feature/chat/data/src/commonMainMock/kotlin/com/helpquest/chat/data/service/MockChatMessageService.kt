@@ -33,4 +33,8 @@ class MockChatMessageService(
         return Result.Success(Unit)
     }
 
+    override suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote> {
+        return Result.Success(Unit)
+    }
+
 }

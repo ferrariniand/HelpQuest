@@ -130,4 +130,28 @@ class OfflineFirstMessageRepository(
                 }
         }
     }
+
+    override suspend fun deleteMessage(
+        messageId: String,
+        deliveryStatus: ChatMessageDeliveryStatus
+    ): EmptyResult<DataError> {
+        return if (deliveryStatus == ChatMessageDeliveryStatus.FAILED) {
+            //if message is not sent to the server, should be removed just locally
+            return safeDatabaseUpdate {
+                applicationScope.launch {
+                    database.chatMessageDao.deleteMessageById(messageId)
+                }.join()
+            }
+        } else {
+            chatMessageService
+                .deleteMessage(messageId)
+                .onSuccess {
+                    applicationScope.launch {
+                        database.chatMessageDao.deleteMessageById(messageId)
+                    }.join()
+                }
+
+        }
+    }
+
 }

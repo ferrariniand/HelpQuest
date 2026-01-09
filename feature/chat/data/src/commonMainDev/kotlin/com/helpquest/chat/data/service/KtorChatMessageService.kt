@@ -11,6 +11,7 @@ import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.chat.domain.service.ChatMessageService
 import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.networking.KtorWebSocketConnector
+import com.helpquest.core.data.networking.delete
 import com.helpquest.core.data.networking.get
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
@@ -46,6 +47,12 @@ class KtorChatMessageService(
     override suspend fun sendMessage(message: OutgoingNewMessage): EmptyResult<DataError.Connection> {
         val dto = message.toWebSocketNewMessageDto()
         return webSocketConnector.sendMessage(dto.toJsonPayload())
+    }
+
+    override suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote> {
+        return httpClient.delete(
+            route = "/messages/$messageId"
+        )
     }
 
     private fun OutgoingChatWebSocketDto.NewMessage.toJsonPayload(): String {
