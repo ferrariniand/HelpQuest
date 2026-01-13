@@ -15,3 +15,7 @@ data class QuestDto(
     val questStatus: String?,
     val lastActivity: QuestActivityDto?,
 )
+
+object QuestDtoConstants {
+    const val PAGE_SIZE = 20
+}

@@ -45,13 +45,18 @@ fun QuestBoardRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
+            is QuestBoardEvent.OnError -> {
+                snackbarHostState.showSnackbar(
+                    event.error.asStringAsync()
+                )
+            }
             else -> Unit
         }
     }
-
-    val snackbarHostState = remember { SnackbarHostState() }
 
 
     LaunchedEffect(selectedQuestId) {

@@ -11,6 +11,7 @@ import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.map
 import com.helpquest.quests.data.dto.QuestDto
+import com.helpquest.quests.data.dto.QuestDtoConstants
 import com.helpquest.quests.data.dto.requests.CreateQuestRequest
 import com.helpquest.quests.data.mappers.toQuest
 import com.helpquest.quests.domain.models.Quest
@@ -41,8 +42,26 @@ class KtorQuestService(
     override suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote> {
         return httpClient.get<List<QuestDto>>(
             route = "/questboard"
-        ).map { chatDtos ->
-            chatDtos.map { it.toQuest() }
+        ).map { questDtos ->
+            questDtos.map { it.toQuest() }
+        }
+    }
+
+    override suspend fun fetchQuestBoard(
+        before: String?
+    ): Result<List<Quest>, DataError.Remote> {
+        return httpClient.get<List<QuestDto>>(
+            route = "/questboard",
+            queryParams = buildMap {
+                this["pageSize"] = QuestDtoConstants.PAGE_SIZE
+                if (before != null) {
+                    this["before"] = before
+                }
+            }
+        ).map {
+            it.map { questDto ->
+                questDto.toQuest()
+            }
         }
     }
 

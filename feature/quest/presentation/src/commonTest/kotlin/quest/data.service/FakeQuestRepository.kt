@@ -132,7 +132,7 @@ class FakeQuestRepository : QuestRepository {
         return fetchQuestLogResult
     }
 
-    override suspend fun fetchQuestBoard(): Result<List<Quest>, DataError.Remote> {
+    override suspend fun fetchQuestBoard(before: String?): Result<List<Quest>, DataError> {
         return fetchQuestBoardResult
     }
 

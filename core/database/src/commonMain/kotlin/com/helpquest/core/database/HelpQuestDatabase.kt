@@ -8,6 +8,7 @@ import com.helpquest.core.database.dao.chat.ChatDao
 import com.helpquest.core.database.dao.chat.ChatMessageDao
 import com.helpquest.core.database.dao.chat.ChatParticipantsCrossRefDao
 import com.helpquest.core.database.dao.quest.QuestActivityDao
+import com.helpquest.core.database.dao.quest.QuestBoardDao
 import com.helpquest.core.database.dao.quest.QuestLogDao
 import com.helpquest.core.database.dao.quest.QuestParticipantsCrossRefDao
 import com.helpquest.core.database.db_view.LastActivityView
@@ -42,6 +43,7 @@ abstract class HelpQuestDatabase : RoomDatabase() {
     abstract val chatDao: ChatDao
     abstract val chatMessageDao: ChatMessageDao
     abstract val chatParticipantsCrossRefDao: ChatParticipantsCrossRefDao
+    abstract val questBoardDao: QuestBoardDao
     abstract val questLogDao: QuestLogDao
     abstract val questActivityDao: QuestActivityDao
     abstract val questParticipantsCrossRefDao: QuestParticipantsCrossRefDao

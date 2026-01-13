@@ -16,6 +16,10 @@ interface QuestService {
     ): Result<Quest, DataError.Remote>
 
     suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote>
+    suspend fun fetchQuestBoard(
+        before: String? = null
+    ): Result<List<Quest>, DataError.Remote>
+
     suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote>
 
     suspend fun getQuestById(questId: String): Result<Quest, DataError.Remote>

@@ -2,6 +2,7 @@ package com.helpquest.quests.domain.models
 
 enum class QuestStatus {
     OPEN,
+    DRAFT,
     READY_FOR_REFINEMENT,
     IN_REFINEMENT,
     IN_PROGRESS,

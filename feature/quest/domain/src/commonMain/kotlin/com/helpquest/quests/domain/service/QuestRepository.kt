@@ -14,7 +14,9 @@ interface QuestRepository {
     fun getQuestInfoById(questId: String): Flow<QuestInfo>
 
     suspend fun fetchQuestLog(): Result<List<Quest>, DataError.Remote>
-    suspend fun fetchQuestBoard(): Result<List<Quest>, DataError.Remote>
+    suspend fun fetchQuestBoard(
+        before: String? = null
+    ): Result<List<Quest>, DataError>
 
     suspend fun fetchQuestById(questId: String): EmptyResult<DataError.Remote>
 
