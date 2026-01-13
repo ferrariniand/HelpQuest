@@ -26,6 +26,7 @@ import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSecti
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.domain.models.Category
+import com.helpquest.core.presentation.modelsUi.Location
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.UiText
@@ -263,6 +264,7 @@ private fun QuestDetailScreenActivitysLightPreview() {
                         startActivityAt = Clock.System.now(),
                     ),
                     createdAt = Clock.System.now(),
+                    location = Location(0.0, 0.0)
                 ),
                 activities = (1..20).map {
                     ActivityListUiElement.ActivityItem(
@@ -334,6 +336,8 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                         startActivityAt = Clock.System.now(),
                     ),
                     createdAt = Clock.System.now(),
+                    location = Location(0.0, 0.0)
+
                 ),
                 activities = (1..20).map {
                     ActivityListUiElement.ActivityItem(

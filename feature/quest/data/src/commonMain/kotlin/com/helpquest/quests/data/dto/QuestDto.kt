@@ -1,5 +1,6 @@
 package com.helpquest.quests.data.dto
 
+import com.helpquest.core.data.dto.GeoLocationDto
 import com.helpquest.core.data.dto.ParticipantDto
 
 data class QuestDto(
@@ -8,6 +9,7 @@ data class QuestDto(
     val questDescription: String,
     val questCreatorId: String,
     val createdAt: String,
+    val location: GeoLocationDto,
     val participants: List<ParticipantDto>,
     val questCategory: String?,
     val questStatus: String?,

@@ -1,5 +1,6 @@
 package com.helpquest.quests.presentation.mappers
 
+import com.helpquest.core.presentation.mappers.toLocation
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.presentation.model.QuestUi
@@ -12,6 +13,7 @@ fun Quest.toQuestUi(): QuestUi {
         questDescription = questDescription,
         questCreatorId = questCreatorId,
         createdAt = createdAt,
+        location = location.toLocation(),
         questCategory = questCategory,
         participants = participants.map { it.toParticipantUi() },
         questStatus = questStatus,

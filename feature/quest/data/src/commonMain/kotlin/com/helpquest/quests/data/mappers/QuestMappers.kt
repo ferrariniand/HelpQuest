@@ -2,12 +2,14 @@
 
 package com.helpquest.quests.data.mappers
 
+import com.helpquest.core.data.mappers.toGeoLocation
 import com.helpquest.core.data.mappers.toParticipant
 import com.helpquest.core.database.entities.quest.ActivityWithCreatorEntity
 import com.helpquest.core.database.entities.quest.QuestEntity
 import com.helpquest.core.database.entities.quest.QuestInfoEntity
 import com.helpquest.core.database.entities.quest.QuestWithParticipants
 import com.helpquest.core.domain.models.Category
+import com.helpquest.core.domain.models.GeoLocation
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.quests.data.dto.QuestDto
 import com.helpquest.quests.domain.models.ActivityWithCreator
@@ -26,6 +28,7 @@ fun QuestDto.toQuest(): Quest {
         questDescription = questDescription,
         questCreatorId = questCreatorId,
         createdAt = Instant.parse(createdAt),
+        location = location.toGeoLocation(),
         participants = participants.map { it.toParticipant() },
         questCategory = questCategory?.let {
             Category.valueOf(it)
@@ -47,6 +50,7 @@ fun QuestEntity.toQuest(
         questDescription = questDescription,
         questCreatorId = questCreatorId,
         createdAt = Instant.fromEpochMilliseconds(createdTimestamp),
+        location = GeoLocation(latitude, longitude),
         participants = participants,
         questCategory = questCategory?.let {
             Category.valueOf(it)
@@ -65,6 +69,7 @@ fun QuestWithParticipants.toQuest(): Quest {
         questDescription = quest.questDescription,
         questCreatorId = quest.questCreatorId,
         createdAt = Instant.fromEpochMilliseconds(quest.createdTimestamp),
+        location = GeoLocation(quest.latitude, quest.longitude),
         participants = participants.map { it.toParticipant() },
         questCategory = quest.questCategory?.let {
             Category.valueOf(it)
@@ -83,6 +88,8 @@ fun Quest.toQuestEntity(): QuestEntity {
         questTitle = questTitle,
         questDescription = questDescription,
         questCreatorId = questCreatorId,
+        latitude = location.latitude,
+        longitude = location.longitude,
         createdTimestamp = createdAt.toEpochMilliseconds(),
         questCategory = questCategory?.name,
         questStatus = questStatus?.name

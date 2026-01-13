@@ -11,6 +11,8 @@ data class QuestEntity(
     val questDescription: String,
     val questCreatorId: String,
     val createdTimestamp: Long,
+    val latitude: Double,
+    val longitude: Double,
     val questCategory: String?,
     val questStatus: String?,
 )

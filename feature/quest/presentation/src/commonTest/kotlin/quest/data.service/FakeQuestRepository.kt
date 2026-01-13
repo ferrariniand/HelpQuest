@@ -3,6 +3,7 @@
 package quest.data.service
 
 import com.helpquest.core.domain.models.Category
+import com.helpquest.core.domain.models.GeoLocation
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
@@ -63,6 +64,7 @@ class FakeQuestRepository : QuestRepository {
         questDescription = "test quest1 description",
         questCreatorId = participant.userId,
         createdAt = Clock.System.now(),
+        location = GeoLocation(0.0, 0.0),
         questCategory = Category.GENERIC,
         participants = listOf(participant, participant2),
         questStatus = QuestStatus.IN_PROGRESS,
@@ -80,6 +82,7 @@ class FakeQuestRepository : QuestRepository {
         questDescription = "test quest2 description",
         questCreatorId = participant.userId,
         createdAt = Clock.System.now(),
+        location = GeoLocation(0.0, 0.0),
         questCategory = Category.GENERIC,
         participants = listOf(
             participant,
