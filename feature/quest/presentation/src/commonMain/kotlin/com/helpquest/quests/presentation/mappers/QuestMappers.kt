@@ -5,6 +5,11 @@ import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.presentation.model.QuestUi
 
+fun List<Quest>.toQuestUiList(): List<QuestUi> {
+    return this
+        .sortedByDescending { it.createdAt }
+        .map { it.toQuestUi() }
+}
 
 fun Quest.toQuestUi(): QuestUi {
     return QuestUi(

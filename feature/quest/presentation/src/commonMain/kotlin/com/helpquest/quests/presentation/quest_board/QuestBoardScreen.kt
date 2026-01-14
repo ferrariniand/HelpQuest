@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,10 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestFloatingActionButton
-import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.pagination.PaginationScrollListener
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import com.helpquest.quests.presentation.components.QuestListUi
 import helpquest.feature.quest.presentation.generated.resources.Res
 import helpquest.feature.quest.presentation.generated.resources.create_quest
 import org.jetbrains.compose.resources.stringResource
@@ -84,6 +83,21 @@ fun QuestBoardScreen(
     onAction: (QuestBoardAction) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
+
+    val questListState = rememberLazyListState()
+
+    val questItemCount = remember { state.quests.size }
+
+    PaginationScrollListener(
+        lazyListState = questListState,
+        itemCount = questItemCount,
+        isPaginationLoading = state.isPaginationLoading,
+        isEndReached = state.endReached,
+        onNearEnd = {
+            onAction(QuestBoardAction.OnScrollToBottom)
+        }
+    )
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -110,42 +124,23 @@ fun QuestBoardScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when {
-                state.isLoading -> {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                state.quests.isEmpty() -> {
-                    //TODO EmptyListSection
-                    HelpQuestHorizontalDivider()
-                }
-
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    ) {
-                        items(
-                            items = state.quests,
-                            key = { it.questId }
-                        ) { questUi ->
-                            //TODO  QuestBoardItemUi(
-//                                quest = questUi,
-//                                isSelected = questUi.questId == state.selectedQuestId,
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .clickable {
-//                                        onAction(QuestBoardAction.OnSelectQuest(questUi))
-//                                    }
-//                            )
-                            HelpQuestHorizontalDivider()
-                        }
-                    }
-                }
-            }
+            QuestListUi(
+                quests = state.quests,
+                selectedQuestId = state.selectedQuestId,
+                listState = questListState,
+                isLoading = state.isLoading,
+                isPaginationLoading = state.isPaginationLoading,
+                paginationError = state.paginationError?.asString(),
+                onSelectQuest = { questId ->
+                    onAction(QuestBoardAction.OnSelectQuest(questId))
+                },
+                onRetryPaginationClick = {
+                    onAction(QuestBoardAction.OnRetryPaginationClick)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
         }
     }
 }

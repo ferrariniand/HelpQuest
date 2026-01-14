@@ -81,6 +81,9 @@ class FakeQuestService : QuestService {
     var getQuestBoardResult: Result<List<Quest>, DataError.Remote> =
         Result.Success(questList)
 
+    var fetchQuestBoardResult: Result<List<Quest>, DataError.Remote> =
+        Result.Success(questList)
+
     var getQuestLogResult: Result<List<Quest>, DataError.Remote> =
         Result.Success(questList)
 
@@ -95,6 +98,10 @@ class FakeQuestService : QuestService {
 
     override suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote> {
         return getQuestBoardResult
+    }
+
+    override suspend fun fetchQuestBoard(before: String?): Result<List<Quest>, DataError.Remote> {
+        return fetchQuestBoardResult
     }
 
     override suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote> {
