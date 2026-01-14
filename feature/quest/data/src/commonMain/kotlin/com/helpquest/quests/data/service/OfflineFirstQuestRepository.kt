@@ -60,7 +60,25 @@ class OfflineFirstQuestRepository(
     // QUESTLOG: Filter the quests assigned to the user
     // QUESTBOARD: Get all quests in state OPEN or REQUEST_MORE_HELP
     override fun getQuestBoard(): Flow<List<Quest>> {
-        TODO("Not yet implemented")
+        return database.questBoardDao.getQuestsWithParticipantsByStatus("OPEN")
+            .map { allQuestWithParticipants ->
+                supervisorScope {
+                    allQuestWithParticipants
+                        .map { questWithParticipants ->
+                            async {
+                                QuestWithParticipants(
+                                    quest = questWithParticipants.quest,
+                                    participants = questWithParticipants
+                                        .participants
+                                        .onlyActive(questWithParticipants.quest.questId),
+                                    lastActivity = questWithParticipants.lastActivity
+                                )
+                            }
+                        }
+                        .awaitAll()
+                        .map { it.toQuest() }
+                }
+            }
     }
 
     override fun getQuestInfoById(questId: String): Flow<QuestInfo> {

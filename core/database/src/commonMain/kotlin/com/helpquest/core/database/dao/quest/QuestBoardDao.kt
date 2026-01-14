@@ -64,8 +64,15 @@ interface QuestBoardDao {
     @Query("SELECT questId FROM questentity")
     suspend fun getAllQuestIds(): List<String>
 
-    @Query("SELECT * FROM questentity ORDER BY createdTimestamp DESC")
-    fun getQuestsWithParticipants(): Flow<List<QuestWithParticipants>>
+    @Query(
+        """
+        SELECT * 
+        FROM questentity 
+        WHERE questStatus = :questStatus 
+        ORDER BY createdTimestamp DESC
+        """
+    )
+    fun getQuestsWithParticipantsByStatus(questStatus: String): Flow<List<QuestWithParticipants>>
 
     @Query("DELETE FROM questentity WHERE questId = :questId")
     suspend fun deleteQuestById(questId: String)
