@@ -5,6 +5,8 @@ import com.helpquest.chat.presentation.model.MessageListUiElement
 sealed interface ChatDetailAction {
     data object OnSendMessageClick : ChatDetailAction
     data object OnScrollToTop : ChatDetailAction
+    data object OnRetryPaginationClick : ChatDetailAction
+
     data class OnSelectChat(val chatId: String?) : ChatDetailAction
     data class OnDeleteMessageClick(val message: MessageListUiElement.LocalUserMessage) :
         ChatDetailAction

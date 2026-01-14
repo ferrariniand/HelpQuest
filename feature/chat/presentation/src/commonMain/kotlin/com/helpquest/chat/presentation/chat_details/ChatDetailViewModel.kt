@@ -6,15 +6,18 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.chat.domain.service.ChatConnectionClient
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.domain.service.MessageRepository
 import com.helpquest.chat.presentation.mappers.toChatUi
-import com.helpquest.chat.presentation.mappers.toMessageListUiElement
+import com.helpquest.chat.presentation.mappers.toMessageListUi
 import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.util.ConnectionState
+import com.helpquest.core.domain.util.DataErrorException
+import com.helpquest.core.domain.util.Paginator
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
 import com.helpquest.core.presentation.modelsUi.BannerState
@@ -55,7 +58,17 @@ class ChatDetailViewModel(
 
     private val _chatId = MutableStateFlow<String?>(null)
 
+    private var currentPaginator: Paginator<String?, ChatMessage>? = null
+
+
     private val chatInfoFlow = _chatId
+        .onEach { chatId ->
+            if (chatId != null) {
+                setupPaginatorForChat(chatId)
+            } else {
+                currentPaginator = null
+            }
+        }
         .flatMapLatest { chatId ->
             if (chatId != null) {
                 repository
@@ -85,7 +98,7 @@ class ChatDetailViewModel(
 
         currentState.copy(
             chatUi = chatInfo.chat.toChatUi(authInfo.user.id),
-            messages = chatInfo.messages.map { it.toMessageListUiElement(authInfo.user.id) }
+            messages = chatInfo.messages.toMessageListUi(authInfo.user.id)
         )
     }
 
@@ -121,6 +134,8 @@ class ChatDetailViewModel(
             is ChatDetailAction.OnDeleteMessageClick -> deleteMessage(action.message)
             is ChatDetailAction.OnMessageLongClick -> onMessageLongClick(action.message)
             ChatDetailAction.OnDismissMessageMenu -> onDismissMessageMenu()
+            ChatDetailAction.OnScrollToTop -> onScrollToTop()
+            ChatDetailAction.OnRetryPaginationClick -> retryPagination()
             else -> Unit
         }
     }
@@ -217,9 +232,7 @@ class ChatDetailViewModel(
             .connectionState
             .onEach { connectionState ->
                 if (connectionState == ConnectionState.CONNECTED) {
-                    _chatId.value?.let {
-                        messageRepository.fetchMessages(it, before = null)
-                    }
+                    currentPaginator?.loadNextItems()
                 }
 
                 _state.update {
@@ -328,4 +341,54 @@ class ChatDetailViewModel(
                 }
         }
     }
+
+    private fun setupPaginatorForChat(chatId: String) {
+        currentPaginator = Paginator(
+            initialKey = null,
+            onLoadUpdated = { isLoading ->
+                _state.update { it.copy(isPaginationLoading = isLoading) }
+            },
+            onRequest = { beforeTimestamp ->
+                messageRepository.fetchMessages(chatId, beforeTimestamp)
+            },
+            getNextKey = { messages ->
+                messages.minOfOrNull { it.createdAt }?.toString()
+            },
+            onError = { throwable ->
+                if (throwable is DataErrorException) {
+                    _state.update {
+                        it.copy(
+                            paginationError = throwable.error.toUiText()
+                        )
+                    }
+                }
+            },
+            onSuccess = { messages, _ ->
+                _state.update {
+                    it.copy(
+                        endReached = messages.isEmpty(),
+                        paginationError = null
+                    )
+                }
+            }
+        )
+
+        _state.update {
+            it.copy(
+                endReached = false,
+                isPaginationLoading = false,
+            )
+        }
+    }
+
+    private fun retryPagination() = loadNextItems()
+
+    private fun onScrollToTop() = loadNextItems()
+
+    private fun loadNextItems() {
+        viewModelScope.launch {
+            currentPaginator?.loadNextItems()
+        }
+    }
+
 }

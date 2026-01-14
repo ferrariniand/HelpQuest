@@ -39,12 +39,13 @@ import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSecti
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
+import com.helpquest.core.presentation.pagination.PaginationScrollListener
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
+import helpquest.core.designsystem.generated.resources.empty_list
 import helpquest.feature.chat.presentation.generated.resources.Res
-import helpquest.feature.chat.presentation.generated.resources.empty_chat
 import helpquest.feature.chat.presentation.generated.resources.no_chat_selected
 import helpquest.feature.chat.presentation.generated.resources.select_a_chat
 import kotlinx.coroutines.delay
@@ -57,6 +58,7 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ChatDetailRoot(
@@ -124,6 +126,23 @@ fun ChatDetailScreen(
     val configuration = currentDeviceConfiguration()
     val messageListState = rememberLazyListState()
 
+    val realMessageItemCount = remember(state.messages) {
+        state
+            .messages
+            .filter { it is MessageListUiElement.LocalUserMessage || it is MessageListUiElement.OtherUserMessage }
+            .size
+    }
+
+    PaginationScrollListener(
+        lazyListState = messageListState,
+        itemCount = realMessageItemCount,
+        isPaginationLoading = state.isPaginationLoading,
+        isEndReached = state.endReached,
+        onNearEnd = {
+            onAction(ChatDetailAction.OnScrollToTop)
+        }
+    )
+
     SnackbarScaffold(
         snackbarHostState = snackbarState,
         modifier = Modifier
@@ -156,7 +175,7 @@ fun ChatDetailScreen(
                         EmptyListSection(
                             title = stringResource(Res.string.no_chat_selected),
                             description = stringResource(Res.string.select_a_chat),
-                            icon = painterResource(Res.drawable.empty_chat),
+                            icon = painterResource(DesignSystemRes.drawable.empty_list),
                             modifier = Modifier
                                 .fillMaxSize()
                         )
@@ -189,6 +208,8 @@ fun ChatDetailScreen(
                             messages = state.messages,
                             messageWithOpenMenu = state.messageWithOpenMenu,
                             listState = messageListState,
+                            isPaginationLoading = state.isPaginationLoading,
+                            paginationError = state.paginationError?.asString(),
                             onMessageLongClick = { message ->
                                 onAction(ChatDetailAction.OnMessageLongClick(message))
                             },
@@ -200,6 +221,9 @@ fun ChatDetailScreen(
                             },
                             onDeleteMessageClick = { message ->
                                 onAction(ChatDetailAction.OnDeleteMessageClick(message))
+                            },
+                            onRetryPaginationClick = {
+                                onAction(ChatDetailAction.OnRetryPaginationClick)
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

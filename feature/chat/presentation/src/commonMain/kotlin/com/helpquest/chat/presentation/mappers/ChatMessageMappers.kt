@@ -5,6 +5,11 @@ import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.presentation.util.DateUtils
 
+fun List<MessageWithSender>.toMessageListUi(localUserId: String): List<MessageListUiElement> {
+    return this
+        .sortedByDescending { it.message.createdAt }
+        .map { it.toMessageListUiElement(localUserId) }
+}
 
 fun MessageWithSender.toMessageListUiElement(
     localUserId: String,

@@ -34,15 +34,16 @@ import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDiv
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import helpquest.core.designsystem.generated.resources.empty_list
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.create_chat
-import helpquest.feature.chat.presentation.generated.resources.empty_chat
 import helpquest.feature.chat.presentation.generated.resources.no_chats
 import helpquest.feature.chat.presentation.generated.resources.no_chats_subtitle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ChatListRoot(
@@ -130,7 +131,7 @@ fun ChatListScreen(
                     EmptyListSection(
                         title = stringResource(Res.string.no_chats),
                         description = stringResource(Res.string.no_chats_subtitle),
-                        icon = painterResource(Res.drawable.empty_chat),
+                        icon = painterResource(DesignSystemRes.drawable.empty_list),
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
