@@ -1,5 +1,7 @@
 package com.helpquest.core.presentation.util
 
+import com.helpquest.core.domain.models.GeoLocation
+import com.helpquest.core.presentation.modelsUi.Location
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -27,4 +29,18 @@ fun distanceTo(
 
     val c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return EARTH_RADIUS * c
+}
+
+fun Location.toPlace(): String {
+    //TODO Probably there is a different implementation for Android and iOS. on Android should be used Google Places API
+    val latitude = this.latitude
+    val longitude = this.longitude
+    return "city, region, country"
+}
+
+fun GeoLocation.toPlace(): String {
+    //TODO Probably there is a different implementation for Android and iOS. on Android should be used Google Places API
+    val latitude = this.latitude
+    val longitude = this.longitude
+    return "city($latitude, $longitude), country"
 }
