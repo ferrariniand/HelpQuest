@@ -4,11 +4,21 @@ import com.helpquest.chat.domain.models.MessageWithSender
 import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.presentation.util.DateUtils
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun List<MessageWithSender>.toMessageListUi(localUserId: String): List<MessageListUiElement> {
     return this
         .sortedByDescending { it.message.createdAt }
-        .map { it.toMessageListUiElement(localUserId) }
+        .groupBy {
+            it.message.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        }
+        .flatMap { (date, messages) ->
+            messages.map { it.toMessageListUiElement(localUserId) } + MessageListUiElement.DateSeparator(
+                id = date.toString(),
+                date = DateUtils.formatDateSeparator(date)
+            )
+        }
 }
 
 fun MessageWithSender.toMessageListUiElement(
