@@ -3,6 +3,8 @@
 package com.helpquest.chat.presentation.chat_details
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -17,12 +20,17 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.chat.domain.models.ChatMessage
@@ -35,10 +43,12 @@ import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.designsystem.components.containers_layouts.DynamicRoundedCornerColumn
 import com.helpquest.core.designsystem.components.containers_layouts.SnackbarScaffold
 import com.helpquest.core.designsystem.components.for_scrollables.EmptyListSection
+import com.helpquest.core.designsystem.components.for_scrollables.TextChip
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
+import com.helpquest.core.presentation.pagination.BannerListener
 import com.helpquest.core.presentation.pagination.PaginationScrollListener
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.core.presentation.util.UiText
@@ -49,6 +59,7 @@ import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.no_chat_selected
 import helpquest.feature.chat.presentation.generated.resources.select_a_chat
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -71,6 +82,8 @@ fun ChatDetailRoot(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val snackbarState = remember { SnackbarHostState() }
+    val messageListState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -81,7 +94,9 @@ fun ChatDetailRoot(
                 )
             }
             ChatDetailEvent.OnNewMessage -> {
-                // TODO: Auto scroll to bottom
+                scope.launch {
+                    messageListState.animateScrollToItem(0)
+                }
             }
         }
     }
@@ -89,7 +104,12 @@ fun ChatDetailRoot(
         viewModel.onAction(ChatDetailAction.OnSelectChat(chatId))
     }
 
-    val scope = rememberCoroutineScope()
+    LaunchedEffect(chatId) {
+        if (chatId != null) {
+            messageListState.scrollToItem(0)
+        }
+    }
+
     BackHandler(
         enabled = showBackButton
     ) {
@@ -104,11 +124,13 @@ fun ChatDetailRoot(
 
     ChatDetailScreen(
         state = state,
+        messageListState = messageListState,
         showBackButton = showBackButton,
         snackbarState = snackbarState,
         onAction = { action ->
             when (action) {
                 is ChatDetailAction.OnChatMembersClick -> onChatMembersClick()
+                is ChatDetailAction.OnBackClick -> onBack()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -119,12 +141,12 @@ fun ChatDetailRoot(
 @Composable
 fun ChatDetailScreen(
     state: ChatDetailState,
+    messageListState: LazyListState,
     showBackButton: Boolean,
     snackbarState: SnackbarHostState,
     onAction: (ChatDetailAction) -> Unit,
 ) {
     val configuration = currentDeviceConfiguration()
-    val messageListState = rememberLazyListState()
 
     val realMessageItemCount = remember(state.messages) {
         state
@@ -132,6 +154,28 @@ fun ChatDetailScreen(
             .filter { it is MessageListUiElement.LocalUserMessage || it is MessageListUiElement.OtherUserMessage }
             .size
     }
+
+    LaunchedEffect(messageListState) {
+        snapshotFlow {
+            messageListState.firstVisibleItemIndex to messageListState.layoutInfo.totalItemsCount
+        }.filter { (firstVisibleIndex, totalItemsCount) ->
+            firstVisibleIndex >= 0 && totalItemsCount > 0
+        }.collect { (firstVisibleItemIndex, _) ->
+            onAction(ChatDetailAction.OnFirstVisibleIndexChanged(firstVisibleItemIndex))
+        }
+    }
+
+    BannerListener(
+        lazyListState = messageListState,
+        elements = state.messages,
+        isBannerVisible = state.bannerState.isVisible,
+        onShowBanner = { index ->
+            onAction(ChatDetailAction.OnTopVisibleIndexChanged(index))
+        },
+        onHide = {
+            onAction(ChatDetailAction.OnHideBanner)
+        }
+    )
 
     PaginationScrollListener(
         lazyListState = messageListState,
@@ -142,6 +186,11 @@ fun ChatDetailScreen(
             onAction(ChatDetailAction.OnScrollToTop)
         }
     )
+
+    var headerHeight by remember {
+        mutableStateOf(0.dp)
+    }
+    val density = LocalDensity.current
 
     SnackbarScaffold(
         snackbarHostState = snackbarState,
@@ -180,7 +229,14 @@ fun ChatDetailScreen(
                                 .fillMaxSize()
                         )
                     } else {
-                        GenericPageHeaderSection {
+                        GenericPageHeaderSection(
+                            modifier = Modifier
+                                .onSizeChanged {
+                                    headerHeight = with(density) {
+                                        it.height.toDp()
+                                    }
+                                }
+                        ) {
                             ChatDetailHeader(
                                 chatUi = state.chatUi,
                                 isBackVisible = showBackButton,
@@ -277,6 +333,21 @@ fun ChatDetailScreen(
                     }
                 }
             }
+
+            AnimatedVisibility(
+                visible = state.bannerState.isVisible,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = headerHeight + 16.dp),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                state.bannerState.bannerUiText?.let { bannerText ->
+                    TextChip(
+                        text = bannerText.asString()
+                    )
+                }
+            }
         }
     }
 }
@@ -289,6 +360,7 @@ private fun ChatDetailScreenEmptyLightPreview() {
     HelpQuestTheme {
         ChatDetailScreen(
             state = ChatDetailState(),
+            messageListState = rememberLazyListState(),
             showBackButton = true,
             snackbarState = remember { SnackbarHostState() },
             onAction = {}
@@ -305,6 +377,7 @@ private fun ChatDetailScreenEmptyDarkPreview() {
     HelpQuestTheme(darkTheme = true) {
         ChatDetailScreen(
             state = ChatDetailState(),
+            messageListState = rememberLazyListState(),
             showBackButton = true,
             snackbarState = remember { SnackbarHostState() },
             onAction = {}
@@ -377,6 +450,7 @@ private fun ChatDetailScreenMessagesLightPreview() {
                     }
                 }
             ),
+            messageListState = rememberLazyListState(),
             showBackButton = true,
             snackbarState = remember { SnackbarHostState() },
             onAction = {}
@@ -450,6 +524,7 @@ private fun ChatDetailScreenMessagesDarkPreview() {
                     }
                 }
             ),
+            messageListState = rememberLazyListState(),
             showBackButton = true,
             snackbarState = remember { SnackbarHostState() },
             onAction = {}

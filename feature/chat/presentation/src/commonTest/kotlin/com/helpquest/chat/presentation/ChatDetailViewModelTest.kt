@@ -23,12 +23,14 @@ import com.helpquest.chat.presentation.chat_details.ChatDetailState
 import com.helpquest.chat.presentation.chat_details.ChatDetailViewModel
 import com.helpquest.chat.presentation.di.chatPresentationModule
 import com.helpquest.chat.presentation.model.ChatUi
+import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.util.ConnectionState
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.presentation.modelsUi.BannerState
+import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.test.auth.FakeSessionStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -375,5 +377,101 @@ class ChatDetailViewModelTest : KoinTest {
 
             cancelAndConsumeRemainingEvents()
         }
+    }
+
+    @Test
+    fun `onAction OnMessageLongClick`() = runBlocking {
+        // Call `OnLeaveChatClick` when `_chatId.value` is null. Verify that the function returns early and no repository calls or state changes occur.
+        val messageWithOpenMenu = MessageListUiElement.LocalUserMessage(
+            fakeMessageRepository.message1.id,
+            fakeMessageRepository.message1.content,
+            fakeMessageRepository.message1.deliveryStatus,
+            UiText.DynamicString(
+                fakeMessageRepository.message1.createdAt.toEpochMilliseconds().toString()
+            )
+        )
+        viewModel = ChatDetailViewModel(
+            fakeChatRepository,
+            fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
+        )
+        viewModel.state.test {
+            val startState = awaitItem()
+            viewModel.onAction(
+                ChatDetailAction.OnMessageLongClick(
+                    message = messageWithOpenMenu
+                )
+            )
+            val newState = viewModel.state.first()
+
+            assertThat(startState.messageWithOpenMenu).isNull()
+            assertThat(newState.messageWithOpenMenu).isEqualTo(messageWithOpenMenu)
+
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `onAction OnDismissMessageMenuClick`() = runBlocking {
+        // Call `OnLeaveChatClick` when `_chatId.value` is null. Verify that the function returns early and no repository calls or state changes occur.
+        val messageWithOpenMenu = MessageListUiElement.LocalUserMessage(
+            fakeMessageRepository.message1.id,
+            fakeMessageRepository.message1.content,
+            fakeMessageRepository.message1.deliveryStatus,
+            UiText.DynamicString(
+                fakeMessageRepository.message1.createdAt.toEpochMilliseconds().toString()
+            )
+        )
+        viewModel = ChatDetailViewModel(
+            fakeChatRepository,
+            fakeSessionStorage,
+            fakeMessageRepository,
+            fakeChatConnectionClient
+        )
+        viewModel.state.test {
+            val startState = awaitItem()
+            viewModel.onAction(
+                ChatDetailAction.OnMessageLongClick(
+                    message = messageWithOpenMenu
+                )
+            )
+            val firstState = viewModel.state.first()
+
+            assertThat(startState.messageWithOpenMenu).isNull()
+            assertThat(firstState.messageWithOpenMenu).isEqualTo(messageWithOpenMenu)
+
+            viewModel.onAction(ChatDetailAction.OnDismissMessageMenu)
+            val secondState = viewModel.state.first()
+
+            assertThat(secondState.messageWithOpenMenu).isNull()
+
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `onAction OnDeleteMessageClick Success`() = runBlocking {
+
+    }
+
+    @Test
+    fun `onAction OnDeleteMessageClick Error`() = runBlocking {
+
+    }
+
+    @Test
+    fun `onAction OnHideBanner`() = runBlocking {
+
+    }
+
+    @Test
+    fun `onAction OnFirstVisibleIndexChanged`() = runBlocking {
+
+    }
+
+    @Test
+    fun `onAction OnTopVisibleIndexChanged`() = runBlocking {
+
     }
 }

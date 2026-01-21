@@ -21,7 +21,9 @@ import com.helpquest.core.domain.util.Paginator
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
 import com.helpquest.core.presentation.modelsUi.BannerState
+import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.toUiText
+import helpquest.core.presentation.generated.resources.today
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +42,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import helpquest.core.presentation.generated.resources.Res as CorePresentationRes
 
 class ChatDetailViewModel(
     private val repository: ChatRepository,
@@ -136,6 +139,9 @@ class ChatDetailViewModel(
             ChatDetailAction.OnDismissMessageMenu -> onDismissMessageMenu()
             ChatDetailAction.OnScrollToTop -> onScrollToTop()
             ChatDetailAction.OnRetryPaginationClick -> retryPagination()
+            ChatDetailAction.OnHideBanner -> hideBanner()
+            is ChatDetailAction.OnTopVisibleIndexChanged -> updateBanner(action.topVisibleIndex)
+            is ChatDetailAction.OnFirstVisibleIndexChanged -> updateNearBottom(action.index)
             else -> Unit
         }
     }
@@ -218,10 +224,14 @@ class ChatDetailViewModel(
             newMessages,
             isNearBottom
         ) { currentMessages, newMessages, isNearBottom ->
-            val lastNewId = newMessages.lastOrNull()?.message?.id
-            val lastCurrentId = currentMessages.lastOrNull()?.id
+            val newestMessageId = newMessages.firstOrNull()?.message?.id
+            val currentNewestId = currentMessages
+                .asSequence()
+                .filterNot { it is MessageListUiElement.DateSeparator }
+                .firstOrNull()
+                ?.id
 
-            if (lastNewId != lastCurrentId && isNearBottom) {
+            if (newestMessageId != null && newestMessageId != currentNewestId && isNearBottom) {
                 eventChannel.send(ChatDetailEvent.OnNewMessage)
             }
         }.launchIn(viewModelScope)
@@ -390,5 +400,65 @@ class ChatDetailViewModel(
             currentPaginator?.loadNextItems()
         }
     }
+
+    private fun hideBanner() {
+        _state.update {
+            it.copy(
+                bannerState = it.bannerState.copy(
+                    isVisible = false
+                )
+            )
+        }
+    }
+
+    private fun updateBanner(topVisibleIndex: Int) {
+        val visibleDate = calculateBannerDateFromIndex(
+            messages = state.value.messages,
+            index = topVisibleIndex
+        )
+
+        _state.update {
+            it.copy(
+                bannerState = BannerState(
+                    bannerUiText = visibleDate,
+                    isVisible = visibleDate != null
+                )
+            )
+        }
+    }
+
+    private fun calculateBannerDateFromIndex(
+        messages: List<MessageListUiElement>,
+        index: Int
+    ): UiText? {
+        if (messages.isEmpty() || index < 0 || index >= messages.size) {
+            return null
+        }
+
+        val nearestDateSeparator = (index until messages.size)
+            .asSequence()
+            .mapNotNull { index ->
+                val item = messages.getOrNull(index)
+                if (item is MessageListUiElement.DateSeparator) item.date else null
+            }
+            .firstOrNull()
+
+        return when (nearestDateSeparator) {
+            is UiText.Resource -> {
+                if (nearestDateSeparator.id == CorePresentationRes.string.today) null else nearestDateSeparator
+            }
+
+            else -> nearestDateSeparator
+        }
+    }
+
+    private fun updateNearBottom(firstVisibleIndex: Int) {
+        _state.update {
+            it.copy(
+                isNearBottom = firstVisibleIndex <= 3
+            )
+        }
+    }
+
 
 }
