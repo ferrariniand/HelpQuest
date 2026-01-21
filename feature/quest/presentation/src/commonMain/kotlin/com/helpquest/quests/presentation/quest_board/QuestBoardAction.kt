@@ -7,4 +7,6 @@ sealed interface QuestBoardAction {
     data class OnSelectQuest(val questId: String?) : QuestBoardAction
     data object OnScrollToBottom : QuestBoardAction
     data object OnRetryPaginationClick : QuestBoardAction
+    data object OnHideBanner : QuestBoardAction
+    data class OnTopVisibleIndexChanged(val topVisibleIndex: Int) : QuestBoardAction
 }

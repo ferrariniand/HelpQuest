@@ -1,6 +1,5 @@
 package com.helpquest.quests.presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.for_scrollables.EmptyListSection
-import com.helpquest.quests.presentation.model.QuestUi
+import com.helpquest.quests.presentation.model.QuestListUiElement
 import helpquest.core.designsystem.generated.resources.empty_list
 import helpquest.feature.quest.presentation.generated.resources.Res
 import helpquest.feature.quest.presentation.generated.resources.no_quests
@@ -35,7 +34,7 @@ import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun QuestListUi(
-    quests: List<QuestUi>,
+    questListUiElements: List<QuestListUiElement>,
     selectedQuestId: String?,
     listState: LazyListState,
     isLoading: Boolean,
@@ -52,7 +51,7 @@ fun QuestListUi(
             )
         }
 
-        quests.isEmpty() -> {
+        questListUiElements.isEmpty() -> {
             Box(
                 modifier = modifier
                     .padding(vertical = 32.dp),
@@ -71,22 +70,21 @@ fun QuestListUi(
                 modifier = modifier,
                 state = listState,
                 contentPadding = PaddingValues(16.dp),
-                reverseLayout = true,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(
-                    items = quests,
-                    key = { it.questId }
-                ) { quest ->
+                    items = questListUiElements,
+                    key = { it.id }
+                ) { questListUiElement ->
                     QuestListItemUi(
-                        quest = quest,
-                        isSelected = quest.questId == selectedQuestId,
+                        questListUiElement = questListUiElement,
+                        isSelected = questListUiElement.id == selectedQuestId,
+                        onSelect = {
+                            onSelectQuest(questListUiElement.id)
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateItem()
-                            .clickable {
-                                onSelectQuest(quest.questId)
-                            }
 
                     )
 

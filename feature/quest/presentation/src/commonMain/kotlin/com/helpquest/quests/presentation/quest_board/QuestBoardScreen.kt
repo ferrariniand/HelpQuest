@@ -1,6 +1,10 @@
 package com.helpquest.quests.presentation.quest_board
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,15 +22,25 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestFloatingActionButton
+import com.helpquest.core.designsystem.components.for_scrollables.TextChip
+import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.pagination.BannerListener
 import com.helpquest.core.presentation.pagination.PaginationScrollListener
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import com.helpquest.core.presentation.util.clearFocusOnTap
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.quests.presentation.components.QuestListUi
 import helpquest.feature.quest.presentation.generated.resources.Res
 import helpquest.feature.quest.presentation.generated.resources.create_quest
@@ -83,10 +97,23 @@ fun QuestBoardScreen(
     onAction: (QuestBoardAction) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
+    val configuration = currentDeviceConfiguration()
 
     val questListState = rememberLazyListState()
 
     val questItemCount = remember { state.quests.size }
+
+    BannerListener(
+        lazyListState = questListState,
+        elements = state.quests,
+        isBannerVisible = state.bannerState.isVisible,
+        onShowBanner = { index ->
+            onAction(QuestBoardAction.OnTopVisibleIndexChanged(index))
+        },
+        onHide = {
+            onAction(QuestBoardAction.OnHideBanner)
+        }
+    )
 
     PaginationScrollListener(
         lazyListState = questListState,
@@ -97,6 +124,11 @@ fun QuestBoardScreen(
             onAction(QuestBoardAction.OnScrollToBottom)
         }
     )
+
+    var headerHeight by remember {
+        mutableStateOf(0.dp)
+    }
+    val density = LocalDensity.current
 
     Scaffold(
         modifier = Modifier
@@ -117,30 +149,66 @@ fun QuestBoardScreen(
             }
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .clearFocusOnTap()
+                .then(
+                    if (configuration.isWideScreen) {
+                        Modifier.padding(horizontal = 8.dp)
+                    } else Modifier
+                )
         ) {
-            QuestListUi(
-                quests = state.quests,
-                selectedQuestId = state.selectedQuestId,
-                listState = questListState,
-                isLoading = state.isLoading,
-                isPaginationLoading = state.isPaginationLoading,
-                paginationError = state.paginationError?.asString(),
-                onSelectQuest = { questId ->
-                    onAction(QuestBoardAction.OnSelectQuest(questId))
-                },
-                onRetryPaginationClick = {
-                    onAction(QuestBoardAction.OnRetryPaginationClick)
-                },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            )
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                GenericPageHeaderSection(
+                    modifier = Modifier
+                        .onSizeChanged {
+                            headerHeight = with(density) {
+                                it.height.toDp()
+                            }
+                        }
+                ) {
+                    //TODO define Quest Board Header
+                }
+
+                QuestListUi(
+                    questListUiElements = state.quests,
+                    selectedQuestId = state.selectedQuestId,
+                    listState = questListState,
+                    isLoading = state.isLoading,
+                    isPaginationLoading = state.isPaginationLoading,
+                    paginationError = state.paginationError?.asString(),
+                    onSelectQuest = { questId ->
+                        onAction(QuestBoardAction.OnSelectQuest(questId))
+                    },
+                    onRetryPaginationClick = {
+                        onAction(QuestBoardAction.OnRetryPaginationClick)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            }
+
+            AnimatedVisibility(
+                visible = state.bannerState.isVisible,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = headerHeight + 16.dp),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                state.bannerState.bannerUiText?.let { bannerText ->
+                    TextChip(
+                        text = bannerText.asString()
+                    )
+                }
+            }
         }
     }
 }

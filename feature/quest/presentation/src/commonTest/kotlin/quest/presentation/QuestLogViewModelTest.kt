@@ -12,6 +12,7 @@ import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.mappers.toParticipantUi
+import com.helpquest.core.presentation.modelsUi.Location
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.test.auth.FakeSessionStorage
 import com.helpquest.quests.domain.models.QuestActivity
@@ -117,6 +118,7 @@ class QuestLogViewModelTest : KoinTest {
                             activityStatus = QuestActivityStatus.IN_PROGRESS,
                             startActivityAt = Clock.System.now(),
                         ),
+                        location = Location(0.0, 0.0),
                         createdAt = Clock.System.now(),
                     )
                 )
@@ -168,6 +170,7 @@ class QuestLogViewModelTest : KoinTest {
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
                     ),
+                    location = Location(0.0, 0.0),
                     createdAt = Clock.System.now(),
                 )
             ),
@@ -215,6 +218,7 @@ class QuestLogViewModelTest : KoinTest {
                                 activityStatus = QuestActivityStatus.IN_PROGRESS,
                                 startActivityAt = Clock.System.now(),
                             ),
+                            location = Location(0.0, 0.0),
                             createdAt = Clock.System.now(),
                         )
                     )
@@ -277,6 +281,7 @@ class QuestLogViewModelTest : KoinTest {
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
                     ),
+                    location = Location(0.0, 0.0),
                     createdAt = Clock.System.now(),
                 )
             ),
@@ -325,6 +330,7 @@ class QuestLogViewModelTest : KoinTest {
                                 activityStatus = QuestActivityStatus.IN_PROGRESS,
                                 startActivityAt = Clock.System.now(),
                             ),
+                            location = Location(0.0, 0.0),
                             createdAt = Clock.System.now(),
                         )
                     )

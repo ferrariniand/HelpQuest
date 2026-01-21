@@ -6,11 +6,14 @@ import com.helpquest.core.domain.util.ConnectionState
 import com.helpquest.core.domain.util.DataErrorException
 import com.helpquest.core.domain.util.Paginator
 import com.helpquest.core.domain.util.map
+import com.helpquest.core.presentation.modelsUi.BannerState
+import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.toUiText
 import com.helpquest.quests.domain.service.QuestConnectionClient
 import com.helpquest.quests.domain.service.QuestRepository
 import com.helpquest.quests.presentation.mappers.toQuestUi
-import com.helpquest.quests.presentation.mappers.toQuestUiList
+import com.helpquest.quests.presentation.mappers.toQuestUiListWithSeparators
+import com.helpquest.quests.presentation.model.QuestListUiElement
 import com.helpquest.quests.presentation.model.QuestUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +46,7 @@ class QuestBoardViewModel(
     ) { currentState, quests ->
 
         currentState.copy(
-            quests = quests.toQuestUiList(),
+            quests = quests.toQuestUiListWithSeparators(),
         )
     }.onStart {
         if (!hasLoadedInitialData) {
@@ -68,9 +71,11 @@ class QuestBoardViewModel(
                     )
                 }
             }
+
             QuestBoardAction.OnScrollToBottom -> onScrollToBottom()
             QuestBoardAction.OnRetryPaginationClick -> retryPagination()
-
+            QuestBoardAction.OnHideBanner -> hideBanner()
+            is QuestBoardAction.OnTopVisibleIndexChanged -> updateBanner(action.topVisibleIndex)
             else -> Unit
         }
     }
@@ -151,5 +156,50 @@ class QuestBoardViewModel(
         viewModelScope.launch {
             currentPaginator?.loadNextItems()
         }
+    }
+
+    private fun hideBanner() {
+        _state.update {
+            it.copy(
+                bannerState = it.bannerState.copy(
+                    isVisible = false
+                )
+            )
+        }
+    }
+
+    private fun updateBanner(topVisibleIndex: Int) {
+        val visibleDate = calculateBannerPlaceFromIndex(
+            quests = state.value.quests,
+            index = topVisibleIndex
+        )
+
+        _state.update {
+            it.copy(
+                bannerState = BannerState(
+                    bannerUiText = visibleDate,
+                    isVisible = visibleDate != null
+                )
+            )
+        }
+    }
+
+    private fun calculateBannerPlaceFromIndex(
+        quests: List<QuestListUiElement>,
+        index: Int
+    ): UiText? {
+        if (quests.isEmpty() || index < 0 || index >= quests.size) {
+            return null
+        }
+
+        val nearestPlaceSeparator = (index until quests.size)
+            .asSequence()
+            .mapNotNull { index ->
+                val item = quests.getOrNull(index)
+                if (item is QuestListUiElement.PlaceSeparator) item.place else null
+            }
+            .firstOrNull()
+
+        return nearestPlaceSeparator
     }
 }
