@@ -16,9 +16,9 @@ import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAd
 import com.helpquest.core.designsystem.components.containers_layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import helpquest.core.designsystem.generated.resources.email
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.back
-import helpquest.feature.auth.presentation.generated.resources.email
 import helpquest.feature.auth.presentation.generated.resources.email_placeholder
 import helpquest.feature.auth.presentation.generated.resources.forgot_password
 import helpquest.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
@@ -26,6 +26,7 @@ import helpquest.feature.auth.presentation.generated.resources.submit
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ForgotPasswordRoot(
@@ -68,7 +69,7 @@ fun ForgotPasswordScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     placeholder = stringResource(Res.string.email_placeholder),
-                    title = stringResource(Res.string.email),
+                    title = stringResource(DesignSystemRes.string.email),
                     isError = state.emailError != null,
                     supportingText = state.emailError?.asString(),
                     keyboardType = KeyboardType.Email,

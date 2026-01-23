@@ -27,14 +27,15 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.home.presentation.components.HomepageHeader
+import helpquest.core.designsystem.generated.resources.cancel
 import helpquest.feature.home.presentation.generated.resources.Res
-import helpquest.feature.home.presentation.generated.resources.cancel
 import helpquest.feature.home.presentation.generated.resources.do_you_want_to_logout
 import helpquest.feature.home.presentation.generated.resources.do_you_want_to_logout_desc
 import helpquest.feature.home.presentation.generated.resources.logout
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun HomepageRoot(
@@ -161,7 +162,7 @@ fun HomepageScreen(
             title = stringResource(Res.string.do_you_want_to_logout),
             description = stringResource(Res.string.do_you_want_to_logout_desc),
             confirmButtonText = stringResource(Res.string.logout),
-            cancelButtonText = stringResource(Res.string.cancel),
+            cancelButtonText = stringResource(DesignSystemRes.string.cancel),
             onDismiss = {
                 onAction(HomepageAction.OnDismissLogoutDialog)
             },

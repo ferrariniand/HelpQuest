@@ -6,11 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.dialogs.HelpQuestAdaptiveDialogSheetLayout
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import helpquest.core.designsystem.generated.resources.save
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.chat_members
-import helpquest.feature.chat.presentation.generated.resources.save
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ManageChatRoot(
@@ -36,7 +37,7 @@ fun ManageChatRoot(
     ) {
         ManageChatScreen(
             headerText = stringResource(Res.string.chat_members),
-            primaryButtonText = stringResource(Res.string.save),
+            primaryButtonText = stringResource(DesignSystemRes.string.save),
             state = state,
             onAction = { action ->
                 when (action) {

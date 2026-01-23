@@ -32,13 +32,14 @@ import com.helpquest.core.designsystem.theme.titleXSmall
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardVisible
+import helpquest.core.designsystem.generated.resources.cancel
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.add
-import helpquest.feature.chat.presentation.generated.resources.cancel
 import helpquest.feature.chat.presentation.generated.resources.email_or_username
 import helpquest.feature.chat.presentation.generated.resources.error_participant_not_found
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ManageChatScreen(
@@ -153,7 +154,7 @@ fun ManageChatScreen(
                     },
                     secondaryButton = {
                         HelpQuestButton(
-                            text = stringResource(Res.string.cancel),
+                            text = stringResource(DesignSystemRes.string.cancel),
                             onClick = {
                                 onAction(ManageChatAction.OnDismissDialog)
                             },

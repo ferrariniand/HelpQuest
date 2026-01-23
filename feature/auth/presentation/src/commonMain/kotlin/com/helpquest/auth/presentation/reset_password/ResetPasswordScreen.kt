@@ -15,18 +15,19 @@ import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAd
 import com.helpquest.core.designsystem.components.containers_layouts.ScaffoldWithInsets
 import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import helpquest.core.designsystem.generated.resources.new_password
+import helpquest.core.designsystem.generated.resources.password
+import helpquest.core.designsystem.generated.resources.password_hint
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.close
 import helpquest.feature.auth.presentation.generated.resources.confirm_new_password
-import helpquest.feature.auth.presentation.generated.resources.new_password
-import helpquest.feature.auth.presentation.generated.resources.password
-import helpquest.feature.auth.presentation.generated.resources.password_hint
 import helpquest.feature.auth.presentation.generated.resources.reset_password_successfully
 import helpquest.feature.auth.presentation.generated.resources.set_new_password
 import helpquest.feature.auth.presentation.generated.resources.submit
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ResetPasswordRoot(
@@ -68,10 +69,10 @@ fun ResetPasswordScreen(
                     state = state.passwordTextState,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = stringResource(Res.string.password),
-                    title = stringResource(Res.string.new_password),
+                    placeholder = stringResource(DesignSystemRes.string.password),
+                    title = stringResource(DesignSystemRes.string.new_password),
                     supportingText = state.passwordError?.asString()
-                        ?: stringResource(Res.string.password_hint),
+                        ?: stringResource(DesignSystemRes.string.password_hint),
                     isError = state.passwordError != null,
                     onFocusChanged = { isFocused ->
                         onAction(ResetPasswordAction.OnInputTextFocusGain)
@@ -87,7 +88,7 @@ fun ResetPasswordScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 HelpQuestPasswordTextField(
                     state = state.confirmPasswordTextState,
-                    placeholder = stringResource(Res.string.password),
+                    placeholder = stringResource(DesignSystemRes.string.password),
                     title = stringResource(Res.string.confirm_new_password),
                     supportingText = state.confirmPasswordError?.asString(),
                     isError = state.confirmPasswordError != null,

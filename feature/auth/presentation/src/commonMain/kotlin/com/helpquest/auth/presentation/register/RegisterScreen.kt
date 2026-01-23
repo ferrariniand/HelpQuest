@@ -19,13 +19,13 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTe
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import helpquest.core.designsystem.generated.resources.email
+import helpquest.core.designsystem.generated.resources.password
+import helpquest.core.designsystem.generated.resources.password_hint
 import helpquest.feature.auth.presentation.generated.resources.Res
-import helpquest.feature.auth.presentation.generated.resources.email
 import helpquest.feature.auth.presentation.generated.resources.email_placeholder
 import helpquest.feature.auth.presentation.generated.resources.help_quest
 import helpquest.feature.auth.presentation.generated.resources.login
-import helpquest.feature.auth.presentation.generated.resources.password
-import helpquest.feature.auth.presentation.generated.resources.password_hint
 import helpquest.feature.auth.presentation.generated.resources.register
 import helpquest.feature.auth.presentation.generated.resources.username
 import helpquest.feature.auth.presentation.generated.resources.username_hint
@@ -34,6 +34,7 @@ import helpquest.feature.auth.presentation.generated.resources.welcome_to
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun RegisterRoot(
@@ -98,7 +99,7 @@ fun RegisterScreen(
                 HelpQuestTextField(
                     state = state.emailTextState,
                     placeholder = stringResource(Res.string.email_placeholder),
-                    title = stringResource(Res.string.email),
+                    title = stringResource(DesignSystemRes.string.email),
                     supportingText = state.emailError?.asString(),
                     isError = state.emailError != null,
                     keyboardType = KeyboardType.Email,
@@ -112,10 +113,10 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 HelpQuestPasswordTextField(
                     state = state.passwordTextState,
-                    placeholder = stringResource(Res.string.password),
-                    title = stringResource(Res.string.password),
+                    placeholder = stringResource(DesignSystemRes.string.password),
+                    title = stringResource(DesignSystemRes.string.password),
                     supportingText = state.passwordError?.asString()
-                        ?: stringResource(Res.string.password_hint),
+                        ?: stringResource(DesignSystemRes.string.password_hint),
                     isError = state.passwordError != null,
                     onFocusChanged = { isFocused ->
                         onAction(RegisterAction.OnInputTextFocusGain)

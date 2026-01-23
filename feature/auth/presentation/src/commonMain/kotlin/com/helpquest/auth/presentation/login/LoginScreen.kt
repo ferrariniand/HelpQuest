@@ -20,18 +20,19 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTe
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import helpquest.core.designsystem.generated.resources.email
+import helpquest.core.designsystem.generated.resources.password
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.create_account
-import helpquest.feature.auth.presentation.generated.resources.email
 import helpquest.feature.auth.presentation.generated.resources.email_placeholder
 import helpquest.feature.auth.presentation.generated.resources.forgot_password
 import helpquest.feature.auth.presentation.generated.resources.help_quest
 import helpquest.feature.auth.presentation.generated.resources.login
-import helpquest.feature.auth.presentation.generated.resources.password
 import helpquest.feature.auth.presentation.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 
 @Composable
@@ -85,17 +86,17 @@ fun LoginScreen(
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    title = stringResource(Res.string.email)
+                    title = stringResource(DesignSystemRes.string.email)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 HelpQuestPasswordTextField(
                     state = state.passwordTextState,
-                    placeholder = stringResource(Res.string.password),
+                    placeholder = stringResource(DesignSystemRes.string.password),
                     isPasswordVisible = state.isPasswordVisible,
                     onToggleVisibilityClick = {
                         onAction(LoginAction.OnTogglePasswordVisibilityClick)
                     },
-                    title = stringResource(Res.string.password),
+                    title = stringResource(DesignSystemRes.string.password),
                     modifier = Modifier
                         .fillMaxWidth()
                 )
