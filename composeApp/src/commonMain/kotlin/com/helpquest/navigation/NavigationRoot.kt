@@ -10,6 +10,8 @@ import com.helpquest.chat.presentation.navigation.ChatGraphRoutes
 import com.helpquest.chat.presentation.navigation.chatGraph
 import com.helpquest.home.presentation.HomepageRoot
 import com.helpquest.home.presentation.navigation.HomepageGraphRoutes
+import com.helpquest.profile.presentation.ProfileRoot
+import com.helpquest.profile.presentation.navigation.ProfileGraphRoutes
 import com.helpquest.quests.presentation.navigation.QuestGraphRoutes
 import com.helpquest.quests.presentation.navigation.questGraph
 
@@ -38,7 +40,7 @@ fun NavigationRoot(
 
                 },
                 onProfileSettingsClick = {
-
+                    navController.navigate(ProfileGraphRoutes.ProfileRoute)
                 },
                 onChatFabButtonClick = {
                     navController.navigate(ChatGraphRoutes.Graph)
@@ -49,10 +51,20 @@ fun NavigationRoot(
             )
         }
         chatGraph(
-            navController = navController
+            navController = navController,
+            onProfileSettingsClick = {
+                navController.navigate(ProfileGraphRoutes.ProfileRoute)
+            },
         )
         questGraph(
             navController = navController
         )
+        composable<ProfileGraphRoutes.ProfileRoute> {
+            ProfileRoot(
+                onDismiss = { //TODO Maybe should just go back to previous screen
+                    navController.navigate(HomepageGraphRoutes.HomepageRoute)
+                }
+            )
+        }
     }
 }

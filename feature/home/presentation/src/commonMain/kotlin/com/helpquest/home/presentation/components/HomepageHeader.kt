@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.buttons.HelpQuestIconButton
 import com.helpquest.core.designsystem.components.dropdown.DropDownItem
 import com.helpquest.core.designsystem.components.dropdown.HelpQuestDropDownMenu
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
@@ -21,11 +24,12 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import helpquest.core.designsystem.generated.resources.app_name
+import helpquest.core.designsystem.generated.resources.ic_hamburger_menu
 import helpquest.core.designsystem.generated.resources.log_out_icon
+import helpquest.core.designsystem.generated.resources.profile_settings
 import helpquest.core.designsystem.generated.resources.users_icon
 import helpquest.feature.home.presentation.generated.resources.Res
 import helpquest.feature.home.presentation.generated.resources.logout
-import helpquest.feature.home.presentation.generated.resources.profile_settings
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -92,6 +96,17 @@ fun ProfileAvatarSection(
                 showClass = true,
                 onClick = onClick
             )
+        } else {
+            HelpQuestIconButton(
+                onClick = onClick
+            ) {
+                Icon(
+                    imageVector = vectorResource(DesignSystemRes.drawable.ic_hamburger_menu),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(8.dp)
+                )
+            }
         }
 
         HelpQuestDropDownMenu(
@@ -99,7 +114,7 @@ fun ProfileAvatarSection(
             onDismiss = onDismissMenu,
             items = listOf(
                 DropDownItem(
-                    title = stringResource(Res.string.profile_settings),
+                    title = stringResource(DesignSystemRes.string.profile_settings),
                     icon = vectorResource(DesignSystemRes.drawable.users_icon),
                     contentColor = MaterialTheme.colorScheme.extended.textSecondary,
                     onClick = onProfileSettingsClick

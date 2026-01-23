@@ -7,13 +7,16 @@ import androidx.navigation.navigation
 import com.helpquest.chat.presentation.chat_list_detail.ChatListDetailAdaptiveLayout
 
 fun NavGraphBuilder.chatGraph(
-    navController: NavController
+    navController: NavController,
+    onProfileSettingsClick: () -> Unit,
 ) {
     navigation<ChatGraphRoutes.Graph>(
         startDestination = ChatGraphRoutes.ChatListDetailRoute
     ) {
         composable<ChatGraphRoutes.ChatListDetailRoute> {
-            ChatListDetailAdaptiveLayout()
+            ChatListDetailAdaptiveLayout(
+                onProfileSettingsClick = onProfileSettingsClick,
+            )
         }
     }
 }

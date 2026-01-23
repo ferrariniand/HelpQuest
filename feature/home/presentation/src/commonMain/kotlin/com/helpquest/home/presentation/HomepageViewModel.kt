@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 class HomepageViewModel : ViewModel() {
 
@@ -32,6 +33,23 @@ class HomepageViewModel : ViewModel() {
 
     fun onAction(action: HomepageAction) {
         when (action) {
+            HomepageAction.OnUserAvatarClick -> {
+                _state.update {
+                    it.copy(
+                        isUserMenuOpen = true
+                    )
+                }
+            }
+
+            HomepageAction.OnProfileSettingsClick,
+            HomepageAction.OnLogoutClick,
+            HomepageAction.OnDismissUserMenu -> {
+                _state.update {
+                    it.copy(
+                        isUserMenuOpen = false
+                    )
+                }
+            }
             else -> Unit
         }
     }
