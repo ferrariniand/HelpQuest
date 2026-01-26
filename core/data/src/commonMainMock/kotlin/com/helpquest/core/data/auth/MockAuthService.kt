@@ -36,6 +36,7 @@ class MockAuthService() : AuthService {
     private var verifyEmailResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
     private var forgotPasswordResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
     private var resetPasswordResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
+    private var changePasswordResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
 
     fun setLoginResult(
         error: DataError.Remote? = null
@@ -155,6 +156,24 @@ class MockAuthService() : AuthService {
     ): EmptyResult<DataError.Remote> {
         savedPassword = newPassword
         return resetPasswordResult
+    }
+
+    fun setChangePasswordResult(
+        error: DataError.Remote? = null
+    ) {
+        changePasswordResult = if (error != null) {
+            Result.Failure(error)
+        } else {
+            Result.Success(Unit)
+        }
+    }
+
+    override suspend fun changePassword(
+        currentPassword: String,
+        newPassword: String,
+    ): EmptyResult<DataError.Remote> {
+        savedPassword = newPassword
+        return changePasswordResult
     }
 
     fun setRefreshTokenResult(

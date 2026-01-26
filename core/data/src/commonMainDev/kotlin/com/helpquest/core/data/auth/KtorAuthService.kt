@@ -1,6 +1,7 @@
 package com.helpquest.core.data.auth
 
 import com.helpquest.core.data.dto.AuthInfoDto
+import com.helpquest.core.data.dto.request.auth.ChangePasswordRequest
 import com.helpquest.core.data.dto.request.auth.EmailRequest
 import com.helpquest.core.data.dto.request.auth.LoginRequest
 import com.helpquest.core.data.dto.request.auth.RegisterRequest
@@ -81,6 +82,19 @@ class KtorAuthService(
                 newPassword = newPassword,
                 token = token
             ),
+        )
+    }
+
+    override suspend fun changePassword(
+        currentPassword: String,
+        newPassword: String
+    ): EmptyResult<DataError.Remote> {
+        return httpClient.post(
+            route = "/auth/change-password",
+            body = ChangePasswordRequest(
+                oldPassword = currentPassword,
+                newPassword = newPassword
+            )
         )
     }
 }
