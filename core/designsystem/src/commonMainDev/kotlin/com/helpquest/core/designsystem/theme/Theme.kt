@@ -42,6 +42,9 @@ data class ExtendedColors(
     val surfaceOutline: Color,
     val overlay: Color,
 
+    // Warning colors
+    val warning: Color,
+
     // Accent colors
     val accentBlue: Color,
     val accentPurple: Color,
@@ -91,6 +94,8 @@ val LightExtendedColors = ExtendedColors(
     surfaceOutline = HelpQuestBase1000Alpha14,
     overlay = HelpQuestBase1000Alpha80,
 
+    warning = HelpQuestFullYellow,
+
     accentBlue = HelpQuestBlue,
     accentPurple = HelpQuestPurple,
     accentViolet = HelpQuestViolet,
@@ -135,6 +140,8 @@ val DarkExtendedColors = ExtendedColors(
     surfaceHigher = HelpQuestBase900,
     surfaceOutline = HelpQuestBase100Alpha10Alt,
     overlay = HelpQuestBase1000Alpha80,
+
+    warning = HelpQuestFullYellow,
 
     accentBlue = HelpQuestBlue,
     accentPurple = HelpQuestPurple,

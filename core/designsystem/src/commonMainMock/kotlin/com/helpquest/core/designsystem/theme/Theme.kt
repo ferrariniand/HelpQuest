@@ -54,6 +54,9 @@ data class ExtendedColors(
     val accentLightBlue: Color,
     val accentGrey: Color,
 
+    // Warning colors
+    val warning: Color,
+
     // Cake colors for chat bubbles
     val cakeViolet: Color,
     val cakeGreen: Color,
@@ -90,6 +93,8 @@ val LightExtendedColors = ExtendedColors(
     surfaceHigher = HelpQuestBase100,
     surfaceOutline = HelpQuestBase1000Alpha14,
     overlay = HelpQuestBase1000Alpha80,
+
+    warning = HelpQuestFullYellow,
 
     accentBlue = HelpQuestBlue,
     accentPurple = HelpQuestPurple,
@@ -135,6 +140,8 @@ val DarkExtendedColors = ExtendedColors(
     surfaceHigher = HelpQuestBase900,
     surfaceOutline = HelpQuestBase100Alpha10Alt,
     overlay = HelpQuestBase1000Alpha80,
+
+    warning = HelpQuestFullYellow,
 
     accentBlue = HelpQuestBlue,
     accentPurple = HelpQuestPurple,

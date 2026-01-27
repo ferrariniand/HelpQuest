@@ -51,6 +51,9 @@ val HelpQuestRed600 = Color(0xFFAA142A)
 val HelpQuestRed500 = Color(0xFFDA233E)
 val HelpQuestRed200 = Color(0xFFFF7987)
 
+// Yellow Colors
+val HelpQuestFullYellow = Color(0xFFFFD500)
+
 // Accent Colors (15% alpha)
 val HelpQuestBlue = Color(0x26A2C0FF)
 val HelpQuestPurple = Color(0x26CAADFF)

@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.avatar.AvatarSize
@@ -34,6 +36,7 @@ import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDiv
 import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTextField
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
@@ -52,6 +55,8 @@ import helpquest.feature.profile.presentation.generated.resources.current_passwo
 import helpquest.feature.profile.presentation.generated.resources.delete
 import helpquest.feature.profile.presentation.generated.resources.delete_profile_picture
 import helpquest.feature.profile.presentation.generated.resources.delete_profile_picture_desc
+import helpquest.feature.profile.presentation.generated.resources.password_change_successful
+import helpquest.feature.profile.presentation.generated.resources.password_change_warning
 import helpquest.feature.profile.presentation.generated.resources.profile_image
 import helpquest.feature.profile.presentation.generated.resources.upload_image
 import org.jetbrains.compose.resources.stringResource
@@ -197,8 +202,7 @@ fun ProfileScreen(
                     onAction(ProfileAction.OnToggleCurrentPasswordVisibility)
                 },
                 placeholder = stringResource(Res.string.current_password),
-                isError = state.currentPasswordError != null,
-                supportingText = state.currentPasswordError?.asString()
+                isError = state.newPasswordError != null,
             )
             HelpQuestPasswordTextField(
                 state = state.newPasswordTextState,
@@ -211,6 +215,32 @@ fun ProfileScreen(
                 supportingText = state.newPasswordError?.asString()
                     ?: stringResource(DesignSystemRes.string.password_hint)
             )
+            if (state.isPasswordChangeSuccessful) {
+                Text(
+                    text = stringResource(Res.string.password_change_successful),
+                    color = MaterialTheme.colorScheme.extended.success,
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.extended.warning,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                    Text(
+                        text = stringResource(Res.string.password_change_warning),
+                        color = MaterialTheme.colorScheme.extended.textPrimary,
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.End,
+                    )
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
