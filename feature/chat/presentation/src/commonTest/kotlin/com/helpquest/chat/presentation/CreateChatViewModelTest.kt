@@ -11,9 +11,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.helpquest.chat.data.service.FakeChatParticipantService
 import com.helpquest.chat.data.service.FakeChatRepository
-import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.presentation.create_chat.CreateChatEvent
 import com.helpquest.chat.presentation.create_manage_chat.CreateChatViewModel
@@ -25,6 +23,8 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
+import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.FakeParticipantService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -46,11 +46,10 @@ import kotlin.test.Test
 
 class CreateChatViewModelTest : KoinTest {
 
-    private val fakeChatParticipantService by inject<FakeChatParticipantService>()
+    private val fakeParticipantService by inject<FakeParticipantService>()
     private val fakeChatRepository by inject<FakeChatRepository>()
 
     val overrideChatDataModule = module {
-        singleOf(::FakeChatParticipantService) bind ChatParticipantService::class
         singleOf(::FakeChatRepository) bind ChatRepository::class
     }
 
@@ -60,6 +59,7 @@ class CreateChatViewModelTest : KoinTest {
     fun setup() {
         startKoin {
             modules(
+                coreTestModule,
                 overrideChatDataModule,
                 chatPresentationModule,
             )
@@ -82,7 +82,7 @@ class CreateChatViewModelTest : KoinTest {
             ),
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateEmptyQuery
         )
@@ -105,7 +105,7 @@ class CreateChatViewModelTest : KoinTest {
             ),
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuery
         )
@@ -115,13 +115,13 @@ class CreateChatViewModelTest : KoinTest {
 
             assertThat(
                 resultState.canAddParticipant.getValue(
-                    fakeChatParticipantService.participant3.toParticipantUi()
+                    fakeParticipantService.participant3.toParticipantUi()
                 )
             ).isTrue()
             assertThat(resultState.isSearching).isFalse()
             assertThat(resultState.currentSearchResult).isEqualTo(
                 SearchResult.Success(
-                    listOf(fakeChatParticipantService.participant3.toParticipantUi())
+                    listOf(fakeParticipantService.participant3.toParticipantUi())
                 )
             )
             cancelAndConsumeRemainingEvents()
@@ -137,10 +137,10 @@ class CreateChatViewModelTest : KoinTest {
                 initialText = "not-found"
             ),
         )
-        fakeChatParticipantService.searchParticipantResult =
+        fakeParticipantService.searchParticipantResult =
             Result.Failure(DataError.Remote.NOT_FOUND)
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateNotFoundQuery
         )
@@ -166,10 +166,10 @@ class CreateChatViewModelTest : KoinTest {
                 initialText = "primo"
             ),
         )
-        fakeChatParticipantService.searchParticipantResult =
+        fakeParticipantService.searchParticipantResult =
             Result.Failure(DataError.Remote.UNKNOWN)
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuery
         )
@@ -188,7 +188,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnAddClick with a valid search result`() = runBlocking {
         // When a participant is found and OnAddClick is triggered, verify the participant is added to selectedChatParticipants, the search query is cleared, and canAddParticipant is set to false.
-        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val participant = fakeParticipantService.participant.toParticipantUi()
         val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -200,7 +200,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = mapOf(participant to true)
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -221,7 +221,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnAddClick with a duplicate participant`() = runBlocking {
         // If OnAddClick is called for a participant that is already in the selectedChatParticipants list, verify that the participant is not added again.
-        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val participant = fakeParticipantService.participant.toParticipantUi()
         val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -233,7 +233,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = mapOf(participant to true)
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -259,7 +259,7 @@ class CreateChatViewModelTest : KoinTest {
     fun `OnAddClick with canAddParticipant empty`() = runBlocking {
         // Trigger OnAddClick when currentSearchResult is null and verify that the selectedChatParticipants list remains unchanged.
         // If OnAddClick is called for a participant that is already in the selectedChatParticipants list, verify that the participant is not added again.
-        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val participant = fakeParticipantService.participant.toParticipantUi()
         val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -271,7 +271,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = emptyMap()
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -296,7 +296,7 @@ class CreateChatViewModelTest : KoinTest {
     @Test
     fun `OnDismissDialog action resets search state`() = runBlocking {
         // When OnDismissDialog action is called, verify that isSearching is set to false and any existing searchError is cleared from the state.
-        val participant = fakeChatParticipantService.participant.toParticipantUi()
+        val participant = fakeParticipantService.participant.toParticipantUi()
         val stateValidQuerySearched = ManageChatState(
             queryTextState = TextFieldState(
                 initialText = "primo"
@@ -317,7 +317,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = mapOf(participant to true)
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -346,7 +346,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = emptyMap()
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -379,7 +379,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = mapOf(participant to true)
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )
@@ -422,7 +422,7 @@ class CreateChatViewModelTest : KoinTest {
             canAddParticipant = mapOf(participant to true)
         )
         viewModel = CreateChatViewModel(
-            fakeChatParticipantService,
+            fakeParticipantService,
             fakeChatRepository,
             initialState = stateValidQuerySearched
         )

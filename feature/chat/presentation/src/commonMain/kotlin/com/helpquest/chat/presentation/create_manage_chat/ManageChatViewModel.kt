@@ -5,9 +5,9 @@ package com.helpquest.chat.presentation.create_manage_chat
 import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helpquest.chat.domain.service.ChatParticipantService
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
+import com.helpquest.core.domain.service.ParticipantService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ManageChatViewModel(
-    private val chatParticipantService: ChatParticipantService,
+    private val participantService: ParticipantService,
     private val repository: ChatRepository,
     initialState: ManageChatState = ManageChatState()
 ) : ViewModel() {
@@ -118,8 +118,8 @@ class ManageChatViewModel(
                 )
             }
 
-            chatParticipantService
-                .searchParticipant(query)
+            participantService
+                .searchParticipants(query)
                 .onSuccess { participants ->
                     val participantUiList = participants.map { participant ->
                         participant.toParticipantUi()

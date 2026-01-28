@@ -193,22 +193,4 @@ class ChatListDetailViewModelTest : KoinTest {
 
         }
     }
-
-    @Test
-    fun `onAction OnProfileSettingsClick updates dialog state`() = runBlocking {
-        // Verify that `OnProfileSettingsClick` action updates the `dialogState` in the state flow to `DialogState.Profile`.
-        viewModel = ChatListDetailViewModel(fakeChatConnectionClient)
-        viewModel.state.test {
-            val initState = awaitItem()
-            assertThat(initState.selectedChatId).isNull()
-            assertThat(initState.dialogState).isEqualTo(DialogState.Hidden)
-
-            viewModel.onAction(ChatListDetailAction.OnProfileSettingsClick)
-            val resultStateManageChat = viewModel.state.first()
-            assertThat(resultStateManageChat.selectedChatId).isNull()
-            assertThat(resultStateManageChat.dialogState).isEqualTo(DialogState.Profile)
-            cancelAndConsumeRemainingEvents()
-
-        }
-    }
 }

@@ -1,20 +1,20 @@
-package com.helpquest.chat.data.service
+package com.helpquest.core.data.service
 
-import com.helpquest.chat.data.service.MockChatResponseElements
-import com.helpquest.chat.domain.service.ChatParticipantService
+import com.helpquest.core.data.service.MockCoreResponseElements
+import com.helpquest.core.domain.service.ParticipantService
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 
-class MockChatParticipantService(
-    val mockResponse: MockChatResponseElements
-) : ChatParticipantService {
+class MockParticipantService(
+    val mockResponse: MockCoreResponseElements
+) : ParticipantService {
 
-    var savedChatParticipantList: List<Participant>? = null
+    var savedParticipantList: List<Participant>? = null
 
-    override suspend fun searchParticipant(query: String): Result<List<Participant>, DataError.Remote> {
+    override suspend fun searchParticipants(query: String): Result<List<Participant>, DataError.Remote> {
         if (query.contains("!")) {
             return Result.Failure(DataError.Remote.UNKNOWN)
         }
@@ -30,5 +30,9 @@ class MockChatParticipantService(
         } else {
             Result.Success(resultList)
         }
+    }
+
+    override suspend fun getLocalParticipant(): Result<Participant, DataError.Remote> {
+        return Result.Success(mockResponse.participantFull)
     }
 }

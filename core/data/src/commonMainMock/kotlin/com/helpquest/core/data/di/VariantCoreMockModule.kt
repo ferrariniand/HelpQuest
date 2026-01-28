@@ -1,9 +1,10 @@
 package com.helpquest.core.data.di
 
-
+import com.helpquest.core.domain.service.ParticipantService
 import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
+import com.helpquest.core.data.service.MockParticipantService
 import com.helpquest.core.data.auth.MockAuthService
 import com.helpquest.core.data.auth.MockDataStoreSessionStorage
 import com.helpquest.core.data.logging.KermitLogger
@@ -20,4 +21,5 @@ val variantCoreDataModule = module {
     }
     singleOf(::MockAuthService) bind AuthService::class
     singleOf(::MockDataStoreSessionStorage) bind SessionStorage::class
+    singleOf(::MockParticipantService) bind ParticipantService::class
 }
