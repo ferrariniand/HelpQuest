@@ -23,6 +23,24 @@ interface ParticipantDao {
     )
     suspend fun updateProfilePictureUrl(userId: String, newUrl: String?)
 
+    @Query(
+        """
+        UPDATE participantentity
+        SET classId = :newClassId
+        WHERE userId = :userId
+    """
+    )
+    suspend fun updateClassId(userId: String, newClassId: String)
+
+    @Query(
+        """
+        UPDATE participantentity
+        SET subClassId = :newSubClassId
+        WHERE userId = :userId
+    """
+    )
+    suspend fun updateSubClassId(userId: String, newSubClassId: String?)
+
     @Query("SELECT * FROM participantentity WHERE userId = :userId")
     suspend fun getParticipantById(userId: String): ParticipantEntity?
 

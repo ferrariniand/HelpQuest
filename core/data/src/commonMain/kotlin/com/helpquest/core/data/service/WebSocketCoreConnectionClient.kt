@@ -46,6 +46,13 @@ class WebSocketCoreConnectionClient(
             IncomingCoreWebSocketType.PROFILE_PICTURE_UPDATED.name -> {
                 json.decodeFromString<IncomingCoreWebSocketDto.ProfilePictureUpdated>(message.payload)
             }
+            IncomingCoreWebSocketType.CLASS_UPDATED.name -> {
+                json.decodeFromString<IncomingCoreWebSocketDto.ClassUpdated>(message.payload)
+            }
+
+            IncomingCoreWebSocketType.SUBCLASS_UPDATED.name -> {
+                json.decodeFromString<IncomingCoreWebSocketDto.SubClassUpdated>(message.payload)
+            }
 
             else -> null
         }
@@ -54,6 +61,8 @@ class WebSocketCoreConnectionClient(
     private suspend fun handleIncomingMessage(message: IncomingCoreWebSocketDto) {
         when (message) {
             is IncomingCoreWebSocketDto.ProfilePictureUpdated -> updateProfilePicture(message)
+            is IncomingCoreWebSocketDto.ClassUpdated -> updateClass(message)
+            is IncomingCoreWebSocketDto.SubClassUpdated -> updateSubClass(message)
         }
     }
 
@@ -69,6 +78,42 @@ class WebSocketCoreConnectionClient(
                 info = authInfo.copy(
                     user = authInfo.user.copy(
                         profilePictureUrl = message.newUrl
+                    )
+                )
+            )
+        }
+    }
+
+    private suspend fun updateClass(message: IncomingCoreWebSocketDto.ClassUpdated) {
+        database.participantDao.updateClassId(
+            userId = message.userId,
+            newClassId = message.newClassId
+        )
+
+        val authInfo = sessionStorage.observeAuthInfo().firstOrNull()
+        if (authInfo != null && authInfo.user.id == message.userId) {
+            sessionStorage.setAuthInfo(
+                info = authInfo.copy(
+                    user = authInfo.user.copy(
+                        classId = message.newClassId
+                    )
+                )
+            )
+        }
+    }
+
+    private suspend fun updateSubClass(message: IncomingCoreWebSocketDto.SubClassUpdated) {
+        database.participantDao.updateSubClassId(
+            userId = message.userId,
+            newSubClassId = message.newSubClassId
+        )
+
+        val authInfo = sessionStorage.observeAuthInfo().firstOrNull()
+        if (authInfo != null && authInfo.user.id == message.userId) {
+            sessionStorage.setAuthInfo(
+                info = authInfo.copy(
+                    user = authInfo.user.copy(
+                        subClassId = message.newSubClassId
                     )
                 )
             )

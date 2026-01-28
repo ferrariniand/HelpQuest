@@ -5,7 +5,7 @@ data class Participant(
     val username: String,
     val profilePictureUrl: String?,
     val showParticipantIdentity: Boolean = false,
-    val participantClass: Class? = null,
+    val participantClass: Class = Class.VILLAGER,
     val participantSubClass: SubClass? = null,
     val isFriend: Boolean = false
 ) {

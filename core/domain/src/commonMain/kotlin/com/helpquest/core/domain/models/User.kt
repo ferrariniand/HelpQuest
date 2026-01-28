@@ -5,7 +5,9 @@ data class User(
     val email: String,
     val username: String,
     val hasVerifiedEmail: Boolean,
-    val profilePictureUrl: String? = null
+    val profilePictureUrl: String? = null,
+    val classId: String = Class.VILLAGER.classId,
+    val subClassId: String? = null,
 ) {
     val initials: String
         get() = username.take(2).uppercase()
