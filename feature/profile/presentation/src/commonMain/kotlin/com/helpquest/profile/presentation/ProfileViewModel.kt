@@ -1,10 +1,14 @@
 package com.helpquest.profile.presentation
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.auth.SessionStorage
+import com.helpquest.core.domain.service.ParticipantRepository
+import com.helpquest.core.domain.util.ClassUtils
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
@@ -28,7 +32,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val participantRepository: ParticipantRepository,
+    private val sessionStorage: SessionStorage
 ) : ViewModel() {
 
     private val eventChannel = Channel<ProfileEvent>()
@@ -37,11 +43,25 @@ class ProfileViewModel(
     private var hasLoadedInitialData = false
 
     private val _state = MutableStateFlow(ProfileState())
-    val state = _state
+    val state = combine(
+        _state,
+        sessionStorage.observeAuthInfo()
+    ) { currentState, authInfo ->
+        if (authInfo != null) {
+            currentState.copy(
+                username = authInfo.user.username,
+                userInitials = authInfo.user.initials,
+                emailTextState = TextFieldState(initialText = authInfo.user.email),
+                profilePictureUrl = authInfo.user.profilePictureUrl,
+                classImageUrl = ClassUtils.findClassById(authInfo.user.classId).classImageUrl,
+            )
+        } else currentState
+    }
         .onStart {
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
                 observeCanChangePassword()
+                fetchLocalParticipantDetails()
                 hasLoadedInitialData = true
             }
         }
@@ -60,6 +80,11 @@ class ProfileViewModel(
         }
     }
 
+    private fun fetchLocalParticipantDetails() {
+        viewModelScope.launch {
+            participantRepository.fetchLocalParticipant()
+        }
+    }
 
     private fun toggleCurrentPasswordVisibility() {
         _state.update {
@@ -77,14 +102,13 @@ class ProfileViewModel(
         }
     }
 
-
     private fun observeCanChangePassword() {
         val isCurrentPasswordValidFlow = snapshotFlow {
-            state.value.currentPasswordTextState.text.toString()
+            _state.value.currentPasswordTextState.text.toString()
         }.map { it.isNotBlank() }.distinctUntilChanged()
 
         val isNewPasswordValidFlow = snapshotFlow {
-            state.value.newPasswordTextState.text.toString()
+            _state.value.newPasswordTextState.text.toString()
         }.map {
             PasswordValidator.validate(it).isValidPassword
         }.distinctUntilChanged()

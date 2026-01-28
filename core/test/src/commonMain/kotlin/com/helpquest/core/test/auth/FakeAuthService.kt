@@ -2,24 +2,29 @@ package com.helpquest.core.test.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 
 class FakeAuthService : AuthService {
-    var loginResult: Result<AuthInfo, DataError.Remote> = Result.Success(
-        AuthInfo(
-            accessToken = "accessToken",
-            refreshToken = "refreshToken",
-            user = User(
-                id = "id",
-                email = "email",
-                username = "username",
-                hasVerifiedEmail = true
-            )
-        )
+
+    var user = User(
+        id = "id",
+        email = "email",
+        username = "username",
+        hasVerifiedEmail = true,
+        profilePictureUrl = null,
+        classId = Class.VILLAGER.classId,
     )
+
+    var authInfo = AuthInfo(
+        accessToken = "accessToken",
+        refreshToken = "refreshToken",
+        user = user
+    )
+    var loginResult: Result<AuthInfo, DataError.Remote> = Result.Success(authInfo)
 
     var registerResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
     var resendVerificationResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
