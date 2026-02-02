@@ -3,8 +3,16 @@ package com.helpquest.core.data.service
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.SubClass
+import com.helpquest.core.domain.models.ProfilePictureUploadUrls
+
 
 object MockCoreResponseElements {
+
+    val profilePictureUploadUrls = ProfilePictureUploadUrls(
+        uploadUrl = "uploadUrl",
+        publicUrl = "publicUrl",
+        headers = mapOf("header1" to "value1", "header2" to "value2")
+    )
 
     val participantFull = Participant(
         userId = "id1",

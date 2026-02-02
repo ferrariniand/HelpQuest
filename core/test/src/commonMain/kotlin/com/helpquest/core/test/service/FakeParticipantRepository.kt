@@ -5,7 +5,9 @@ package com.helpquest.core.test.service
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.service.ParticipantRepository
 import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
+import com.helpquest.core.domain.util.asEmptyResult
 import kotlin.time.ExperimentalTime
 
 class FakeParticipantRepository : ParticipantRepository {
@@ -32,7 +34,17 @@ class FakeParticipantRepository : ParticipantRepository {
     var fetchLocalParticipantResult: Result<Participant, DataError.Remote> =
         Result.Success(participant)
 
+    var uploadProfilePictureResult: Result<Participant, DataError.Remote> =
+        Result.Success(participant)
+
     override suspend fun fetchLocalParticipant(): Result<Participant, DataError.Remote> {
         return fetchLocalParticipantResult
+    }
+
+    override suspend fun uploadProfilePicture(
+        imageBytes: ByteArray,
+        mimeType: String
+    ): EmptyResult<DataError.Remote> {
+        return uploadProfilePictureResult.asEmptyResult()
     }
 }
