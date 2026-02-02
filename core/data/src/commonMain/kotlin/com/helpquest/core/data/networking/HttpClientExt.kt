@@ -8,6 +8,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -21,7 +22,7 @@ expect suspend fun <T> platformSafeCall(
 ): Result<T, DataError.Remote>
 
 
-suspend inline fun <reified Request, reified Response : Any> HttpClient.post(
+suspend inline fun <reified Request, reified Response : Any> HttpClient.hqPost(
     route: String,
     body: Request,
     queryParams: Map<String, Any> = mapOf(),
@@ -39,7 +40,7 @@ suspend inline fun <reified Request, reified Response : Any> HttpClient.post(
     }
 }
 
-suspend inline fun <reified Response : Any> HttpClient.get(
+suspend inline fun <reified Response : Any> HttpClient.hqGet(
     route: String,
     queryParams: Map<String, Any> = mapOf(),
     crossinline builder: HttpRequestBuilder.() -> Unit = {}
@@ -55,7 +56,7 @@ suspend inline fun <reified Response : Any> HttpClient.get(
     }
 }
 
-suspend inline fun <reified Response : Any> HttpClient.delete(
+suspend inline fun <reified Response : Any> HttpClient.hqDelete(
     route: String,
     queryParams: Map<String, Any> = mapOf(),
     crossinline builder: HttpRequestBuilder.() -> Unit = {}
@@ -72,19 +73,18 @@ suspend inline fun <reified Response : Any> HttpClient.delete(
 }
 
 suspend inline fun <reified Request, reified Response : Any> HttpClient.put(
-    route: String,
+    url: String,
     body: Request,
-    queryParams: Map<String, Any> = mapOf(),
-    crossinline builder: HttpRequestBuilder.() -> Unit = {}
+    headers: Map<String, Any> = mapOf(),
 ): Result<Response, DataError.Remote> {
     return safeCall {
+        //we don't use the custom put because the url is not to our url, but to supabase
         put {
-            url(constructRoute(route))
-            queryParams.forEach { (key, value) ->
-                parameter(key, value)
+            url(url)
+            headers.forEach { (key, value) ->
+                header(key, value)
             }
             setBody(body)
-            builder()
         }
     }
 }

@@ -87,7 +87,7 @@ class HttpClientFactory(
                         }
 
                         var bearerTokens: BearerTokens? = null
-                        client.post<RefreshRequest, AuthInfoDto>(
+                        client.hqPost<RefreshRequest, AuthInfoDto>(
                             route = "/auth/refresh",
                             body = RefreshRequest(
                                 refreshToken = authInfo.refreshToken

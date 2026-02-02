@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.helpquest.quests.presentation.mappers
 
 import com.helpquest.core.presentation.mappers.toLocation
@@ -7,6 +9,7 @@ import com.helpquest.core.presentation.util.toPlace
 import com.helpquest.quests.domain.models.Quest
 import com.helpquest.quests.presentation.model.QuestListUiElement
 import com.helpquest.quests.presentation.model.QuestUi
+import kotlin.time.ExperimentalTime
 
 fun List<Quest>.toQuestUiList(): List<QuestUi> {
     return this

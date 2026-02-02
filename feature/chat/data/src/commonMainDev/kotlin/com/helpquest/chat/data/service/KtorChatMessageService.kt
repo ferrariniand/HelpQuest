@@ -11,8 +11,8 @@ import com.helpquest.chat.domain.models.OutgoingNewMessage
 import com.helpquest.chat.domain.service.ChatMessageService
 import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.networking.KtorWebSocketConnector
-import com.helpquest.core.data.networking.delete
-import com.helpquest.core.data.networking.get
+import com.helpquest.core.data.networking.hqDelete
+import com.helpquest.core.data.networking.hqGet
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -29,7 +29,7 @@ class KtorChatMessageService(
         chatId: String,
         before: String?
     ): Result<List<ChatMessage>, DataError.Remote> {
-        return httpClient.get<List<ChatMessageDto>>(
+        return httpClient.hqGet<List<ChatMessageDto>>(
             route = "/chat/$chatId/messages",
             queryParams = buildMap {
                 this["pageSize"] = ChatMessageConstants.PAGE_SIZE
@@ -50,7 +50,7 @@ class KtorChatMessageService(
     }
 
     override suspend fun deleteMessage(messageId: String): EmptyResult<DataError.Remote> {
-        return httpClient.delete(
+        return httpClient.hqDelete(
             route = "/messages/$messageId"
         )
     }

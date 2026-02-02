@@ -2,8 +2,8 @@ package com.helpquest.quests.data.service
 
 import com.helpquest.core.data.dto.websocket.WebSocketMessageDto
 import com.helpquest.core.data.networking.KtorWebSocketConnector
-import com.helpquest.core.data.networking.delete
-import com.helpquest.core.data.networking.get
+import com.helpquest.core.data.networking.hqDelete
+import com.helpquest.core.data.networking.hqGet
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -27,7 +27,7 @@ class KtorQuestActivityService(
         questId: String,
         before: String?
     ): Result<List<QuestActivity>, DataError.Remote> {
-        return httpClient.get<List<QuestActivityDto>>(
+        return httpClient.hqGet<List<QuestActivityDto>>(
             route = "/quest/$questId/activities",
             queryParams = buildMap {
                 if (before != null) {
@@ -47,7 +47,7 @@ class KtorQuestActivityService(
     }
 
     override suspend fun deleteActivity(activityId: String): EmptyResult<DataError.Remote> {
-        return httpClient.delete(
+        return httpClient.hqDelete(
             route = "/activities/$activityId"
         )
     }

@@ -7,8 +7,8 @@ import com.helpquest.core.data.dto.request.auth.LoginRequest
 import com.helpquest.core.data.dto.request.auth.RegisterRequest
 import com.helpquest.core.data.dto.request.auth.ResetPasswordRequest
 import com.helpquest.core.data.mappers.toAuthInfo
-import com.helpquest.core.data.networking.get
-import com.helpquest.core.data.networking.post
+import com.helpquest.core.data.networking.hqGet
+import com.helpquest.core.data.networking.hqPost
 import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.util.DataError
@@ -25,7 +25,7 @@ class KtorAuthService(
         email: String,
         password: String
     ): Result<AuthInfo, DataError.Remote> {
-        return httpClient.post<LoginRequest, AuthInfoDto>(
+        return httpClient.hqPost<LoginRequest, AuthInfoDto>(
             route = "/auth/login",
             body = LoginRequest(
                 email = email,
@@ -41,7 +41,7 @@ class KtorAuthService(
         username: String,
         password: String
     ): EmptyResult<DataError.Remote> {
-        return httpClient.post(
+        return httpClient.hqPost(
             route = "/auth/register",
             body = RegisterRequest(
                 email = email,
@@ -52,21 +52,21 @@ class KtorAuthService(
     }
 
     override suspend fun resendVerificationEmail(email: String): EmptyResult<DataError.Remote> {
-        return httpClient.post(
+        return httpClient.hqPost(
             route = "/auth/resend-verification",
             body = EmailRequest(email),
         )
     }
 
     override suspend fun verifyEmail(token: String): EmptyResult<DataError.Remote> {
-        return httpClient.get(
+        return httpClient.hqGet(
             route = "/auth/verify",
             queryParams = mapOf("token" to token)
         )
     }
 
     override suspend fun forgotPassword(email: String): EmptyResult<DataError.Remote> {
-        return httpClient.post<EmailRequest, Unit>(
+        return httpClient.hqPost<EmailRequest, Unit>(
             route = "/auth/forgot-password",
             body = EmailRequest(email),
         )
@@ -76,7 +76,7 @@ class KtorAuthService(
         newPassword: String,
         token: String
     ): EmptyResult<DataError.Remote> {
-        return httpClient.post(
+        return httpClient.hqPost(
             route = "/auth/reset-password",
             body = ResetPasswordRequest(
                 newPassword = newPassword,
@@ -89,7 +89,7 @@ class KtorAuthService(
         currentPassword: String,
         newPassword: String
     ): EmptyResult<DataError.Remote> {
-        return httpClient.post(
+        return httpClient.hqPost(
             route = "/auth/change-password",
             body = ChangePasswordRequest(
                 oldPassword = currentPassword,

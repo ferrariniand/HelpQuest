@@ -1,9 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.helpquest.quests.data.service
 
 
-import com.helpquest.core.data.networking.delete
-import com.helpquest.core.data.networking.get
-import com.helpquest.core.data.networking.post
+import com.helpquest.core.data.networking.hqDelete
+import com.helpquest.core.data.networking.hqGet
+import com.helpquest.core.data.networking.hqPost
 import com.helpquest.core.domain.models.Category
 import com.helpquest.core.domain.models.GeoLocation
 import com.helpquest.core.domain.models.Participant
@@ -23,6 +25,7 @@ import com.helpquest.quests.domain.service.QuestService
 import io.ktor.client.HttpClient
 import kotlin.random.Random
 import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class KtorQuestService(
     private val httpClient: HttpClient
@@ -34,7 +37,7 @@ class KtorQuestService(
         questCategory: Category,
         questCreatorId: String,
     ): Result<Quest, DataError.Remote> {
-        return httpClient.post<CreateQuestRequest, QuestDto>(
+        return httpClient.hqPost<CreateQuestRequest, QuestDto>(
             route = "/quest",
             body = CreateQuestRequest(
                 questTitle = questTitle,
@@ -46,7 +49,7 @@ class KtorQuestService(
     }
 
     override suspend fun getQuestBoard(): Result<List<Quest>, DataError.Remote> {
-        return httpClient.get<List<QuestDto>>(
+        return httpClient.hqGet<List<QuestDto>>(
             route = "/questboard"
         ).map { questDtos ->
             questDtos.map { it.toQuest() }
@@ -130,7 +133,7 @@ class KtorQuestService(
     }
 
     override suspend fun getQuestLog(): Result<List<Quest>, DataError.Remote> {
-        return httpClient.get<List<QuestDto>>(
+        return httpClient.hqGet<List<QuestDto>>(
             route = "/questlog"
         ).map { chatDtos ->
             chatDtos.map { it.toQuest() }
@@ -138,13 +141,13 @@ class KtorQuestService(
     }
 
     override suspend fun getQuestById(questId: String): Result<Quest, DataError.Remote> {
-        return httpClient.get<QuestDto>(
+        return httpClient.hqGet<QuestDto>(
             route = "/quest/$questId"
         ).map { it.toQuest() }
     }
 
     override suspend fun leaveQuest(questId: String): EmptyResult<DataError.Remote> {
-        return httpClient.delete<Unit>(
+        return httpClient.hqDelete<Unit>(
             route = "/quest/$questId/leave"
         ).asEmptyResult()
     }
