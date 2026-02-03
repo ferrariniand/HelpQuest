@@ -4,6 +4,7 @@ import com.helpquest.core.domain.service.ParticipantService
 import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
+import com.helpquest.core.data.service.MockCoreResponseElements
 import com.helpquest.core.data.service.MockParticipantService
 import com.helpquest.core.data.auth.MockAuthService
 import com.helpquest.core.data.auth.MockDataStoreSessionStorage
@@ -21,5 +22,6 @@ val variantCoreDataModule = module {
     }
     singleOf(::MockAuthService) bind AuthService::class
     singleOf(::MockDataStoreSessionStorage) bind SessionStorage::class
+    single { MockCoreResponseElements }
     singleOf(::MockParticipantService) bind ParticipantService::class
 }

@@ -18,7 +18,7 @@ import com.helpquest.core.presentation.util.toUiText
 import helpquest.feature.profile.presentation.generated.resources.Res
 import helpquest.feature.profile.presentation.generated.resources.error_current_password_equal_to_new_one
 import helpquest.feature.profile.presentation.generated.resources.error_current_password_incorrect
-import kotlinx.coroutines.channels.Channel
+import helpquest.feature.profile.presentation.generated.resources.error_invalid_file_type
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,9 +35,6 @@ class ProfileViewModel(
     private val participantRepository: ParticipantRepository,
     private val sessionStorage: SessionStorage
 ) : ViewModel() {
-
-    private val eventChannel = Channel<ProfileEvent>()
-    val events = eventChannel.receiveAsFlow()
 
     private var hasLoadedInitialData = false
 
@@ -76,6 +72,14 @@ class ProfileViewModel(
             is ProfileAction.OnChangePasswordClick -> changePassword()
             is ProfileAction.OnToggleCurrentPasswordVisibility -> toggleCurrentPasswordVisibility()
             is ProfileAction.OnToggleNewPasswordVisibility -> toggleNewPasswordVisibility()
+            is ProfileAction.OnPictureSelected -> uploadProfilePicture(
+                action.bytes,
+                action.mimeType
+            )
+
+            is ProfileAction.OnDeletePictureClick -> showDeleteConfirmation()
+            is ProfileAction.OnConfirmDeleteClick -> deleteProfilePicture()
+            is ProfileAction.OnDismissDeleteConfirmationDialogClick -> dismissDeleteConfirmation()
             else -> Unit
         }
     }
@@ -180,4 +184,98 @@ class ProfileViewModel(
         }
     }
 
+    private fun uploadProfilePicture(bytes: ByteArray, mimeType: String?) {
+        if (state.value.isUploadingImage) {
+            return
+        }
+
+        if (mimeType == null) {
+            _state.update {
+                it.copy(
+                    imageError = UiText.Resource(Res.string.error_invalid_file_type)
+                )
+            }
+            return
+        }
+
+        _state.update {
+            it.copy(
+                isUploadingImage = true,
+                imageError = null
+            )
+        }
+
+        viewModelScope.launch {
+            participantRepository
+                .uploadProfilePicture(
+                    imageBytes = bytes,
+                    mimeType = mimeType
+                )
+                .onSuccess {
+                    _state.update {
+                        it.copy(
+                            isUploadingImage = false,
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            imageError = error.toUiText(),
+                            isUploadingImage = false
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun deleteProfilePicture() {
+        if (state.value.isDeletingImage && state.value.profilePictureUrl == null) {
+            return
+        }
+
+        _state.update {
+            it.copy(
+                isDeletingImage = true,
+                imageError = null,
+                showDeleteConfirmationDialog = false
+            )
+        }
+
+        viewModelScope.launch {
+            participantRepository
+                .deleteProfilePicture()
+                .onSuccess {
+                    _state.update {
+                        it.copy(
+                            isDeletingImage = false
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            imageError = error.toUiText(),
+                            isDeletingImage = false
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun dismissDeleteConfirmation() {
+        _state.update {
+            it.copy(
+                showDeleteConfirmationDialog = false
+            )
+        }
+    }
+
+    private fun showDeleteConfirmation() {
+        _state.update {
+            it.copy(
+                showDeleteConfirmationDialog = true
+            )
+        }
+    }
 }

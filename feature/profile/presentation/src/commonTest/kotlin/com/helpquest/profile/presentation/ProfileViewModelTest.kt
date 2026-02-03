@@ -224,4 +224,35 @@ class ProfileViewModelTest : KoinTest {
         }
 
     }
+
+    @Test
+    fun `onAction OnPictureSelected case success`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
+
+    @Test
+    fun `onAction OnPictureSelected case error`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
+
+    @Test
+    fun `onAction OnConfirmDeleteClick case success`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
+
+    @Test
+    fun `onAction OnConfirmDeleteClick case error`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
+
+
+    @Test
+    fun `onAction OnDeletePictureClick`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
+
+    @Test
+    fun `onAction OnDismissDeleteConfirmationDialogClick`() = runBlocking {
+        //TODO: IMPLEMENT
+    }
 }

@@ -37,6 +37,7 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTe
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.mediapicker.rememberImagePickerLauncher
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
@@ -72,6 +73,15 @@ fun ProfileRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val launcher = rememberImagePickerLauncher { pickedImageData ->
+        viewModel.onAction(
+            ProfileAction.OnPictureSelected(
+                pickedImageData.bytes,
+                pickedImageData.mimeType
+            )
+        )
+    }
+
     HelpQuestAdaptiveDialogSheetLayout(
         onDismiss = onDismiss
     ) {
@@ -80,6 +90,9 @@ fun ProfileRoot(
             onAction = { action ->
                 when (action) {
                     is ProfileAction.OnDismiss -> onDismiss()
+                    is ProfileAction.OnUploadPictureClick -> {
+                        launcher.launch()
+                    }
                     else -> Unit
                 }
                 viewModel.onAction(action)
