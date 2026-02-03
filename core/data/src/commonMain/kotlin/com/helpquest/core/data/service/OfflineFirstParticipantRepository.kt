@@ -67,4 +67,19 @@ class OfflineFirstParticipantRepository(
                 )
             }
     }
+
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return participantService
+            .deleteProfilePicture()
+            .onSuccess {
+                val authInfo = sessionStorage.observeAuthInfo().first()
+                sessionStorage.setAuthInfo(
+                    authInfo?.copy(
+                        user = authInfo.user.copy(
+                            profilePictureUrl = null
+                        )
+                    )
+                )
+            }
+    }
 }

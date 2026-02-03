@@ -45,6 +45,9 @@ class FakeParticipantService : ParticipantService {
     var confirmProfilePictureUploadResult: Result<ProfilePictureUploadUrls, DataError.Remote> =
         Result.Success(profilePictureUploadUrls)
 
+    var deleteProfilePictureResult: Result<ProfilePictureUploadUrls, DataError.Remote> =
+        Result.Success(profilePictureUploadUrls)
+
     override suspend fun searchParticipants(query: String): Result<List<Participant>, DataError.Remote> {
         return searchParticipantResult
     }
@@ -67,5 +70,9 @@ class FakeParticipantService : ParticipantService {
 
     override suspend fun confirmProfilePictureUpload(publicUrl: String): EmptyResult<DataError.Remote> {
         return confirmProfilePictureUploadResult.asEmptyResult()
+    }
+
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return deleteProfilePictureResult.asEmptyResult()
     }
 }

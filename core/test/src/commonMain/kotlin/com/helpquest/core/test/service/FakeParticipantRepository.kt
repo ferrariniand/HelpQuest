@@ -37,6 +37,9 @@ class FakeParticipantRepository : ParticipantRepository {
     var uploadProfilePictureResult: Result<Participant, DataError.Remote> =
         Result.Success(participant)
 
+    var deleteProfilePictureResult: Result<Participant, DataError.Remote> =
+        Result.Success(participant)
+
     override suspend fun fetchLocalParticipant(): Result<Participant, DataError.Remote> {
         return fetchLocalParticipantResult
     }
@@ -46,5 +49,9 @@ class FakeParticipantRepository : ParticipantRepository {
         mimeType: String
     ): EmptyResult<DataError.Remote> {
         return uploadProfilePictureResult.asEmptyResult()
+    }
+
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return deleteProfilePictureResult.asEmptyResult()
     }
 }

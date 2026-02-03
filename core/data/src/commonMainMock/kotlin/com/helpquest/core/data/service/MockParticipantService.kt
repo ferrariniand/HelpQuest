@@ -54,4 +54,9 @@ class MockParticipantService(
     override suspend fun confirmProfilePictureUpload(publicUrl: String): EmptyResult<DataError.Remote> {
         return Result.Success(mockResponse.profilePictureUploadUrls).asEmptyResult()
     }
+
+
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return Result.Success(mockResponse.profilePictureUploadUrls).asEmptyResult()
+    }
 }

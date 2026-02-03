@@ -5,6 +5,7 @@ import com.helpquest.core.data.dto.request.profile.ConfirmProfilePictureRequest
 import com.helpquest.core.data.dto.response.ProfilePictureUploadUrlsResponse
 import com.helpquest.core.data.mappers.toParticipant
 import com.helpquest.core.data.mappers.toProfilePictureUploadUrls
+import com.helpquest.core.data.networking.hqDelete
 import com.helpquest.core.data.networking.hqGet
 import com.helpquest.core.data.networking.hqPost
 import com.helpquest.core.data.networking.put
@@ -67,6 +68,13 @@ class KtorParticipantService(
         return httpClient.hqPost<ConfirmProfilePictureRequest, Unit>(
             route = "/participants/confirm-profile-picture",
             body = ConfirmProfilePictureRequest(publicUrl)
+        )
+    }
+
+
+    override suspend fun deleteProfilePicture(): EmptyResult<DataError.Remote> {
+        return httpClient.hqDelete(
+            route = "/participants/profile-picture"
         )
     }
 }
