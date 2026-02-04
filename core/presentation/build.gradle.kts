@@ -5,6 +5,9 @@ plugins {
 
 kotlin {
 
+    // Apply the default hierarchy again. It'll create, for example, the iosMain source set:
+    applyDefaultHierarchyTemplate()
+
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
     // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
@@ -44,6 +47,17 @@ kotlin {
                 // KMP dependencies declared in commonMain.
             }
         }
+
+        val mobileMain by creating {
+            dependencies {
+                implementation(libs.moko.permissions)
+                implementation(libs.moko.permissions.compose)
+                implementation(libs.moko.permissions.notifications)
+            }
+            dependsOn(commonMain.get())
+        }
+        androidMain.get().dependsOn(mobileMain)
+        iosMain.get().dependsOn(mobileMain)
     }
 
 }

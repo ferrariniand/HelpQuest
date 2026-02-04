@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +26,8 @@ import com.helpquest.core.designsystem.components.containers_layouts.SnackbarSca
 import com.helpquest.core.designsystem.components.dialogs.DestructiveConfirmationDialog
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.permissions.Permission
+import com.helpquest.core.presentation.permissions.rememberPermissionController
 import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.home.presentation.components.HomepageHeader
 import helpquest.core.designsystem.generated.resources.cancel
@@ -77,6 +80,12 @@ fun HomepageScreen(
     onAction: (HomepageAction) -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
+
+    val permissionController = rememberPermissionController()
+    LaunchedEffect(true) {
+        permissionController.requestPermission(Permission.NOTIFICATIONS)
+    }
+
     SnackbarScaffold(
         snackbarHostState = snackbarHostState,
         modifier = Modifier
