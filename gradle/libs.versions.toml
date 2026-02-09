@@ -76,7 +76,7 @@ testCoreKtx = "1.7.0"
 composeTest = "1.9.4"
 mockk = "1.14.6"
 mockkCommon = "1.12.5"
-kover = "0.9.3"
+kover = "0.9.6"
 
 
 #TODO: Are Necessary?

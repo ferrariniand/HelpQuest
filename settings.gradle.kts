@@ -33,7 +33,7 @@ dependencyResolutionManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-    id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.3"
+    id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.6"
 }
 
 include(":composeApp")
@@ -60,3 +60,5 @@ include(":feature:quest:data")
 include(":feature:quest:presentation")
 include(":feature:home:domain")
 include(":feature:home:presentation")
+include(":feature:notification:domain")
+include(":feature:notification:data")

@@ -10,5 +10,6 @@ sealed interface QuestGraphRoutes {
     data object QuestBoardDetailRoute : QuestGraphRoutes
 
     @Serializable
-    data object QuestLogDetailRoute : QuestGraphRoutes
+    data class QuestLogDetailRoute(val questId: String? = null) : QuestGraphRoutes
+
 }

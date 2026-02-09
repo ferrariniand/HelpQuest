@@ -6,6 +6,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.convention.cmp.application)
     alias(libs.plugins.compose.hot.reload)
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -95,6 +96,9 @@ kotlin {
             implementation(projects.feature.settings.domain)
             implementation(projects.feature.settings.data)
             implementation(projects.feature.settings.presentation)
+            // Notification Modules
+            implementation(projects.feature.notification.domain)
+            implementation(projects.feature.notification.data)
             // Home Modules
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.presentation)
