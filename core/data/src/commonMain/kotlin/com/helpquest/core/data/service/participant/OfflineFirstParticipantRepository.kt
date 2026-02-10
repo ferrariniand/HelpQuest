@@ -1,9 +1,9 @@
-package com.helpquest.core.data.service
+package com.helpquest.core.data.service.participant
 
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.core.domain.service.ParticipantRepository
-import com.helpquest.core.domain.service.ParticipantService
+import com.helpquest.core.domain.service.participant.ParticipantRepository
+import com.helpquest.core.domain.service.participant.ParticipantService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result

@@ -11,8 +11,8 @@ import com.helpquest.auth.presentation.di.authPresentationModule
 import com.helpquest.auth.presentation.email_verification.EmailVerificationViewModel
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
-import com.helpquest.core.test.auth.FakeAuthService
 import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.auth.FakeAuthService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

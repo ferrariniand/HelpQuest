@@ -1,12 +1,11 @@
-package com.helpquest.notification.data.service
+package com.helpquest.core.data.service.notification
 
-
+import com.helpquest.core.data.dto.request.notification.RegisterDeviceTokenRequest
 import com.helpquest.core.data.networking.hqDelete
 import com.helpquest.core.data.networking.hqPost
+import com.helpquest.core.domain.service.notification.DeviceTokenService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
-import com.helpquest.notification.data.dto.request.RegisterDeviceTokenRequest
-import com.helpquest.notification.domain.service.DeviceTokenService
 import io.ktor.client.HttpClient
 
 class KtorDeviceTokenService(

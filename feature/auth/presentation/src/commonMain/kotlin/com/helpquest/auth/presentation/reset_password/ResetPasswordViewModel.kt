@@ -4,7 +4,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.service.auth.AuthService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess

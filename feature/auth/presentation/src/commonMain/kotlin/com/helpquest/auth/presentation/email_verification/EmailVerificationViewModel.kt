@@ -3,7 +3,7 @@ package com.helpquest.auth.presentation.email_verification
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.service.auth.AuthService
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
 import kotlinx.coroutines.channels.Channel

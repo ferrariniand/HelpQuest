@@ -1,4 +1,4 @@
-package com.helpquest.notification.data.dto.request
+package com.helpquest.core.data.dto.request.notification
 
 import kotlinx.serialization.Serializable
 

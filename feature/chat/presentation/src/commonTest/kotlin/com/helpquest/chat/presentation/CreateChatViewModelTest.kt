@@ -24,7 +24,7 @@ import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.test.di.coreTestModule
-import com.helpquest.core.test.service.FakeParticipantService
+import com.helpquest.core.test.service.participant.FakeParticipantService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

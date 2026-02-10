@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.core.designsystem.components.selection_sections.SearchResult
-import com.helpquest.core.domain.service.ParticipantService
+import com.helpquest.core.domain.service.participant.ParticipantService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess

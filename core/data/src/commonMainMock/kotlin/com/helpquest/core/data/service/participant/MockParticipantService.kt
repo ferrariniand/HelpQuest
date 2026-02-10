@@ -1,7 +1,7 @@
-package com.helpquest.core.data.service
+package com.helpquest.core.data.service.participant
 
 import com.helpquest.core.data.service.MockCoreResponseElements
-import com.helpquest.core.domain.service.ParticipantService
+import com.helpquest.core.domain.service.participant.ParticipantService
 import com.helpquest.core.domain.models.ProfilePictureUploadUrls
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.Class

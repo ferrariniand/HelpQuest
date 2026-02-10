@@ -21,9 +21,9 @@ import com.helpquest.core.domain.models.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
-import com.helpquest.core.test.auth.FakeAuthService
 import com.helpquest.core.test.auth.FakeSessionStorage
 import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.auth.FakeAuthService
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.error_email_not_verified
 import helpquest.feature.auth.presentation.generated.resources.error_invalid_credentials

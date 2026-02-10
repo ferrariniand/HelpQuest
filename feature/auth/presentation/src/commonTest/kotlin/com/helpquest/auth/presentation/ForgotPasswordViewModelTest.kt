@@ -17,8 +17,8 @@ import com.helpquest.auth.presentation.forgot_password.ForgotPasswordViewModel
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
-import com.helpquest.core.test.auth.FakeAuthService
 import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.auth.FakeAuthService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

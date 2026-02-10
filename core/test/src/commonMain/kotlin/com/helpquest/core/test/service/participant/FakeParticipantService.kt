@@ -1,8 +1,8 @@
-package com.helpquest.core.test.service
+package com.helpquest.core.test.service.participant
 
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.ProfilePictureUploadUrls
-import com.helpquest.core.domain.service.ParticipantService
+import com.helpquest.core.domain.service.participant.ParticipantService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result

@@ -1,4 +1,4 @@
-package com.helpquest.core.domain.service
+package com.helpquest.core.domain.service.participant
 
 import com.helpquest.core.domain.models.Participant
 import com.helpquest.core.domain.models.ProfilePictureUploadUrls

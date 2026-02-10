@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.core.data.util.PlatformUtils
 import com.helpquest.core.domain.auth.SessionStorage
-import com.helpquest.notification.domain.service.DeviceTokenService
+import com.helpquest.core.domain.service.notification.DeviceTokenService
 import com.helpquest.notification.domain.service.PushNotificationService
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

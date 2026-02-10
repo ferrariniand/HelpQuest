@@ -5,9 +5,9 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.auth.SessionStorage
-import com.helpquest.core.domain.service.ParticipantRepository
+import com.helpquest.core.domain.service.auth.AuthService
+import com.helpquest.core.domain.service.participant.ParticipantRepository
 import com.helpquest.core.domain.util.ClassUtils
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.onFailure

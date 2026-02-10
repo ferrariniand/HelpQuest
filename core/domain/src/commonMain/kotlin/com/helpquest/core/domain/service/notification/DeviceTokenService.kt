@@ -1,8 +1,7 @@
-package com.helpquest.notification.domain.service
+package com.helpquest.core.domain.service.notification
 
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
-
 
 interface DeviceTokenService {
 

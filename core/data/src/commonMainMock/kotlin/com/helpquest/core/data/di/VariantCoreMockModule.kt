@@ -1,12 +1,14 @@
 package com.helpquest.core.data.di
 
-import com.helpquest.core.domain.service.ParticipantService
-import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.service.participant.ParticipantService
+import com.helpquest.core.domain.service.auth.AuthService
+import com.helpquest.core.domain.service.notification.DeviceTokenService
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
 import com.helpquest.core.data.service.MockCoreResponseElements
-import com.helpquest.core.data.service.MockParticipantService
-import com.helpquest.core.data.auth.MockAuthService
+import com.helpquest.core.data.service.participant.MockParticipantService
+import com.helpquest.core.data.service.auth.MockAuthService
+import com.helpquest.core.data.service.notification.MockDeviceTokenService
 import com.helpquest.core.data.auth.MockDataStoreSessionStorage
 import com.helpquest.core.data.logging.KermitLogger
 import com.helpquest.core.data.networking.MockHttpClientFactory
@@ -24,4 +26,5 @@ val variantCoreDataModule = module {
     singleOf(::MockDataStoreSessionStorage) bind SessionStorage::class
     single { MockCoreResponseElements }
     singleOf(::MockParticipantService) bind ParticipantService::class
+    singleOf(::MockDeviceTokenService) bind DeviceTokenService::class
 }

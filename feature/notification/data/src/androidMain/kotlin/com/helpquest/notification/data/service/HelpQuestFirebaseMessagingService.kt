@@ -3,7 +3,7 @@ package com.helpquest.notification.data.service
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.helpquest.core.data.util.ANDROID_OS_NAME
 import com.helpquest.core.domain.auth.SessionStorage
-import com.helpquest.notification.domain.service.DeviceTokenService
+import com.helpquest.core.domain.service.notification.DeviceTokenService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

@@ -14,10 +14,10 @@ import com.helpquest.core.domain.util.ClassUtils
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
-import com.helpquest.core.test.auth.FakeAuthService
 import com.helpquest.core.test.auth.FakeSessionStorage
 import com.helpquest.core.test.di.coreTestModule
-import com.helpquest.core.test.service.FakeParticipantRepository
+import com.helpquest.core.test.service.auth.FakeAuthService
+import com.helpquest.core.test.service.participant.FakeParticipantRepository
 import com.helpquest.profile.presentation.di.profilePresentationModule
 import helpquest.feature.profile.presentation.generated.resources.Res
 import helpquest.feature.profile.presentation.generated.resources.error_current_password_equal_to_new_one

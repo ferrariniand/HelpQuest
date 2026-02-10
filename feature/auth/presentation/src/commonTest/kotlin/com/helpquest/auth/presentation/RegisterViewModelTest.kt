@@ -20,8 +20,8 @@ import com.helpquest.auth.presentation.register.RegisterViewModel
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.presentation.util.UiText
-import com.helpquest.core.test.auth.FakeAuthService
 import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.auth.FakeAuthService
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.error_account_exists
 import kotlinx.coroutines.Dispatchers

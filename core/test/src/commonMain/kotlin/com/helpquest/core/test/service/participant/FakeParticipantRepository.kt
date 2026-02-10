@@ -1,14 +1,11 @@
-@file:OptIn(ExperimentalTime::class)
-
-package com.helpquest.core.test.service
+package com.helpquest.core.test.service.participant
 
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.core.domain.service.ParticipantRepository
+import com.helpquest.core.domain.service.participant.ParticipantRepository
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
-import kotlin.time.ExperimentalTime
 
 class FakeParticipantRepository : ParticipantRepository {
 
