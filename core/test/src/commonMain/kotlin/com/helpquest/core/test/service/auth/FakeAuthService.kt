@@ -1,9 +1,9 @@
-package com.helpquest.core.test.auth
+package com.helpquest.core.test.service.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
-import com.helpquest.core.domain.auth.AuthService
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.User
+import com.helpquest.core.domain.service.auth.AuthService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -25,6 +25,8 @@ class FakeAuthService : AuthService {
         user = user
     )
     var loginResult: Result<AuthInfo, DataError.Remote> = Result.Success(authInfo)
+
+    var logoutResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
 
     var registerResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
     var resendVerificationResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
@@ -72,5 +74,9 @@ class FakeAuthService : AuthService {
         newPassword: String
     ): EmptyResult<DataError.Remote> {
         return changePasswordResult
+    }
+
+    override suspend fun logout(refreshToken: String): EmptyResult<DataError.Remote> {
+        return logoutResult
     }
 }

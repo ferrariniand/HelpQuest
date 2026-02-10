@@ -1,21 +1,25 @@
-package com.helpquest.core.data.auth
+package com.helpquest.core.data.service.auth
 
 import com.helpquest.core.data.dto.AuthInfoDto
 import com.helpquest.core.data.dto.request.auth.ChangePasswordRequest
 import com.helpquest.core.data.dto.request.auth.EmailRequest
 import com.helpquest.core.data.dto.request.auth.LoginRequest
+import com.helpquest.core.data.dto.request.auth.RefreshRequest
 import com.helpquest.core.data.dto.request.auth.RegisterRequest
 import com.helpquest.core.data.dto.request.auth.ResetPasswordRequest
 import com.helpquest.core.data.mappers.toAuthInfo
 import com.helpquest.core.data.networking.hqGet
 import com.helpquest.core.data.networking.hqPost
 import com.helpquest.core.domain.auth.AuthInfo
-import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.service.auth.AuthService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.map
+import com.helpquest.core.domain.util.onSuccess
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 
 class KtorAuthService(
     private val httpClient: HttpClient
@@ -96,5 +100,14 @@ class KtorAuthService(
                 newPassword = newPassword
             )
         )
+    }
+
+    override suspend fun logout(refreshToken: String): EmptyResult<DataError.Remote> {
+        return httpClient.hqPost<RefreshRequest, Unit>(
+            route = "/auth/logout",
+            body = RefreshRequest(refreshToken)
+        ).onSuccess {
+            httpClient.authProvider<BearerAuthProvider>()?.clearToken()
+        }
     }
 }

@@ -1,10 +1,11 @@
-package com.helpquest.core.data.auth
+package com.helpquest.core.data.service.auth
 
 import com.helpquest.core.domain.auth.AuthInfo
-import com.helpquest.core.domain.auth.AuthService
+import com.helpquest.core.domain.service.auth.AuthService
 import com.helpquest.core.domain.models.User
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.data.dto.AuthInfoDto
 import com.helpquest.core.data.mappers.toAuthInfoDto
@@ -28,6 +29,9 @@ class MockAuthService() : AuthService {
 
     private var loginResult: Result<AuthInfo, DataError.Remote> =
         Result.Success(savedAuthInfo ?: mockAuthInfo)
+
+    private var logoutResult: EmptyResult<DataError.Remote> = Result.Success(Unit)
+
     private var refreshTokenResult: Result<AuthInfoDto, DataError.Remote> =
         Result.Success(savedAuthInfo?.toAuthInfoDto() ?: mockAuthInfo.toAuthInfoDto())
 
@@ -199,6 +203,26 @@ class MockAuthService() : AuthService {
             refreshToken = refreshToken
         )
         return refreshTokenResult
+    }
+
+    fun setLogoutResult(
+        error: DataError.Remote? = null
+    ) {
+        logoutResult = when {
+
+            error != null -> {
+                Result.Failure(error)
+            }
+
+            else -> {
+                Result.Success(Unit)
+            }
+        }
+    }
+
+    override suspend fun logout(refreshToken: String): EmptyResult<DataError.Remote> {
+        savedAuthInfo = null
+        return logoutResult
     }
 
 }

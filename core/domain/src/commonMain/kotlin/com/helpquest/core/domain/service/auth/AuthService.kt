@@ -1,5 +1,6 @@
-package com.helpquest.core.domain.auth
+package com.helpquest.core.domain.service.auth
 
+import com.helpquest.core.domain.auth.AuthInfo
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
@@ -32,4 +33,6 @@ interface AuthService {
         currentPassword: String,
         newPassword: String,
     ): EmptyResult<DataError.Remote>
+
+    suspend fun logout(refreshToken: String): EmptyResult<DataError.Remote>
 }
