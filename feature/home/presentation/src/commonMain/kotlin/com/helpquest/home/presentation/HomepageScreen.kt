@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import helpquest.feature.home.presentation.generated.resources.Res
 import helpquest.feature.home.presentation.generated.resources.do_you_want_to_logout
 import helpquest.feature.home.presentation.generated.resources.do_you_want_to_logout_desc
 import helpquest.feature.home.presentation.generated.resources.logout
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -42,7 +44,7 @@ import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun HomepageRoot(
-    onLogout: () -> Unit,
+    onSuccessfulLogout: () -> Unit,
     onProfileSettingsClick: () -> Unit,
     onChatFabButtonClick: () -> Unit,
     onQuestFabButtonClick: () -> Unit,
@@ -50,19 +52,28 @@ fun HomepageRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            else -> Unit
-        }
-    }
 
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val scope = rememberCoroutineScope()
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is HomepageEvent.OnLogoutError -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = event.error.asStringAsync()
+                    )
+                }
+            }
+
+            HomepageEvent.OnLogoutSuccess -> onSuccessfulLogout()
+        }
+    }
 
     HomepageScreen(
         state = state,
         onAction = { action ->
             when (action) {
-                HomepageAction.OnConfirmLogout -> onLogout()
                 HomepageAction.OnProfileSettingsClick -> onProfileSettingsClick()
                 HomepageAction.OnChatFabButtonClick -> onChatFabButtonClick()
                 HomepageAction.OnQuestFabButtonClick -> onQuestFabButtonClick()

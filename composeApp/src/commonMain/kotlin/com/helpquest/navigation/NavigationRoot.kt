@@ -36,8 +36,12 @@ fun NavigationRoot(
         )
         composable<HomepageGraphRoutes.HomepageRoute> {
             HomepageRoot(
-                onLogout = {
-
+                onSuccessfulLogout = {
+                    navController.navigate(AuthGraphRoutes.Graph) {
+                        popUpTo(HomepageGraphRoutes.HomepageRoute) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onProfileSettingsClick = {
                     navController.navigate(ProfileGraphRoutes.ProfileRoute)
