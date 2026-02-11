@@ -44,11 +44,11 @@ fun SendMessageBox(
     messageTextFieldState: TextFieldState,
     isSendButtonEnabled: Boolean,
     connectionState: ConnectionState,
+    focusRequester: FocusRequester,
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isConnected = connectionState == ConnectionState.CONNECTED
-    val focusRequester = remember { FocusRequester() }
     HelpQuestMultiLineTextField(
         state = messageTextFieldState,
         modifier = modifier
@@ -60,10 +60,15 @@ fun SendMessageBox(
                 focusRequester.requestFocus()
             },
         placeholder = stringResource(Res.string.send_a_message),
+        focusRequester = focusRequester,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Send
         ),
-        onKeyboardAction = onSendClick,
+        onKeyboardAction = {
+            if (messageTextFieldState.text.isNotBlank()) {
+                onSendClick()
+            }
+        },
         bottomContent = {
             Spacer(modifier = Modifier.weight(1f))
             if (!isConnected) {
@@ -107,6 +112,7 @@ fun MessageBoxConnectedLightPreview() {
                 messageTextFieldState = rememberTextFieldState(),
                 isSendButtonEnabled = true,
                 connectionState = ConnectionState.CONNECTED,
+                focusRequester = remember { FocusRequester() },
                 onSendClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -132,6 +138,7 @@ fun MessageBoxConnectedDarkPreview() {
                 messageTextFieldState = rememberTextFieldState(),
                 isSendButtonEnabled = true,
                 connectionState = ConnectionState.CONNECTED,
+                focusRequester = remember { FocusRequester() },
                 onSendClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -154,6 +161,7 @@ fun MessageBoxDisconnectedLightPreview() {
                 messageTextFieldState = rememberTextFieldState(),
                 isSendButtonEnabled = false,
                 connectionState = ConnectionState.DISCONNECTED,
+                focusRequester = remember { FocusRequester() },
                 onSendClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -179,6 +187,7 @@ fun MessageBoxDisconnectedDarkPreview() {
                 messageTextFieldState = rememberTextFieldState(),
                 isSendButtonEnabled = false,
                 connectionState = ConnectionState.DISCONNECTED,
+                focusRequester = remember { FocusRequester() },
                 onSendClick = {},
                 modifier = Modifier
                     .fillMaxWidth()

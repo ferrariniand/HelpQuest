@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +30,8 @@ fun SnackbarScaffold(
         contentWindowInsets = WindowInsets.statusBars
             .union(WindowInsets.displayCutout)
             .union(WindowInsets.ime)
-            .union(WindowInsets.navigationBars),
+            .union(WindowInsets.navigationBars)
+            .union(WindowInsets.safeDrawing),
         containerColor = containerColor,
         snackbarHost = {
             SnackbarHost(

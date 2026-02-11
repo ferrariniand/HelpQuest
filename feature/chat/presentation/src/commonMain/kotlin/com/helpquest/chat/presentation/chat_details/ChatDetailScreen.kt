@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -147,6 +148,7 @@ fun ChatDetailScreen(
     onAction: (ChatDetailAction) -> Unit,
 ) {
     val configuration = currentDeviceConfiguration()
+    val focusRequester = remember { FocusRequester() }
 
     val realMessageItemCount = remember(state.messages) {
         state
@@ -294,8 +296,10 @@ fun ChatDetailScreen(
                                 messageTextFieldState = state.messageTextFieldState,
                                 isSendButtonEnabled = state.canSendMessage,
                                 connectionState = state.connectionState,
+                                focusRequester = focusRequester,
                                 onSendClick = {
                                     onAction(ChatDetailAction.OnSendMessageClick)
+                                    focusRequester.requestFocus()
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -323,8 +327,10 @@ fun ChatDetailScreen(
                             messageTextFieldState = state.messageTextFieldState,
                             isSendButtonEnabled = state.canSendMessage,
                             connectionState = state.connectionState,
+                            focusRequester = focusRequester,
                             onSendClick = {
                                 onAction(ChatDetailAction.OnSendMessageClick)
+                                focusRequester.requestFocus()
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

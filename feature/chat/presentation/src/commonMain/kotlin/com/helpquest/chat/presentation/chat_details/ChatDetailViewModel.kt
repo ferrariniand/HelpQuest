@@ -166,12 +166,10 @@ class ChatDetailViewModel(
                     state.value.messageTextFieldState.clearText()
                     // Clear the cache for this chat after sending
                     messageDraftCache.remove(currentChatId)
+                    eventChannel.send(ChatDetailEvent.OnNewMessage)
                 }
                 .onFailure { error ->
                     eventChannel.send(ChatDetailEvent.OnError(error.toUiText()))
-                    state.value.messageTextFieldState.clearText()
-                    // Clear the cache for this chat after sending
-                    messageDraftCache.remove(currentChatId)
                 }
         }
     }
