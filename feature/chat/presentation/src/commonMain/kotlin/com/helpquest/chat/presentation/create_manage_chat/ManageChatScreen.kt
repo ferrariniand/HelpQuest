@@ -14,6 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,8 +53,10 @@ fun ManageChatScreen(
 ) {
     val configuration = currentDeviceConfiguration()
     val isKeyboardVisible by isKeyboardVisible()
+    var isTextFieldFocused by remember { mutableStateOf(false) }
 
-    val shouldHideHeader = configuration.isSmallScreenHeight || isKeyboardVisible
+    val shouldHideHeader =
+        configuration.isSmallScreenHeight && (isKeyboardVisible || isTextFieldFocused)
 
     Column(
         modifier = Modifier
@@ -80,7 +85,9 @@ fun ManageChatScreen(
             queryState = state.queryTextState,
             searchTextPlaceholder = stringResource(Res.string.email_or_username),
             keyboardType = KeyboardType.Email,
-            onFocusChanged = {},
+            onFocusChanged = {
+                isTextFieldFocused = it
+            },
             onDebouncedValueChange = {
                 onAction(ManageChatAction.OnDebounceSearchTextField)
             },
