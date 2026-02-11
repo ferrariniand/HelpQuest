@@ -304,7 +304,7 @@ fun ChatDetailScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(
-                                        vertical = 8.dp,
+                                        vertical = if (configuration.isSmallScreenHeight) 4.dp else 8.dp,
                                         horizontal = 16.dp
                                     )
                             )

@@ -28,6 +28,7 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestMultiLineT
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.domain.util.ConnectionState
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.toUiText
 import helpquest.core.designsystem.generated.resources.cloud_off_icon
 import helpquest.feature.chat.presentation.generated.resources.Res
@@ -48,6 +49,7 @@ fun SendMessageBox(
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val configuration = currentDeviceConfiguration()
     val isConnected = connectionState == ConnectionState.CONNECTED
     HelpQuestMultiLineTextField(
         state = messageTextFieldState,
@@ -92,7 +94,8 @@ fun SendMessageBox(
             HelpQuestButton(
                 text = stringResource(Res.string.send),
                 onClick = onSendClick,
-                enabled = isConnected && isSendButtonEnabled
+                enabled = isConnected && isSendButtonEnabled,
+                reduceVerticalPadding = configuration.isSmallScreenHeight
             )
         }
     )

@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.util.DeviceConfiguration
+import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -45,6 +47,8 @@ fun HelpQuestMultiLineTextField(
     maxHeightInLines: Int = 3,
     bottomContent: @Composable (RowScope.() -> Unit)? = null
 ) {
+    val configuration = currentDeviceConfiguration()
+
     Column(
         modifier = modifier
             .background(
@@ -64,48 +68,94 @@ fun HelpQuestMultiLineTextField(
                 }
             )
             .padding(
-                vertical = 12.dp,
+                vertical = if (configuration.isSmallScreenHeight) 4.dp else 12.dp,
                 horizontal = 16.dp
             ),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(if (configuration.isSmallScreenHeight) 4.dp else 8.dp)
     ) {
-        BasicTextField(
-            state = state,
-            enabled = enabled,
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.extended.textPrimary
-            ),
-            lineLimits = TextFieldLineLimits.MultiLine(
-                minHeightInLines = 1,
-                maxHeightInLines = maxHeightInLines
-            ),
-            keyboardOptions = keyboardOptions,
-            onKeyboardAction = {
-                onKeyboardAction()
-            },
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.extended.textPrimary),
-            decorator = { innerBox ->
-                if (placeholder != null && state.text.isEmpty()) {
-                    Text(
-                        text = placeholder,
-                        color = MaterialTheme.colorScheme.extended.textPlaceholder,
-                        style = MaterialTheme.typography.bodyLarge
+        when (configuration) {
+            DeviceConfiguration.MOBILE_LANDSCAPE -> {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BasicTextField(
+                        state = state,
+                        enabled = enabled,
+                        modifier = Modifier
+                            .weight(1f)
+                            .focusRequester(focusRequester),
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.extended.textPrimary
+                        ),
+                        lineLimits = TextFieldLineLimits.MultiLine(
+                            minHeightInLines = 1,
+                            maxHeightInLines = maxHeightInLines
+                        ),
+                        keyboardOptions = keyboardOptions,
+                        onKeyboardAction = {
+                            onKeyboardAction()
+                        },
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.extended.textPrimary),
+                        decorator = { innerBox ->
+                            if (placeholder != null && state.text.isEmpty()) {
+                                Text(
+                                    text = placeholder,
+                                    color = MaterialTheme.colorScheme.extended.textPlaceholder,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                            innerBox()
+                        }
                     )
+                    if (bottomContent != null) {
+                        bottomContent(this)
+                    }
                 }
-                innerBox()
             }
-        )
-        if (bottomContent != null) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                bottomContent(this)
+
+            else -> {
+                BasicTextField(
+                    state = state,
+                    enabled = enabled,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.extended.textPrimary
+                    ),
+                    lineLimits = TextFieldLineLimits.MultiLine(
+                        minHeightInLines = 1,
+                        maxHeightInLines = maxHeightInLines
+                    ),
+                    keyboardOptions = keyboardOptions,
+                    onKeyboardAction = {
+                        onKeyboardAction()
+                    },
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.extended.textPrimary),
+                    decorator = { innerBox ->
+                        if (placeholder != null && state.text.isEmpty()) {
+                            Text(
+                                text = placeholder,
+                                color = MaterialTheme.colorScheme.extended.textPlaceholder,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                        innerBox()
+                    }
+                )
+                if (bottomContent != null) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        bottomContent(this)
+                    }
+                }
             }
         }
     }

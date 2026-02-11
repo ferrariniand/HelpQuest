@@ -27,7 +27,7 @@ fun GenericPageHeaderSection(
                 .fillMaxWidth()
                 .heightIn(max = if (isSmallScreenHeight) 56.dp else 72.dp)
                 .padding(
-                    vertical = if (isSmallScreenHeight) 8.dp else 16.dp,
+                    vertical = if (isSmallScreenHeight) 4.dp else 16.dp,
                     horizontal = 16.dp
                 ),
             contentAlignment = Alignment.Center
