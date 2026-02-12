@@ -17,8 +17,8 @@ import com.helpquest.core.designsystem.components.avatar.HelpQuestStackedAvatars
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.designsystem.theme.titleXSmall
 import helpquest.feature.chat.presentation.generated.resources.Res
-import helpquest.feature.chat.presentation.generated.resources.error_participant_not_found
 import helpquest.feature.chat.presentation.generated.resources.group_chat
+import helpquest.feature.chat.presentation.generated.resources.only_you
 import helpquest.feature.chat.presentation.generated.resources.you
 import org.jetbrains.compose.resources.stringResource
 
@@ -33,9 +33,11 @@ fun ChatItemHeaderRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        HelpQuestStackedAvatars(
-            avatars = chat.otherParticipants,
-        )
+        if (chat.otherParticipants.isNotEmpty()) {
+            HelpQuestStackedAvatars(
+                avatars = chat.otherParticipants,
+            )
+        }
         Column(
             modifier = Modifier
                 .weight(1f),
@@ -44,7 +46,7 @@ fun ChatItemHeaderRow(
             Text(
                 text = if (!isGroupChat) {
                     chat.otherParticipants.firstOrNull()?.username
-                        ?: stringResource(Res.string.error_participant_not_found)
+                        ?: stringResource(Res.string.only_you)
                 } else {
                     stringResource(Res.string.group_chat)
                 },
