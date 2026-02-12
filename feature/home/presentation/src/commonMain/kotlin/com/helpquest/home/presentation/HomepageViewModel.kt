@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.service.auth.AuthRepository
+import com.helpquest.core.domain.service.participant.ParticipantRepository
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
 import com.helpquest.core.presentation.util.toUiText
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class HomepageViewModel(
     private val authRepository: AuthRepository,
+    private val participantRepository: ParticipantRepository,
     private val sessionStorage: SessionStorage
 ) : ViewModel() {
 
@@ -32,6 +34,7 @@ class HomepageViewModel(
         .onStart {
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
+                fetchLocalUserProfile() //added here to be sure to update User Profile after login
                 hasLoadedInitialData = true
             }
         }
@@ -102,6 +105,13 @@ class HomepageViewModel(
                 .onFailure { error ->
                     eventChannel.send(HomepageEvent.OnLogoutError(error.toUiText()))
                 }
+        }
+    }
+
+    private fun fetchLocalUserProfile() {
+        viewModelScope.launch {
+            participantRepository
+                .fetchLocalParticipant()
         }
     }
 

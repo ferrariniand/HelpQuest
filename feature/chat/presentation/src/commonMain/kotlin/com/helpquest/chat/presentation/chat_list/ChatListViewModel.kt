@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.helpquest.chat.domain.service.ChatRepository
 import com.helpquest.chat.presentation.mappers.toChatUi
 import com.helpquest.core.domain.auth.SessionStorage
+import com.helpquest.core.domain.service.participant.ParticipantRepository
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatListViewModel(
-    private val repository: ChatRepository,
-    private val sessionStorage: SessionStorage
+    private val chatRepository: ChatRepository,
+    private val participantRepository: ParticipantRepository,
+    private val sessionStorage: SessionStorage,
 ) : ViewModel() {
 
     private val eventChannel = Channel<ChatListEvent>()
@@ -29,7 +31,7 @@ class ChatListViewModel(
     private val _state = MutableStateFlow(ChatListState())
     val state = combine(
         _state,
-        repository.getChats(),
+        chatRepository.getChats(),
         sessionStorage.observeAuthInfo()
     ) { currentState, chats, authInfo ->
         if (authInfo == null) {
@@ -44,6 +46,7 @@ class ChatListViewModel(
         if (!hasLoadedInitialData) {
             /** Load initial data here **/
             loadChats()
+            fetchLocalUserProfile()
             hasLoadedInitialData = true
         }
     }.stateIn(
@@ -67,7 +70,14 @@ class ChatListViewModel(
 
     private fun loadChats() {
         viewModelScope.launch {
-            repository.fetchChats()
+            chatRepository.fetchChats()
+        }
+    }
+
+    private fun fetchLocalUserProfile() {
+        viewModelScope.launch {
+            participantRepository
+                .fetchLocalParticipant()
         }
     }
 

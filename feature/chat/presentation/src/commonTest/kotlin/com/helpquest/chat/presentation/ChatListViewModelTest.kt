@@ -15,6 +15,8 @@ import com.helpquest.chat.presentation.mappers.toChatUi
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.presentation.mappers.toParticipantUi
 import com.helpquest.core.test.auth.FakeSessionStorage
+import com.helpquest.core.test.di.coreTestModule
+import com.helpquest.core.test.service.participant.FakeParticipantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +41,7 @@ class ChatListViewModelTest : KoinTest {
     private val fakeSessionStorage by inject<FakeSessionStorage>()
 
     private val fakeChatRepository by inject<FakeChatRepository>()
+    private val fakeParticipantRepository by inject<FakeParticipantRepository>()
 
     val overrideChatDataModule = module {
         singleOf(::FakeSessionStorage) bind SessionStorage::class
@@ -52,6 +55,7 @@ class ChatListViewModelTest : KoinTest {
         startKoin {
             modules(
                 overrideChatDataModule,
+                coreTestModule,
                 chatPresentationModule,
             )
         }
@@ -76,6 +80,7 @@ class ChatListViewModelTest : KoinTest {
 
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
@@ -92,6 +97,7 @@ class ChatListViewModelTest : KoinTest {
         fakeSessionStorage.resultAuthInfoFlow = MutableStateFlow(null)
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
@@ -122,6 +128,7 @@ class ChatListViewModelTest : KoinTest {
 
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
@@ -152,6 +159,7 @@ class ChatListViewModelTest : KoinTest {
         fakeSessionStorage.resultAuthInfoFlow = MutableStateFlow(null)
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
@@ -176,6 +184,7 @@ class ChatListViewModelTest : KoinTest {
         // Call `onAction` with `OnSelectChat` and verify that the `state` Flow emits a new state with the `selectedChatId` updated to the provided ID.
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {
@@ -193,6 +202,7 @@ class ChatListViewModelTest : KoinTest {
         // Call `onAction` with `OnSelectChat` and verify that the `state` Flow emits a new state with the `selectedChatId` updated to the ID from the `ChatUi` object.
         viewModel = ChatListViewModel(
             fakeChatRepository,
+            fakeParticipantRepository,
             fakeSessionStorage,
         )
         viewModel.state.test {

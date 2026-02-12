@@ -7,6 +7,7 @@ import assertk.assertions.isTrue
 import com.helpquest.core.test.auth.FakeSessionStorage
 import com.helpquest.core.test.di.coreTestModule
 import com.helpquest.core.test.service.auth.FakeAuthRepository
+import com.helpquest.core.test.service.participant.FakeParticipantRepository
 import com.helpquest.home.presentation.HomepageAction
 import com.helpquest.home.presentation.HomepageViewModel
 import com.helpquest.home.presentation.di.homepagePresentationModule
@@ -28,6 +29,7 @@ import kotlin.test.Test
 class HomepageViewModelTest : KoinTest {
 
     private val fakeAuthRepository by inject<FakeAuthRepository>()
+    private val fakeParticipantRepository by inject<FakeParticipantRepository>()
     private val fakeSessionStorage by inject<FakeSessionStorage>()
 
     private lateinit var viewModel: HomepageViewModel
@@ -56,7 +58,11 @@ class HomepageViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnUserAvatarClick`() = runBlocking {
-        viewModel = HomepageViewModel(fakeAuthRepository, fakeSessionStorage)
+        viewModel = HomepageViewModel(
+            fakeAuthRepository,
+            fakeParticipantRepository,
+            fakeSessionStorage
+        )
 
         viewModel.state.test {
             val initialState = awaitItem()
@@ -71,7 +77,11 @@ class HomepageViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnProfileSettingsClick`() = runBlocking {
-        viewModel = HomepageViewModel(fakeAuthRepository, fakeSessionStorage)
+        viewModel = HomepageViewModel(
+            fakeAuthRepository,
+            fakeParticipantRepository,
+            fakeSessionStorage
+        )
 
         viewModel.state.test {
             val initialState = awaitItem()
@@ -89,7 +99,11 @@ class HomepageViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnDismissUserMenu`() = runBlocking {
-        viewModel = HomepageViewModel(fakeAuthRepository, fakeSessionStorage)
+        viewModel = HomepageViewModel(
+            fakeAuthRepository,
+            fakeParticipantRepository,
+            fakeSessionStorage
+        )
 
         viewModel.state.test {
             val initialState = awaitItem()
@@ -107,7 +121,11 @@ class HomepageViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnLogoutClick`() = runBlocking {
-        viewModel = HomepageViewModel(fakeAuthRepository, fakeSessionStorage)
+        viewModel = HomepageViewModel(
+            fakeAuthRepository,
+            fakeParticipantRepository,
+            fakeSessionStorage
+        )
 
         viewModel.state.test {
             val initialState = awaitItem()
@@ -126,7 +144,11 @@ class HomepageViewModelTest : KoinTest {
 
     @Test
     fun `onAction OnDismissLogoutDialog`() = runBlocking {
-        viewModel = HomepageViewModel(fakeAuthRepository, fakeSessionStorage)
+        viewModel = HomepageViewModel(
+            fakeAuthRepository,
+            fakeParticipantRepository,
+            fakeSessionStorage
+        )
 
         viewModel.state.test {
             val initialState = awaitItem()
