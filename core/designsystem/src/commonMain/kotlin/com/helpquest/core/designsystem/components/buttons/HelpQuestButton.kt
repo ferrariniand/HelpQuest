@@ -142,7 +142,11 @@ fun HelpQuestButton(
                         vertical = if (reduceVerticalPadding) 4.dp else 6.dp
                     )
             ) {
-                Loader(isLoading)
+                Loader(
+                    isLoading,
+                    size = 22.dp,
+                    color = colors.contentColor
+                )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(
                         8.dp,

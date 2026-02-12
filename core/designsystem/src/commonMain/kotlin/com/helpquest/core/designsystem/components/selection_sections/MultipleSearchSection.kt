@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDividerWithTitle
-import com.helpquest.core.designsystem.components.result_layouts.Loader
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.presentation.util.UiText
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
@@ -54,40 +53,25 @@ fun <T> MultipleSearchSection(
     Column(
         modifier = modifier
     ) {
-        Row(
+        HelpQuestTextField(
+            state = queryState,
             modifier = Modifier
                 .padding(
                     horizontal = 16.dp,
                     vertical = if (isSmallScreenHeight) 8.dp else 16.dp
                 ),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            HelpQuestTextField(
-                state = queryState,
-                modifier = Modifier
-                    .weight(1f),
-                internalModifier = Modifier
-                    .padding(vertical = if (isSmallScreenHeight) 0.dp else 3.dp),
-                placeholder = searchTextPlaceholder,
-                title = null,
-                supportingText = error?.asString(),
-                isError = error != null,
-                singleLine = true,
-                keyboardType = keyboardType,
-                onFocusChanged = onFocusChanged,
-                onDebouncedValueChange = onDebouncedValueChange,
-            )
-            Loader(
-                isLoading,
-                size = 30.dp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 6.dp,
-                        vertical = if (isSmallScreenHeight) 4.dp else 6.dp
-                    )
-            )
-        }
+            internalModifier = Modifier
+                .padding(vertical = if (isSmallScreenHeight) 0.dp else 3.dp),
+            placeholder = searchTextPlaceholder,
+            title = null,
+            supportingText = error?.asString(),
+            isLoading = isLoading,
+            isError = error != null,
+            singleLine = true,
+            keyboardType = keyboardType,
+            onFocusChanged = onFocusChanged,
+            onDebouncedValueChange = onDebouncedValueChange,
+        )
         if (searchResult != null) {
             HelpQuestHorizontalDividerWithTitle(
                 title = stringResource(Res.string.search_results),

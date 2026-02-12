@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 fun Loader(
     isLoading: Boolean,
     size: Dp = 15.dp,
+    color: Color = Color.Black,
     modifier: Modifier = Modifier
 ) {
     CircularProgressIndicator( //TODO: Customize this loader
@@ -22,6 +23,6 @@ fun Loader(
                 alpha = if (isLoading) 1f else 0f
             ),
         strokeWidth = 1.5.dp,
-        color = Color.Black
+        color = color
     )
 }
