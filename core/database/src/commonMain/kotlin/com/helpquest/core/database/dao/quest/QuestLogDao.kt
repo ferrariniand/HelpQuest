@@ -111,6 +111,7 @@ interface QuestLogDao {
                         content = content,
                         activityStatus = activityStatus,
                         startTimestamp = startTimestamp,
+                        lastActivityUpdateTimestamp = lastActivityUpdateTimestamp,
                         endTimestamp = endTimestamp
                     )
                 )
@@ -142,4 +143,16 @@ interface QuestLogDao {
         deleteQuestsByIds(staleQuestIds)
 
     }
+
+    @Query(
+        """
+        UPDATE questentity
+        SET lastUpdateTimestamp = CASE
+                WHEN :timestamp > lastUpdateTimestamp THEN :timestamp
+                ELSE lastUpdateTimestamp
+                END
+        WHERE questId = :questId
+            """
+    )
+    suspend fun updateLastUpdateTimestamp(questId: String, timestamp: Long)
 }

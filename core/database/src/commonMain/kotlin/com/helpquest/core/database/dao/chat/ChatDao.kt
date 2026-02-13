@@ -136,4 +136,8 @@ interface ChatDao {
 
         deleteChatsByIds(staleChatIds)
     }
+
+    @Query("UPDATE chatentity SET lastActivityTimestamp = :timestamp WHERE chatId = :chatId")
+    suspend fun updateLastActivity(chatId: String, timestamp: Long)
+
 }

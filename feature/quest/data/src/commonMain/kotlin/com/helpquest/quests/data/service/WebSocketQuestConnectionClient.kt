@@ -82,6 +82,10 @@ class WebSocketQuestConnectionClient(
         }
 
         val entity = message.toQuestActivityEntity()
+        database.questLogDao.updateLastUpdateTimestamp(
+            message.questId,
+            entity.lastActivityUpdateTimestamp
+        )
         database.questActivityDao.upsertActivity(entity)
     }
 }

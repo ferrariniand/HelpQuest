@@ -76,4 +76,7 @@ interface QuestActivityDao {
     """
     )
     suspend fun updateActivityStatus(activityId: String, status: String)
+
+    @Query("UPDATE questactivityentity SET lastActivityUpdateTimestamp = :timestamp WHERE activityId = :activityId")
+    suspend fun updateLastActivityUpdateTimestamp(activityId: String, timestamp: Long)
 }
