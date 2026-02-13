@@ -37,6 +37,7 @@ fun QuestDto.toQuest(): Quest {
             QuestStatus.valueOf(it)
         },
         lastActivity = lastActivity?.toQuestActivity(),
+        lastUpdateAt = Instant.parse(lastUpdateAt)
     )
 }
 
@@ -58,7 +59,8 @@ fun QuestEntity.toQuest(
         questStatus = questStatus?.let {
             QuestStatus.valueOf(it)
         },
-        lastActivity = lastActivity
+        lastActivity = lastActivity,
+        lastUpdateAt = Instant.fromEpochMilliseconds(lastUpdateTimestamp),
     )
 }
 
@@ -78,7 +80,7 @@ fun QuestWithParticipants.toQuest(): Quest {
             QuestStatus.valueOf(it)
         },
         lastActivity = lastActivity?.toQuestActivity(),
-
+        lastUpdateAt = Instant.fromEpochMilliseconds(quest.lastUpdateTimestamp),
         )
 }
 
@@ -92,7 +94,8 @@ fun Quest.toQuestEntity(): QuestEntity {
         longitude = location.longitude,
         createdTimestamp = createdAt.toEpochMilliseconds(),
         questCategory = questCategory?.name,
-        questStatus = questStatus?.name
+        questStatus = questStatus?.name,
+        lastUpdateTimestamp = lastUpdateAt.toEpochMilliseconds()
     )
 }
 

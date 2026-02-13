@@ -24,6 +24,7 @@ fun QuestActivityDto.toQuestActivity(): QuestActivity {
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.parse(startTimestamp),
+        lastActivityUpdateAt = Instant.parse(lastActivityUpdateTimestamp),
         endActivityAt = endTimestamp?.let {
             Instant.parse(it)
         },
@@ -39,6 +40,7 @@ fun QuestActivityEntity.toQuestActivity(): QuestActivity {
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.fromEpochMilliseconds(startTimestamp),
+        lastActivityUpdateAt = Instant.fromEpochMilliseconds(lastActivityUpdateTimestamp),
         endActivityAt = endTimestamp?.let {
             Instant.fromEpochMilliseconds(it)
         },
@@ -54,6 +56,7 @@ fun LastActivityView.toQuestActivity(): QuestActivity {
         actorId = actorId,
         activityStatus = QuestActivityStatus.valueOf(activityStatus),
         startActivityAt = Instant.fromEpochMilliseconds(startTimestamp),
+        lastActivityUpdateAt = Instant.fromEpochMilliseconds(lastActivityUpdateTimestamp),
         endActivityAt = endTimestamp?.let {
             Instant.fromEpochMilliseconds(it)
         },
@@ -69,6 +72,7 @@ fun QuestActivity.toQuestActivityEntity(): QuestActivityEntity {
         content = content,
         activityStatus = activityStatus.name,
         startTimestamp = startActivityAt.toEpochMilliseconds(),
+        lastActivityUpdateTimestamp = lastActivityUpdateAt.toEpochMilliseconds(),
         endTimestamp = endActivityAt?.toEpochMilliseconds()
     )
 }
@@ -82,6 +86,7 @@ fun QuestActivity.toLastActivityView(): LastActivityView {
         content = content,
         activityStatus = activityStatus.name,
         startTimestamp = startActivityAt.toEpochMilliseconds(),
+        lastActivityUpdateTimestamp = lastActivityUpdateAt.toEpochMilliseconds(),
         endTimestamp = endActivityAt?.toEpochMilliseconds()
     )
 }
@@ -102,6 +107,7 @@ fun IncomingQuestWebSocketDto.NewActivityDto.toQuestActivityEntity(): QuestActiv
         actorId = actorId,
         content = content,
         startTimestamp = Instant.parse(startActivityAt).toEpochMilliseconds(),
+        lastActivityUpdateTimestamp = Instant.parse(lastActivityUpdateAt).toEpochMilliseconds(),
         endTimestamp = endActivityAt?.let {
             Instant.parse(it).toEpochMilliseconds()
         },
@@ -129,6 +135,7 @@ fun OutgoingNewActivity.toNewActivityEntity(
         actorId = null,
         activityStatus = activityStatus.name,
         startTimestamp = Clock.System.now().toEpochMilliseconds(),
+        lastActivityUpdateTimestamp = Clock.System.now().toEpochMilliseconds(),
         endTimestamp = null
     )
 }

@@ -14,6 +14,7 @@ data class QuestDto(
     val questCategory: String?,
     val questStatus: String?,
     val lastActivity: QuestActivityDto?,
+    val lastUpdateAt: String
 )
 
 object QuestDtoConstants {

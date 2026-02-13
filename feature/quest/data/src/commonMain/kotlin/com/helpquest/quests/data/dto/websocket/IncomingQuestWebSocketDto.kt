@@ -20,6 +20,7 @@ sealed interface IncomingQuestWebSocketDto {
         val actorId: String?,
         val activityStatus: String,
         val startActivityAt: String,
+        val lastActivityUpdateAt: String,
         val endActivityAt: String? = null,
         val type: IncomingQuestWebSocketType = IncomingQuestWebSocketType.NEW_ACTIVITY
     ) : IncomingQuestWebSocketDto

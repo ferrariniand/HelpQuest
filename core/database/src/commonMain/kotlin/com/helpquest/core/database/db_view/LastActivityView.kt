@@ -25,5 +25,6 @@ data class LastActivityView(
     val content: String,
     val activityStatus: String,
     val startTimestamp: Long,
+    val lastActivityUpdateTimestamp: Long,
     val endTimestamp: Long?
 )

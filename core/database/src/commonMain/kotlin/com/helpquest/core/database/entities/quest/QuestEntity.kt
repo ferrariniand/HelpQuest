@@ -15,4 +15,5 @@ data class QuestEntity(
     val longitude: Double,
     val questCategory: String?,
     val questStatus: String?,
+    val lastUpdateTimestamp: Long
 )

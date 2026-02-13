@@ -262,6 +262,7 @@ private fun QuestDetailScreenActivitysLightPreview() {
                                 "and goes over multiple lines to showcase the ellipsis",
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
+                        lastActivityUpdateAt = Clock.System.now(),
                     ),
                     createdAt = Clock.System.now(),
                     location = Location(0.0, 0.0)
@@ -334,6 +335,7 @@ private fun QuestDetailScreenMessagesDarkPreview() {
                                 "and goes over multiple lines to showcase the ellipsis",
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
+                        lastActivityUpdateAt = Clock.System.now(),
                     ),
                     createdAt = Clock.System.now(),
                     location = Location(0.0, 0.0)

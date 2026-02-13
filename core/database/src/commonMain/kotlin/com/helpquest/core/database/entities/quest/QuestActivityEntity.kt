@@ -28,5 +28,6 @@ data class QuestActivityEntity(
     val content: String,
     val activityStatus: String,
     val startTimestamp: Long,
+    val lastActivityUpdateTimestamp: Long,
     val endTimestamp: Long?
 )

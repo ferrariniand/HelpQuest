@@ -11,5 +11,6 @@ data class QuestActivityDto(
     val content: String,
     val activityStatus: String,
     val startTimestamp: String,
+    val lastActivityUpdateTimestamp: String,
     val endTimestamp: String?
 )

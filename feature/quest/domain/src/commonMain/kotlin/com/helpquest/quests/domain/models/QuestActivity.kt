@@ -25,5 +25,6 @@ data class QuestActivity(
     val content: String,
     val activityStatus: QuestActivityStatus,
     val startActivityAt: Instant,
+    val lastActivityUpdateAt: Instant,
     val endActivityAt: Instant? = null
 )

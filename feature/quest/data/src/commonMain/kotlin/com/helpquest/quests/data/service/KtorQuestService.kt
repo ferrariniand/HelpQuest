@@ -84,6 +84,7 @@ class KtorQuestService(
             content = "test activity content",
             activityStatus = QuestActivityStatus.IN_PROGRESS,
             startActivityAt = Clock.System.now(),
+            lastActivityUpdateAt = Clock.System.now(),
             endActivityAt = null
         )
 
@@ -97,7 +98,8 @@ class KtorQuestService(
             questCategory = Category.GENERIC,
             participants = listOf(participant, participant2),
             questStatus = QuestStatus.OPEN,
-            lastActivity = activity
+            lastActivity = activity,
+            lastUpdateAt = Clock.System.now()
         )
         val quest2 = Quest(
             questId = questId2,
@@ -111,7 +113,8 @@ class KtorQuestService(
                 participant,
             ),
             questStatus = QuestStatus.OPEN,
-            lastActivity = null
+            lastActivity = null,
+            lastUpdateAt = Clock.System.now()
         )
         var questList = mutableListOf(quest, quest2)
 
