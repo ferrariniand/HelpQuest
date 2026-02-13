@@ -53,7 +53,8 @@ class QuestBoardViewModel(
             /** Load initial data here **/
             setupPaginatorForQuestBoard()
             observeConnectionState()
-            loadQuests()     //TODO probably can be removed...ON DEVICE ROTATION QUEST LIST IS DUPLICATED!!!
+            loadNextItems() //added to load first page
+            //TODO ...ON DEVICE ROTATION QUEST LIST IS DUPLICATED!!!
             hasLoadedInitialData = true
         }
     }.stateIn(
