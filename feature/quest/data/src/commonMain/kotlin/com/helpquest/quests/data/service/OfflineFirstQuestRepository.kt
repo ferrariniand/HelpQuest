@@ -121,9 +121,19 @@ class OfflineFirstQuestRepository(
         return questService
             .fetchQuestBoard(before)
             .onSuccess { quests ->
+                val questsWithParticipants = quests.map { quest ->
+                    QuestWithParticipants(
+                        quest = quest.toQuestEntity(),
+                        participants = quest.participants.map { it.toParticipantEntity() },
+                        lastActivity = quest.lastActivity?.toLastActivityView()
+                    )
+                }
                 return safeDatabaseUpdate {
-                    database.questBoardDao.upsertQuestsAndSyncIfNecessary(
-                        serverQuests = quests.map { it.toQuestEntity() },
+                    database.questBoardDao.upsertQuestsWithParticipantsAndCrossRefsAndSyncIfNecessary(
+                        serverQuests = questsWithParticipants,
+                        participantDao = database.participantDao,
+                        crossRefDao = database.questParticipantsCrossRefDao,
+                        activityDao = database.questActivityDao,
                         pageSize = QuestDtoConstants.PAGE_SIZE,
                         shouldSync = before == null // Only sync for most recent page
                     )

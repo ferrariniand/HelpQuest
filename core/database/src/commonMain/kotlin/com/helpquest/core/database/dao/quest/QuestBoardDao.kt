@@ -4,7 +4,10 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
+import com.helpquest.core.database.dao.ParticipantDao
+import com.helpquest.core.database.entities.quest.QuestActivityEntity
 import com.helpquest.core.database.entities.quest.QuestEntity
+import com.helpquest.core.database.entities.quest.QuestParticipantCrossRef
 import com.helpquest.core.database.entities.quest.QuestWithParticipants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -20,8 +23,11 @@ interface QuestBoardDao {
     suspend fun upsertQuests(quests: List<QuestEntity>)
 
     @Transaction
-    suspend fun upsertQuestsAndSyncIfNecessary(
-        serverQuests: List<QuestEntity>,
+    suspend fun upsertQuestsWithParticipantsAndCrossRefsAndSyncIfNecessary(
+        serverQuests: List<QuestWithParticipants>,
+        participantDao: ParticipantDao,
+        crossRefDao: QuestParticipantsCrossRefDao,
+        activityDao: QuestActivityDao,
         pageSize: Int,
         shouldSync: Boolean = false
     ) {
@@ -29,13 +35,53 @@ interface QuestBoardDao {
             limit = pageSize
         ).first()
 
-        upsertQuests(serverQuests)
+        upsertQuests(serverQuests.map { it.quest })
 
         if (!shouldSync) {
             return
         }
 
-        val serverIds = serverQuests.map { it.questId }.toSet()
+        val serverIds = serverQuests.map { it.quest.questId }.toSet()
+
+        serverQuests.forEach { quest ->
+            quest.lastActivity?.run {
+                activityDao.upsertActivity(
+                    QuestActivityEntity(
+                        activityId = activityId,
+                        questId = questId,
+                        creatorId = creatorId,
+                        actorId = actorId,
+                        content = content,
+                        activityStatus = activityStatus,
+                        startTimestamp = startTimestamp,
+                        lastActivityUpdateTimestamp = lastActivityUpdateTimestamp,
+                        endTimestamp = endTimestamp,
+                    )
+                )
+
+            }
+        }
+
+        val allParticipants = serverQuests.flatMap { it.participants }
+        participantDao.upsertParticipants(allParticipants)
+
+        val allCrossRefs = serverQuests.flatMap { questWithParticipants ->
+            questWithParticipants.participants.map { participant ->
+                QuestParticipantCrossRef(
+                    questId = questWithParticipants.quest.questId,
+                    userId = participant.userId,
+                    isActive = true
+                )
+            }
+        }
+        crossRefDao.upsertCrossRefs(allCrossRefs)
+
+        serverQuests.forEach { quest ->
+            crossRefDao.syncQuestParticipants(
+                questId = quest.quest.questId,
+                participants = quest.participants
+            )
+        }
 
         val questsToDelete = localQuests.filter { localQuest ->
             val missingOnServer = localQuest.questId !in serverIds

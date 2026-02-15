@@ -71,6 +71,11 @@ class KtorQuestService(
             username = "secondo",
             profilePictureUrl = "test",
         )
+        val participant3 = Participant(
+            userId = "id3",
+            username = "terzo",
+            profilePictureUrl = "test",
+        )
 
         val questId = Random.nextInt().toString()
         val questId2 = Random.nextInt().toString()
@@ -110,7 +115,7 @@ class KtorQuestService(
             location = GeoLocation(0.0, 0.0),
             questCategory = Category.GENERIC,
             participants = listOf(
-                participant,
+                participant, participant3
             ),
             questStatus = QuestStatus.OPEN,
             lastActivity = null,
