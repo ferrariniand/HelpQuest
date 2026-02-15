@@ -18,11 +18,15 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 fun ChatDto.toChat(): Chat {
+    val lastMessageSenderUsername = lastMessage?.let { message ->
+        participants.find { it.userId == message.senderId }?.username
+    }
     return Chat(
         id = id,
         participants = participants.map { it.toParticipant() },
         lastActivityAt = Instant.parse(lastActivityAt),
-        lastMessage = lastMessage?.toChatMessage()
+        lastMessage = lastMessage?.toChatMessage(),
+        lastMessageSenderUsername = lastMessageSenderUsername
     )
 }
 
@@ -30,11 +34,15 @@ fun ChatEntity.toChat(
     participants: List<Participant>,
     lastMessage: ChatMessage? = null
 ): Chat {
+    val lastMessageSenderUsername = lastMessage?.let { message ->
+        participants.find { it.userId == message.senderId }?.username
+    }
     return Chat(
         id = chatId,
         participants = participants,
         lastActivityAt = Instant.fromEpochMilliseconds(lastActivityTimestamp),
-        lastMessage = lastMessage
+        lastMessage = lastMessage,
+        lastMessageSenderUsername = lastMessageSenderUsername
     )
 }
 
@@ -43,7 +51,8 @@ fun ChatWithParticipants.toChat(): Chat {
         id = chat.chatId,
         participants = participants.map { it.toParticipant() },
         lastActivityAt = Instant.fromEpochMilliseconds(chat.lastActivityTimestamp),
-        lastMessage = lastMessage?.toChatMessage()
+        lastMessage = lastMessage?.toChatMessage(),
+        lastMessageSenderUsername = lastMessage?.senderUsername
     )
 }
 

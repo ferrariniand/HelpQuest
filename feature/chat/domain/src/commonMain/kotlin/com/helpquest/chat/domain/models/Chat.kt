@@ -9,5 +9,6 @@ data class Chat(
     val id: String,
     val participants: List<Participant>,
     val lastActivityAt: Instant,
-    val lastMessage: ChatMessage?
+    val lastMessage: ChatMessage?,
+    val lastMessageSenderUsername: String? = null
 )
