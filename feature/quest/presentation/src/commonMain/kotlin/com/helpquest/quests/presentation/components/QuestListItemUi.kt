@@ -15,7 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestStackedAvatars
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDividerWithTitle
@@ -126,6 +130,28 @@ fun QuestItemUi(
             HelpQuestStackedAvatars(
                 avatars = quest.participants,
             )
+
+            if (quest.lastActivity != null && quest.lastActivityActorUsername != null) {
+                val previewActivity = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.extended.textSecondary,
+                        )
+                    ) {
+                        append(quest.lastActivityActorUsername + ": ")
+
+                    }
+                    append(quest.lastActivity.content)
+                }
+                Text(
+                    text = previewActivity,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.extended.textSecondary,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }

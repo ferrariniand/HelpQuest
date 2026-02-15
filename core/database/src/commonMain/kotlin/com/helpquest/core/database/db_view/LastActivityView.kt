@@ -7,7 +7,7 @@ import androidx.room.DatabaseView
 @DatabaseView(
     viewName = "last_activity_view_per_quest",
     value = """
-        SELECT m1.*
+        SELECT m1.*, p.username AS actorUsername
         FROM questactivityentity m1
         JOIN (
             SELECT questId, MAX(startTimestamp) AS max_start_timestamp
@@ -15,6 +15,7 @@ import androidx.room.DatabaseView
             GROUP BY questId
             LIMIT 1
         ) m2 ON m1.questId = m2.questId AND m1.startTimestamp = m2.max_start_timestamp
+        LEFT JOIN participantentity p ON m1.actorId = p.userId
     """
 )
 data class LastActivityView(
@@ -22,6 +23,7 @@ data class LastActivityView(
     val questId: String,
     val creatorId: String,
     val actorId: String?,
+    val actorUsername: String?,
     val content: String,
     val activityStatus: String,
     val startTimestamp: Long,

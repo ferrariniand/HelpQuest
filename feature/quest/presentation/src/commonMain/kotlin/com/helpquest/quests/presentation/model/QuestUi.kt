@@ -18,4 +18,5 @@ data class QuestUi(
     val participants: List<ParticipantUi>,
     val questStatus: QuestStatus?,
     val lastActivity: QuestActivity?,
+    val lastActivityActorUsername: String? = null
 )

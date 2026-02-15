@@ -19,5 +19,6 @@ data class Quest(
     val participants: List<Participant>,
     val questStatus: QuestStatus?,
     val lastActivity: QuestActivity?,
-    val lastUpdateAt: Instant
+    val lastActivityActorUsername: String? = null,
+    val lastUpdateAt: Instant,
 )

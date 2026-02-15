@@ -83,6 +83,7 @@ fun QuestActivity.toLastActivityView(): LastActivityView {
         questId = questId,
         creatorId = creatorId,
         actorId = actorId,
+        actorUsername = null,
         content = content,
         activityStatus = activityStatus.name,
         startTimestamp = startActivityAt.toEpochMilliseconds(),

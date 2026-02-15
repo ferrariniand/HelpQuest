@@ -22,6 +22,9 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 fun QuestDto.toQuest(): Quest {
+    val lastActivityActorUsername = lastActivity?.let { activity ->
+        participants.find { it.userId == activity.actorId }?.username
+    }
     return Quest(
         questId = questId,
         questTitle = questTitle,
@@ -37,6 +40,7 @@ fun QuestDto.toQuest(): Quest {
             QuestStatus.valueOf(it)
         },
         lastActivity = lastActivity?.toQuestActivity(),
+        lastActivityActorUsername = lastActivityActorUsername,
         lastUpdateAt = Instant.parse(lastUpdateAt)
     )
 }
@@ -45,6 +49,9 @@ fun QuestEntity.toQuest(
     participants: List<Participant>,
     lastActivity: QuestActivity? = null
 ): Quest {
+    val lastActivityActorUsername = lastActivity?.let { activity ->
+        participants.find { it.userId == activity.actorId }?.username
+    }
     return Quest(
         questId = questId,
         questTitle = questTitle,
@@ -60,6 +67,7 @@ fun QuestEntity.toQuest(
             QuestStatus.valueOf(it)
         },
         lastActivity = lastActivity,
+        lastActivityActorUsername = lastActivityActorUsername,
         lastUpdateAt = Instant.fromEpochMilliseconds(lastUpdateTimestamp),
     )
 }
@@ -80,6 +88,7 @@ fun QuestWithParticipants.toQuest(): Quest {
             QuestStatus.valueOf(it)
         },
         lastActivity = lastActivity?.toQuestActivity(),
+        lastActivityActorUsername = lastActivity?.actorUsername,
         lastUpdateAt = Instant.fromEpochMilliseconds(quest.lastUpdateTimestamp),
         )
 }

@@ -45,7 +45,8 @@ fun Quest.toQuestUi(): QuestUi {
         questCategory = questCategory,
         participants = participants.map { it.toParticipantUi() },
         questStatus = questStatus,
-        lastActivity = lastActivity
+        lastActivity = lastActivity,
+        lastActivityActorUsername = lastActivityActorUsername,
     )
 }
 
