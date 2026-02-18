@@ -1,9 +1,11 @@
 package com.helpquest.auth.presentation.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,14 +22,17 @@ import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTe
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
+import com.helpquest.core.presentation.util.UiText
 import helpquest.core.designsystem.generated.resources.email
 import helpquest.core.designsystem.generated.resources.password
 import helpquest.feature.auth.presentation.generated.resources.Res
 import helpquest.feature.auth.presentation.generated.resources.create_account
 import helpquest.feature.auth.presentation.generated.resources.email_placeholder
+import helpquest.feature.auth.presentation.generated.resources.error_email_not_verified
 import helpquest.feature.auth.presentation.generated.resources.forgot_password
 import helpquest.feature.auth.presentation.generated.resources.help_quest
 import helpquest.feature.auth.presentation.generated.resources.login
+import helpquest.feature.auth.presentation.generated.resources.resend_verification_email
 import helpquest.feature.auth.presentation.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -40,6 +45,7 @@ fun LoginRoot(
     onLoginSuccess: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onCreateAccountClick: () -> Unit,
+    onResendVerificationEmailSuccess: (String) -> Unit,
     viewModel: LoginViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -47,6 +53,9 @@ fun LoginRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is LoginEvent.Success -> onLoginSuccess()
+            is LoginEvent.ResendVerificationEmailSuccess -> {
+                onResendVerificationEmailSuccess(event.email)
+            }
         }
     }
 
@@ -79,6 +88,26 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize(),
             formContent = {
+                AnimatedVisibility(
+                    visible = state.showResendVerificationEmail
+                ) {
+                    if (state.showResendVerificationEmail) {
+                        HelpQuestButton(
+                            text = stringResource(Res.string.resend_verification_email),
+                            onClick = {
+                                onAction(LoginAction.OnResendVerificationEmailClick)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    bottom = 6.dp
+                                ),
+                            enabled = !state.isResendingVerificationEmail,
+                            isLoading = state.isResendingVerificationEmail,
+                            style = HelpQuestButtonStyle.SECONDARY
+                        )
+                    }
+                }
                 HelpQuestTextField(
                     state = state.emailTextState,
                     placeholder = stringResource(Res.string.email_placeholder),
@@ -160,6 +189,40 @@ private fun LoginScreenDarkPreview() {
     HelpQuestTheme(darkTheme = true) {
         LoginScreen(
             state = LoginState(),
+            onAction = {}
+        )
+    }
+}
+
+
+@Composable
+@Preview(
+    showBackground = true
+)
+private fun LoginScreenErrorVerificationEmailLightPreview() {
+    HelpQuestTheme {
+        LoginScreen(
+            state = LoginState(
+                showResendVerificationEmail = true,
+                error = UiText.Resource(Res.string.error_email_not_verified)
+            ),
+            onAction = {}
+        )
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    backgroundColor = 1
+)
+private fun LoginScreenErrorVerificationEmailDarkPreview() {
+    HelpQuestTheme(darkTheme = true) {
+        LoginScreen(
+            state = LoginState(
+                showResendVerificationEmail = true,
+                error = UiText.Resource(Res.string.error_email_not_verified)
+            ),
             onAction = {}
         )
     }

@@ -44,6 +44,7 @@ class LoginViewModel(
             if (!hasLoadedInitialData) {
                 /** Load initial data here **/
                 observeTextState()
+                observeIsEmailNotVerified()
                 hasLoadedInitialData = true
             }
         }
@@ -63,12 +64,14 @@ class LoginViewModel(
                     )
                 }
             }
-
+            LoginAction.OnResendVerificationEmailClick -> resendVerification()
             LoginAction.OnForgotPasswordClick,
             LoginAction.OnSignUpClick -> {
                 _state.update {
                     it.copy(
-                        error = null
+                        error = null,
+                        isEmailNotVerified = false,
+                        isResendingVerificationEmail = false,
                     )
                 }
             }
@@ -98,6 +101,28 @@ class LoginViewModel(
             _state.update {
                 it.copy(
                     canLogin = !isLoggingIn && isEmailValid && isPasswordNotBlank
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private val isEmailNotVerifiedFlow = state
+        .map { it.isEmailNotVerified }
+        .distinctUntilChanged()
+
+    private val isEmailNotBlankFlow = state
+        .map { state.value.emailTextState.text.isNotBlank() }
+        .distinctUntilChanged()
+
+    private fun observeIsEmailNotVerified() {
+        combine(
+            isEmailNotVerifiedFlow,
+            isEmailValidFlow,
+            isEmailNotBlankFlow
+        ) { isEmailNotVerified, isEmailValid, isEmailNotBlank ->
+            _state.update {
+                it.copy(
+                    showResendVerificationEmail = isEmailNotVerified && isEmailValid && isEmailNotBlank
                 )
             }
         }.launchIn(viewModelScope)
@@ -143,7 +168,48 @@ class LoginViewModel(
                     _state.update {
                         it.copy(
                             error = errorMessage,
-                            isLoggingIn = false
+                            isLoggingIn = false,
+                            //set the boolean to true in case of "not verified email" error,
+                            // else use the previous state
+                            isEmailNotVerified = error == DataError.Remote.FORBIDDEN || it.isEmailNotVerified
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun resendVerification() {
+        if (state.value.isResendingVerificationEmail) {
+            return
+        }
+
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isResendingVerificationEmail = true
+                )
+            }
+
+            val email = state.value.emailTextState.text.toString()
+
+
+            authService
+                .resendVerificationEmail(email)
+                .onSuccess {
+                    _state.update {
+                        it.copy(
+                            isEmailNotVerified = false,
+                            isResendingVerificationEmail = false,
+                            error = null,
+                        )
+                    }
+                    eventChannel.send(LoginEvent.ResendVerificationEmailSuccess(email))
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isResendingVerificationEmail = false,
+                            error = error.toUiText()
                         )
                     }
                 }

@@ -33,7 +33,15 @@ fun NavGraphBuilder.authGraph(
                         restoreState = true
                         launchSingleTop = true
                     }
-                }
+                },
+                onResendVerificationEmailSuccess = {
+                    navController.navigate(
+                        AuthGraphRoutes.RegisterSuccess(
+                            email = it,
+                            isRegisterFlow = false
+                        )
+                    )
+                },
             )
         }
         composable<AuthGraphRoutes.ForgotPassword> {
@@ -53,7 +61,12 @@ fun NavGraphBuilder.authGraph(
         composable<AuthGraphRoutes.Register> {
             RegisterRoot(
                 onRegisterSuccess = {
-                    navController.navigate(AuthGraphRoutes.RegisterSuccess(it))
+                    navController.navigate(
+                        AuthGraphRoutes.RegisterSuccess(
+                            email = it,
+                            isRegisterFlow = true
+                        )
+                    )
                 },
                 onLoginClick = {
                     navController.navigate(AuthGraphRoutes.Login) {

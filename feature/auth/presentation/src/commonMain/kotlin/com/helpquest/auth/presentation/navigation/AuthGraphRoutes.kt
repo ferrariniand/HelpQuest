@@ -13,7 +13,10 @@ sealed interface AuthGraphRoutes {
     data object Register : AuthGraphRoutes
 
     @Serializable
-    data class RegisterSuccess(val email: String) : AuthGraphRoutes
+    data class RegisterSuccess(
+        val email: String,
+        val isRegisterFlow: Boolean
+    ) : AuthGraphRoutes
 
     @Serializable
     data class EmailVerification(val token: String) : AuthGraphRoutes

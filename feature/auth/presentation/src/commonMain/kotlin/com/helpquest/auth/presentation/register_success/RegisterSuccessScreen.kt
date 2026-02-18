@@ -20,6 +20,7 @@ import helpquest.feature.auth.presentation.generated.resources.account_successfu
 import helpquest.feature.auth.presentation.generated.resources.login
 import helpquest.feature.auth.presentation.generated.resources.resend_verification_email
 import helpquest.feature.auth.presentation.generated.resources.resent_verification_email
+import helpquest.feature.auth.presentation.generated.resources.verification_email_resent
 import helpquest.feature.auth.presentation.generated.resources.verification_email_sent_to_x
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -70,7 +71,14 @@ fun RegisterSuccessScreen(
         snackbarHostState = snackbarHostState
     ) {
         HelpQuestAdaptiveResultLayout(
-            title = stringResource(Res.string.account_successfully_created),
+            title =
+                stringResource(
+                    if (state.isRegisterFlow) {
+                        Res.string.account_successfully_created
+                    } else {
+                        Res.string.verification_email_resent
+                    }
+                ),
             description = stringResource(
                 Res.string.verification_email_sent_to_x,
                 state.registeredEmail

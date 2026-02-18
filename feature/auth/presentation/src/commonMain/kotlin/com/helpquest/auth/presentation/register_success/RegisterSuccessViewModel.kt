@@ -29,9 +29,13 @@ class RegisterSuccessViewModel(
     private val email = savedStateHandle.get<String>("email")
         ?: throw IllegalStateException("No email passed to register success screen")
 
+    private val isRegisterFlow = savedStateHandle.get<Boolean>("isRegisterFlow")
+        ?: false
+
     private val _state = MutableStateFlow(
         RegisterSuccessState(
-            registeredEmail = email
+            registeredEmail = email,
+            isRegisterFlow = isRegisterFlow
         )
     )
 
