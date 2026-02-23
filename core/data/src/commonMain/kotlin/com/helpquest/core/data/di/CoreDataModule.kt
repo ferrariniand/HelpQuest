@@ -2,12 +2,14 @@ package com.helpquest.core.data.di
 
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.helpquest.core.data.auth.KSafeSessionStorage
 import com.helpquest.core.data.logging.KermitLogger
 import com.helpquest.core.data.networking.ConnectionRetryHandler
 import com.helpquest.core.data.networking.KtorWebSocketConnector
 import com.helpquest.core.data.service.auth.OfflineFirstAuthRepository
 import com.helpquest.core.data.service.participant.OfflineFirstParticipantRepository
 import com.helpquest.core.database.DatabaseFactory
+import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
 import com.helpquest.core.domain.service.auth.AuthRepository
 import com.helpquest.core.domain.service.participant.ParticipantRepository
@@ -36,6 +38,7 @@ val coreDataModule = module {
             .setDriver(BundledSQLiteDriver())
             .build()
     }
+    singleOf(::KSafeSessionStorage) bind SessionStorage::class
     singleOf(::OfflineFirstParticipantRepository) bind ParticipantRepository::class
     singleOf(::OfflineFirstAuthRepository) bind AuthRepository::class
 }

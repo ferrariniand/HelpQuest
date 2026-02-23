@@ -9,7 +9,6 @@ import com.helpquest.core.data.service.MockCoreResponseElements
 import com.helpquest.core.data.service.participant.MockParticipantService
 import com.helpquest.core.data.service.auth.MockAuthService
 import com.helpquest.core.data.service.notification.MockDeviceTokenService
-import com.helpquest.core.data.auth.MockDataStoreSessionStorage
 import com.helpquest.core.data.logging.KermitLogger
 import com.helpquest.core.data.networking.MockHttpClientFactory
 import org.koin.core.module.Module
@@ -23,7 +22,6 @@ val variantCoreDataModule = module {
         MockHttpClientFactory(get(), get(), get()).create(get())
     }
     singleOf(::MockAuthService) bind AuthService::class
-    singleOf(::MockDataStoreSessionStorage) bind SessionStorage::class
     single { MockCoreResponseElements }
     singleOf(::MockParticipantService) bind ParticipantService::class
     singleOf(::MockDeviceTokenService) bind DeviceTokenService::class

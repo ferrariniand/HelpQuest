@@ -69,8 +69,7 @@ class MockAuthService() : AuthService {
             )
         )
         savedPassword = password
-//        return loginResult
-        return Result.Failure(DataError.Remote.FORBIDDEN)
+        return loginResult
     }
 
     fun setRegisterResult(

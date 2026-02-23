@@ -36,8 +36,8 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(libs.bundles.ktor.common)
                 implementation(libs.koin.core)
-                implementation(libs.datastore)
-                implementation(libs.datastore.preferences)
+                implementation(libs.ksafe)
+                implementation(libs.ksafe.compose)
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.sqlite.bundled)
 
