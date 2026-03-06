@@ -1,6 +1,7 @@
 package com.helpquest.profile.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -21,6 +22,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -32,11 +36,13 @@ import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.dialogs.DestructiveConfirmationDialog
 import com.helpquest.core.designsystem.components.dialogs.HelpQuestAdaptiveDialogSheetLayout
+import com.helpquest.core.designsystem.components.drag_and_drop.DragAndDropOverlay
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.components.textfields.HelpQuestPasswordTextField
 import com.helpquest.core.designsystem.components.textfields.HelpQuestTextField
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
+import com.helpquest.core.presentation.mediapicker.rememberDragAndDropTarget
 import com.helpquest.core.presentation.mediapicker.rememberImagePickerLauncher
 import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.clearFocusOnTap
@@ -50,6 +56,7 @@ import helpquest.core.designsystem.generated.resources.password
 import helpquest.core.designsystem.generated.resources.password_hint
 import helpquest.core.designsystem.generated.resources.save
 import helpquest.core.designsystem.generated.resources.upload_icon
+import helpquest.core.designsystem.generated.resources.upload_image
 import helpquest.feature.profile.presentation.generated.resources.Res
 import helpquest.feature.profile.presentation.generated.resources.contact_chirp_support_change_email
 import helpquest.feature.profile.presentation.generated.resources.current_password
@@ -59,7 +66,6 @@ import helpquest.feature.profile.presentation.generated.resources.delete_profile
 import helpquest.feature.profile.presentation.generated.resources.password_change_successful
 import helpquest.feature.profile.presentation.generated.resources.password_change_warning
 import helpquest.feature.profile.presentation.generated.resources.profile_image
-import helpquest.feature.profile.presentation.generated.resources.upload_image
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -106,6 +112,23 @@ fun ProfileScreen(
     state: ProfileState,
     onAction: (ProfileAction) -> Unit,
 ) {
+    var isHoveringWithFile by remember {
+        mutableStateOf(false)
+    }
+    val dragAndDropTarget = rememberDragAndDropTarget(
+        onHover = { isHovered ->
+            isHoveringWithFile = isHovered
+        },
+        onDrop = { imageData ->
+            onAction(
+                ProfileAction.OnPictureSelected(
+                    bytes = imageData.bytes,
+                    mimeType = imageData.mimeType
+                )
+            )
+        }
+    )
+
     Column(
         modifier = Modifier
             .clearFocusOnTap()
@@ -115,6 +138,10 @@ fun ProfileScreen(
                 shape = RoundedCornerShape(16.dp)
             )
             .verticalScroll(rememberScrollState())
+            .dragAndDropTarget(
+                shouldStartDragAndDrop = { true },
+                target = dragAndDropTarget
+            )
     ) {
         ProfileHeaderSection(
             username = state.username,
@@ -152,7 +179,7 @@ fun ProfileScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     HelpQuestButton(
-                        text = stringResource(Res.string.upload_image),
+                        text = stringResource(DesignSystemRes.string.upload_image),
                         onClick = {
                             onAction(ProfileAction.OnUploadPictureClick)
                         },
@@ -162,7 +189,7 @@ fun ProfileScreen(
                         leadingIcon = {
                             Icon(
                                 imageVector = vectorResource(DesignSystemRes.drawable.upload_icon),
-                                contentDescription = stringResource(Res.string.upload_image)
+                                contentDescription = stringResource(DesignSystemRes.string.upload_image)
                             )
                         }
                     )
@@ -284,6 +311,10 @@ fun ProfileScreen(
         ) {
             Spacer(modifier = Modifier.weight(1f))
         }
+    }
+
+    if (isHoveringWithFile) {
+        DragAndDropOverlay()
     }
 
     if (state.showDeleteConfirmationDialog) {

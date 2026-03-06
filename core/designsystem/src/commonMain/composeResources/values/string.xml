@@ -17,6 +17,8 @@
     <string name="new_password">New password</string>
     <string name="password_hint">Use 9+ characters, at least one digit and one uppercase letter</string>
     <string name="profile_settings">Profile settings</string>
+    <string name="upload_image">Upload image</string>
+    <string name="drop_picture_info">Drop your image here to upload as your new profile picture</string>
     <string name="error_content_unavailable">Content unavailable</string>
     <string name="error_user_image_unavailable">User image unavailable</string>
     <string name="error_item_not_found">No item found</string>

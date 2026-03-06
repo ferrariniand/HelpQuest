@@ -6,7 +6,6 @@
     <string name="delete_profile_picture_desc">Are you sure you want to delete your profile picture? This action cannot be undone.</string>
     <string name="profile_image">Profile image</string>
     <string name="current_password">Current password</string>
-    <string name="upload_image">Upload image</string>
     <string name="password_change_successful">You've successfully changed your password!</string>
     <string name="password_change_warning">Next session you will be logged out!\n Please remember to use your new password</string>
     <string name="error_current_password_incorrect">Your current password is not correct</string>
