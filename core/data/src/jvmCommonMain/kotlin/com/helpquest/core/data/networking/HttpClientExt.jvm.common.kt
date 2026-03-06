@@ -19,19 +19,19 @@ actual suspend fun <T> platformSafeCall(
     return try {
         val response = execute()
         handleResponse(response)
-    } catch (e: UnknownHostException) {
+    } catch (_: UnknownHostException) {
         Result.Failure(DataError.Remote.NO_INTERNET)
-    } catch (e: UnresolvedAddressException) {
+    } catch (_: UnresolvedAddressException) {
         Result.Failure(DataError.Remote.NO_INTERNET)
-    } catch (e: ConnectException) {
+    } catch (_: ConnectException) {
         Result.Failure(DataError.Remote.NO_INTERNET)
-    } catch (e: SocketTimeoutException) {
+    } catch (_: SocketTimeoutException) {
         Result.Failure(DataError.Remote.REQUEST_TIMEOUT)
-    } catch (e: HttpRequestTimeoutException) {
+    } catch (_: HttpRequestTimeoutException) {
         Result.Failure(DataError.Remote.REQUEST_TIMEOUT)
-    } catch (e: SerializationException) {
+    } catch (_: SerializationException) {
         Result.Failure(DataError.Remote.SERIALIZATION)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         coroutineContext.ensureActive()
         Result.Failure(DataError.Remote.UNKNOWN)
     }

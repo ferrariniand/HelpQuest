@@ -35,6 +35,9 @@ kotlin {
                 // KMP dependencies declared in commonMain.
             }
         }
+        desktopMain.dependencies {
+            implementation(libs.kotlinx.coroutines.swing)
+        }
     }
 
 }

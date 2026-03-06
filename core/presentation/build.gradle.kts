@@ -48,16 +48,11 @@ kotlin {
             }
         }
 
-        val mobileMain by creating {
-            dependencies {
-                implementation(libs.moko.permissions)
-                implementation(libs.moko.permissions.compose)
-                implementation(libs.moko.permissions.notifications)
-            }
-            dependsOn(commonMain.get())
+        mobileMain.dependencies {
+            implementation(libs.moko.permissions)
+            implementation(libs.moko.permissions.compose)
+            implementation(libs.moko.permissions.notifications)
         }
-        androidMain.get().dependsOn(mobileMain)
-        iosMain.get().dependsOn(mobileMain)
     }
 
 }

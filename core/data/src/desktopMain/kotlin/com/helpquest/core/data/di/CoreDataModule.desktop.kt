@@ -13,7 +13,7 @@ import org.koin.dsl.module
 actual val platformCoreDataModule = module {
     single<HttpClientEngine> { OkHttp.create() }
     single { KSafe() }
-    single { DatabaseFactory() }
+    singleOf(::DatabaseFactory)
     singleOf(::AppLifecycleObserver)
     singleOf(::ConnectivityObserver)
     singleOf(::ConnectionErrorHandler)

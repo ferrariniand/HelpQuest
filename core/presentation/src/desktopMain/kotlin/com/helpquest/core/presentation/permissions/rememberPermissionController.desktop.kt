@@ -1,8 +1,9 @@
 package com.helpquest.core.presentation.permissions
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 
 @Composable
 actual fun rememberPermissionController(): PermissionController {
-    TODO("Not yet implemented")
+    return remember { PermissionController() }
 }
