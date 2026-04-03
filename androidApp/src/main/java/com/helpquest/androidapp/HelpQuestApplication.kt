@@ -1,4 +1,4 @@
-package com.helpquest
+package com.helpquest.androidapp
 
 import android.app.Application
 import com.helpquest.di.initKoin

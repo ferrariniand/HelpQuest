@@ -19,6 +19,7 @@ kotlin {
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP

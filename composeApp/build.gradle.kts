@@ -1,59 +1,82 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.convention.cmp.application)
+//    alias(libs.plugins.convention.cmp.application)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.hot.reload)
-    alias(libs.plugins.google.services)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.android.lint)
 }
 
 kotlin {
-    kover {
-        reports {
-            filters {
-                excludes {
-                    annotatedBy("androidx.compose.runtime.Composable")
-                    packages(
-                        "com.helpquest.di",
-                        "com.helpquest.navigation",
-                    )
-                }
+
+    // Target declarations - add or remove as needed below. These define
+    // which platforms this KMP module supports.
+    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
+    android {
+        namespace = "com.helpquest.composeapp"
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
             }
+        }
+        minSdk = 26
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+
+        androidResources {
+            enable = true
         }
     }
 
-    sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
 
-            // Core
-            implementation(libs.androidx.core.ktx)
+    // For iOS targets, this is also where you should
+    // configure native binary output. For more information, see:
+    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
 
-            // Splash screen
-            implementation(libs.core.splashscreen)
+    // A step-by-step guide on how to include this library in an XCode
+    // project can be found here:
+    // https://developer.android.com/kotlin/multiplatform/migrate
+    val xcfName = "composeAppKit"
 
-            //Koin
-            implementation(libs.bundles.koin.android)
-
-            //api command is like implementation command, but extends the usage of the lib to the modules that depends on this module
-            api(libs.play.feature.delivery)
-            api(libs.play.feature.delivery.ktx)
-            api(libs.play.review)
-            api(libs.play.review.ktx)
-            api(libs.play.app.update)
-            api(libs.play.app.update.ktx)
-            api(libs.play.asset.delivery)
-            api(libs.play.asset.delivery.ktx)
-
-            //Test
-            implementation(libs.mockk)
-
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
         }
-        commonMain.dependencies {
-            //Compose
+    }
+
+    iosArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
+    // Source set declarations.
+    // Declaring a target automatically creates a source set with the same name. By default, the
+    // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
+    // common to share sources between related targets.
+    // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
+    sourceSets {
+        commonMain {
+            dependencies {
+                // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -102,8 +125,11 @@ kotlin {
             // Home Modules
             implementation(projects.feature.home.domain)
             implementation(projects.feature.home.presentation)
+            }
         }
-        commonTest.dependencies {
+
+        commonTest {
+            dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlin.test.annotations.common)
             implementation(libs.kotlinx.coroutines.test)
@@ -111,27 +137,48 @@ kotlin {
             implementation(libs.mockk.common)
             implementation(libs.koin.test)
 
-            implementation(compose.uiTest)
             implementation(libs.turbine)
 
             // Core Test Module
             implementation(projects.core.test)
+            }
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.kotlin.stdlib)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.jsystemthemedetector)
 
+        getByName("androidDeviceTest") {
+            dependencies {
+                implementation(libs.androidx.runner)
+                implementation(libs.androidx.test.core)
+                implementation(libs.androidx.junit)
+            }
+        }
 
-            implementation(projects.core.presentation)
+//        val mobileMain by getting
+        androidMain {
+            dependsOn(commonMain.get())
         }
-        desktopTest.dependencies {
-            implementation(compose.desktop.currentOs)
+
+        iosMain {
+            dependsOn(commonMain.get())
         }
+
+//        val desktopMain by getting
+//        desktopMain.dependencies {
+//            implementation(compose.desktop.currentOs)
+//            implementation(libs.kotlinx.coroutines.swing)
+//            implementation(libs.kotlin.stdlib)
+//            implementation(libs.koin.compose)
+//            implementation(libs.koin.compose.viewmodel)
+//            implementation(libs.jsystemthemedetector)
+//
+//
+//            implementation(projects.core.presentation)
+//        }
+//        val desktopTest by getting
+//        desktopTest.dependencies {
+//            implementation(compose.desktop.currentOs)
+//        }
     }
+
 }
 
 compose.desktop {

@@ -1,7 +1,3 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     alias(libs.plugins.convention.cmp.feature)
 }
@@ -26,7 +22,6 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation(compose.uiTest)
 
                 // Core Test Module
                 implementation(projects.core.test)
@@ -34,6 +29,7 @@ kotlin {
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP

@@ -94,6 +94,7 @@ interface QuestBoardDao {
         deleteQuestsByIds(questIds)
     }
 
+    @Transaction
     @Query("SELECT * FROM questentity WHERE questId = :id")
     suspend fun getQuestById(id: String): QuestWithParticipants?
 
@@ -110,6 +111,7 @@ interface QuestBoardDao {
     @Query("SELECT questId FROM questentity")
     suspend fun getAllQuestIds(): List<String>
 
+    @Transaction
     @Query(
         """
         SELECT * 

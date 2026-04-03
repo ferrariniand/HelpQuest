@@ -21,6 +21,7 @@ class RoomConventionPlugin: Plugin<Project> {
             dependencies {
                 "commonMainApi"(getLib("androidx-room-runtime"))
                 "commonMainApi"(getLib("sqlite-bundled"))
+                "androidMainApi"(getLib("androidx-room-runtime"))
                 "kspAndroid"(getLib("androidx-room-compiler"))
                 "kspIosSimulatorArm64"(getLib("androidx-room-compiler"))
                 "kspIosArm64"(getLib("androidx-room-compiler"))

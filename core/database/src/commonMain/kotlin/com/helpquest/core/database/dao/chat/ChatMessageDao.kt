@@ -50,6 +50,7 @@ interface ChatMessageDao {
         deleteMessagesByIds(messageIds)
     }
 
+    @Transaction
     @Query("SELECT * FROM chatmessageentity WHERE chatId = :chatId ORDER BY timestamp DESC")
     fun getMessagesWithSendersByChatId(chatId: String): Flow<List<MessageWithSenderEntity>>
 

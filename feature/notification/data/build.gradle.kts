@@ -4,6 +4,29 @@ plugins {
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.helpquest.feature.notification.data"
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
+            }
+        }
+        minSdk = 26
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+
+        androidResources {
+            enable = true
+        }
+    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
@@ -14,12 +37,16 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.touchlab.kermit)
 
                 implementation(projects.feature.notification.domain)
             }
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
@@ -27,6 +54,9 @@ kotlin {
                 implementation(libs.koin.android)
                 implementation(project.dependencies.platform(libs.firebase.bom))
                 implementation(libs.firebase.messaging)
+
+                implementation(projects.feature.notification.domain)
+
             }
         }
 

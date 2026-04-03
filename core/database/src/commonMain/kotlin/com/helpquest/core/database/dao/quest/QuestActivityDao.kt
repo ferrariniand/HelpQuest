@@ -61,6 +61,7 @@ interface QuestActivityDao {
     @Query("SELECT * FROM questactivityentity WHERE questId = :questId ORDER BY startTimestamp DESC")
     fun getActivitiesByQuestId(questId: String): Flow<List<QuestActivityEntity>>
 
+    @Transaction
     @Query("SELECT * FROM questactivityentity WHERE questId = :questId ORDER BY startTimestamp DESC")
     fun getActivitiesWithCreatorsByQuestId(questId: String): Flow<List<ActivityWithCreatorEntity>>
 

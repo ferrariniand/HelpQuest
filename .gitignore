@@ -26,3 +26,7 @@ captures
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+androidApp/google-services.json
+iosApp/iosApp/GoogleService-info.plist
+output/

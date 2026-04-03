@@ -8,6 +8,8 @@ fun Project.pathToPackageName(): String {
         .replace(':', '.')
         .lowercase()
 
+    println("PackageName: com.helpquest$relativePackageName")
+
     return "com.helpquest$relativePackageName"
 }
 
@@ -20,9 +22,11 @@ fun Project.pathToResourcePrefix(): String {
 
 fun Project.pathToFrameworkName(): String {
     val parts = this.path.split(":", "-", "_", " ")
-    return parts.joinToString("") { part ->
+    val fn = parts.joinToString("") { part ->
         part.replaceFirstChar {
             it.titlecase(Locale.ROOT)
         }
     }
+    println("FrameworkName= $fn ")
+    return fn
 }

@@ -1,7 +1,3 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     alias(libs.plugins.convention.cmp.feature)
 }
@@ -25,6 +21,29 @@ kotlin {
             }
         }
     }
+    androidLibrary {
+        namespace = "com.helpquest.feature.auth.presentation"
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
+            }
+        }
+        minSdk = 26
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+
+        androidResources {
+            enable = true
+        }
+    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
@@ -44,14 +63,13 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation(compose.uiTest)
-
                 // Core Test Module
                 implementation(projects.core.test)
             }
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
