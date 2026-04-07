@@ -2,8 +2,8 @@ package com.helpquest.core.data.service
 
 import com.helpquest.core.domain.models.Class
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.models.ProfilePictureUploadUrls
+import com.helpquest.core.domain.models.SubClass
 
 
 object MockCoreResponseElements {

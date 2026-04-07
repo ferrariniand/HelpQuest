@@ -3,7 +3,6 @@ package com.helpquest.core.data.service.notification
 import com.helpquest.core.domain.service.notification.DeviceTokenService
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
-import com.helpquest.core.domain.util.asEmptyResult
 import com.helpquest.core.domain.util.Result
 
 

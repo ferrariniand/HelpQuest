@@ -2,6 +2,7 @@ package com.helpquest.core.data.di
 
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.helpquest.core.data.BuildKonfig
 import com.helpquest.core.data.auth.KSafeSessionStorage
 import com.helpquest.core.data.logging.KermitLogger
 import com.helpquest.core.data.networking.ConnectionRetryHandler
@@ -23,7 +24,12 @@ expect val platformCoreDataModule: Module
 
 val coreDataModule = module {
     includes(platformCoreDataModule)
-    includes(variantCoreDataModule)
+    //TODO: CHANGE WITH BUILD FLAVOR CONFIGURATIONS WHEN WILL BE AVAILABLE
+    if (BuildKonfig.useMockServer) {
+        includes(variantCoreDataMockModule)
+    } else {
+        includes(variantCoreDataModule)
+    }
     single<HelpQuestLogger> { KermitLogger }
     singleOf(::ConnectionRetryHandler)
     singleOf(::KtorWebSocketConnector)

@@ -1,14 +1,13 @@
 package com.helpquest.core.data.service.auth
 
-import com.helpquest.core.domain.auth.AuthInfo
-import com.helpquest.core.domain.service.auth.AuthService
-import com.helpquest.core.domain.models.User
-import com.helpquest.core.domain.util.DataError
-import com.helpquest.core.domain.util.EmptyResult
-import com.helpquest.core.domain.util.asEmptyResult
-import com.helpquest.core.domain.util.Result
 import com.helpquest.core.data.dto.AuthInfoDto
 import com.helpquest.core.data.mappers.toAuthInfoDto
+import com.helpquest.core.domain.auth.AuthInfo
+import com.helpquest.core.domain.models.User
+import com.helpquest.core.domain.service.auth.AuthService
+import com.helpquest.core.domain.util.DataError
+import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.Result
 
 class MockAuthService() : AuthService {
 

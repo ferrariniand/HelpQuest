@@ -1,14 +1,12 @@
 package com.helpquest.core.data.service.participant
 
 import com.helpquest.core.data.service.MockCoreResponseElements
-import com.helpquest.core.domain.service.participant.ParticipantService
-import com.helpquest.core.domain.models.ProfilePictureUploadUrls
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.core.domain.models.Class
-import com.helpquest.core.domain.models.SubClass
+import com.helpquest.core.domain.models.ProfilePictureUploadUrls
+import com.helpquest.core.domain.service.participant.ParticipantService
 import com.helpquest.core.domain.util.DataError
-import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.EmptyResult
+import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
 
 class MockParticipantService(

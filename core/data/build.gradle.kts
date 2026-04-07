@@ -1,4 +1,3 @@
-import com.helpquest.convention.configureBuildVariants
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
@@ -48,15 +47,23 @@ kotlin {
             }
         }
 
+        val jvmCommonMain by getting {
+            dependsOn(commonMain.get())
+        }
+
         androidMain {
+            dependsOn(jvmCommonMain)
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+                implementation(projects.core.domain)
+
+
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
                 implementation(libs.androidx.lifecycle.process)
-
             }
         }
 
@@ -73,13 +80,12 @@ kotlin {
         }
 
         desktopMain {
+            dependsOn(jvmCommonMain)
             dependencies {
                 implementation(libs.ktor.client.okhttp)
             }
         }
     }
-    //TODO: understand if should be created a different case for just MOCK and DEV or for each variant (all the others)
-    configureBuildVariants()
 
     targets.withType<KotlinNativeTarget> {
         compilations.getByName("main") {

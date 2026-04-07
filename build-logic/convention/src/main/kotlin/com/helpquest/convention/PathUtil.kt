@@ -7,9 +7,6 @@ fun Project.pathToPackageName(): String {
     val relativePackageName = path
         .replace(':', '.')
         .lowercase()
-
-    println("PackageName: com.helpquest$relativePackageName")
-
     return "com.helpquest$relativePackageName"
 }
 
@@ -27,6 +24,5 @@ fun Project.pathToFrameworkName(): String {
             it.titlecase(Locale.ROOT)
         }
     }
-    println("FrameworkName= $fn ")
     return fn
 }

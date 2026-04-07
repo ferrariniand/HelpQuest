@@ -1,11 +1,11 @@
 package com.helpquest.core.data.networking
 
+import com.helpquest.core.data.mappers.toAuthInfo
+import com.helpquest.core.data.service.auth.MockAuthService
 import com.helpquest.core.domain.auth.SessionStorage
 import com.helpquest.core.domain.logging.HelpQuestLogger
 import com.helpquest.core.domain.util.onFailure
 import com.helpquest.core.domain.util.onSuccess
-import com.helpquest.core.data.service.auth.MockAuthService
-import com.helpquest.core.data.mappers.toAuthInfo
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
