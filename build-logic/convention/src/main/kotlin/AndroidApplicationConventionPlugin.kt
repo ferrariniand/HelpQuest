@@ -1,6 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.helpquest.convention.configureAndroidManifest
-import com.helpquest.convention.configureBuildTypes
+import com.helpquest.convention.configureAndroidAppFlavors
 import com.helpquest.convention.configureKotlinAndroid
 import com.helpquest.convention.getProjectApplicationId
 import com.helpquest.convention.getProjectTargetSdkVersion
@@ -19,7 +18,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                namespace = getProjectApplicationId()
+                namespace = getProjectApplicationId() + ".androidapp"
 
 
                 defaultConfig {
@@ -48,10 +47,9 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 }
 
                 configureKotlinAndroid(this)
-                configureAndroidManifest(this)
             }
 
-            configureBuildTypes()
+            configureAndroidAppFlavors()
         }
     }
 }

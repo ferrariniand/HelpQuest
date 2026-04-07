@@ -1,16 +1,17 @@
 package com.helpquest.convention
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Project
 
+//TODO: NOT USED!! TO BE REMOVED??
 internal fun Project.configureAndroidManifest(
-    commonExtension: CommonExtension<*, *, *, *, *, *>
+    applicationExtension: ApplicationExtension
 ) {
-    with(commonExtension) {
-        val variantCapitalized = getManifestVariantString()
+    with(applicationExtension) {
+        val variant = getManifestVariantString()
         sourceSets.getByName("main") {
-            manifest.srcFile("src/androidMain$variantCapitalized/AndroidManifest.xml")
-            res.srcDirs("src/androidMain$variantCapitalized/res")
+            manifest.srcFile("src/$variant/AndroidManifest.xml")
+            res.srcDirs("src/$variant/res")
         }
     }
 }
