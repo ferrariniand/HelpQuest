@@ -1,7 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.codingfeline.buildkonfig.compiler.FieldSpec
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 import com.codingfeline.buildkonfig.gradle.BuildKonfigExtension
-import com.helpquest.convention.BuildVariants
 import com.helpquest.convention.currentBuildVariant
 import com.helpquest.convention.pathToPackageName
 import org.gradle.api.Plugin
@@ -17,7 +16,7 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
                 apply("com.codingfeline.buildkonfig")
             }
 
-            project.extra.set("buildkonfig.flavor", currentBuildVariant().value)
+            project.extra.set("buildkonfig.flavor", currentBuildVariant().id)
 
             extensions.configure<BuildKonfigExtension> {
                 packageName = target.pathToPackageName()
@@ -28,19 +27,22 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
                         ?: throw IllegalStateException(
                             "Missing API_KEY property in local.properties"
                         )
-                    buildConfigField(FieldSpec.Type.STRING, "API_KEY", apiKey)
+                    buildConfigField(Type.STRING, "API_KEY", apiKey)
+                    buildConfigField(Type.BOOLEAN, "useMockServer", "false")
+
                 }
-                defaultConfigs(BuildVariants.MOCK.value) {
-                    buildConfigField(FieldSpec.Type.STRING, "BUILD_TYPE", BuildVariants.MOCK.value)
+                defaultConfigs(Flavors.Environment.MOCK.id) {
+                    buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.MOCK.id)
+                    buildConfigField(Type.BOOLEAN, "useMockServer", "true")
                 }
-                defaultConfigs(BuildVariants.DEV.value) {
-                    buildConfigField(FieldSpec.Type.STRING, "BUILD_TYPE", BuildVariants.DEV.value)
+                defaultConfigs(Flavors.Environment.DEV.id) {
+                    buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.DEV.id)
                 }
-                defaultConfigs(BuildVariants.STAGE.value) {
-                    buildConfigField(FieldSpec.Type.STRING, "BUILD_TYPE", BuildVariants.STAGE.value)
+                defaultConfigs(Flavors.Environment.STAGE.id) {
+                    buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.STAGE.id)
                 }
-                defaultConfigs(BuildVariants.PROD.value) {
-                    buildConfigField(FieldSpec.Type.STRING, "BUILD_TYPE", BuildVariants.PROD.value)
+                defaultConfigs(Flavors.Environment.PROD.id) {
+                    buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.PROD.id)
                 }
             }
         }

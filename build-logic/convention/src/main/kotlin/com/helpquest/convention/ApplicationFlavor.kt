@@ -21,7 +21,7 @@ internal fun Project.configureAndroidAppFlavors() {
             .withDimensions(Flavors.ENVIRONMENT_DIMENSION).build()
         applyFlavors(flavorConfig)
 
-        ConfigurationHelper.addSubFlavorResources(
+        ConfigurationHelper.addAndroidApplicationSubFlavorResources(
             sourceSets,
             listOf(
                 ConfigurationHelper.FLAVORS_ENVIRONMENT,

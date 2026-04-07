@@ -55,7 +55,7 @@ object ConfigurationHelper {
      * @param flavorDimensions A list of lists containing flavor dimensions. The first list
      *                         represents Environment and buildType dimensions.
      */
-    fun addSubFlavorResources(
+    fun addAndroidApplicationSubFlavorResources(
         sourceSets: NamedDomainObjectContainer<out AndroidSourceSet>,
         flavorDimensions: List<List<String>>,
         projectDir: File? = null
