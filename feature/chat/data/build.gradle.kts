@@ -1,5 +1,3 @@
-import com.helpquest.convention.configureBuildVariants
-
 plugins {
     alias(libs.plugins.convention.kmp.feature.data)
     alias(libs.plugins.convention.buildkonfig)
@@ -16,6 +14,29 @@ kotlin {
                     )
                 }
             }
+        }
+    }
+    androidLibrary {
+        namespace = "com.helpquest.feature.chat.data"
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
+            }
+        }
+        minSdk = 26
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+
+        androidResources {
+            enable = true
         }
     }
 
@@ -36,6 +57,7 @@ kotlin {
         }
 
         androidMain {
+            dependsOn(commonMain.get())
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
@@ -54,6 +76,4 @@ kotlin {
             }
         }
     }
-    //TODO: understand if should be created a different case for just MOCK and DEV or for each variant (all the others)
-    configureBuildVariants()
 }

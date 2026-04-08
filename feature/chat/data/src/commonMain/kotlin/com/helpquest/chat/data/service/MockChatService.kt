@@ -1,18 +1,12 @@
 package com.helpquest.chat.data.service
 
-import com.helpquest.chat.data.service.MockChatResponseElements
 import com.helpquest.chat.domain.models.Chat
-import com.helpquest.chat.domain.models.ChatMessage
-import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.domain.service.ChatService
 import com.helpquest.core.domain.models.Participant
-import com.helpquest.core.domain.models.Class
-import com.helpquest.core.domain.models.SubClass
 import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
-import kotlin.String
 import kotlin.random.Random
 import kotlin.time.Clock
 
