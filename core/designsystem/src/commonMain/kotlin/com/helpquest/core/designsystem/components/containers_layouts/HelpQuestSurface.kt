@@ -17,7 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.isKeyboardVisible
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -79,7 +79,7 @@ fun HelpQuestSurfaceLightPreview() {
             modifier = Modifier
                 .fillMaxSize(),
             header = {
-                HelpQuestBrandLogo(
+                BrandLogo(
                     modifier = Modifier
                         .padding(vertical = 32.dp)
                 )
@@ -110,7 +110,7 @@ fun HelpQuestSurfaceDarkPreview() {
             modifier = Modifier
                 .fillMaxSize(),
             header = {
-                HelpQuestBrandLogo(
+                BrandLogo(
                     modifier = Modifier
                         .padding(vertical = 32.dp)
                 )

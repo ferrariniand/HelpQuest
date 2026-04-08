@@ -25,7 +25,7 @@ expect val platformCoreDataModule: Module
 val coreDataModule = module {
     includes(platformCoreDataModule)
     //TODO: CHANGE WITH BUILD FLAVOR CONFIGURATIONS WHEN WILL BE AVAILABLE
-    if (BuildKonfig.useMockServer) {
+    if (BuildKonfig.USE_MOCK_SERVER) {
         includes(variantCoreDataMockModule)
     } else {
         includes(variantCoreDataModule)

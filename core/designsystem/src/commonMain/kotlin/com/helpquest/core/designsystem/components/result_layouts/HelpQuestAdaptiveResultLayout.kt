@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.auth.AuthPageHeaderSection
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestSurface
@@ -45,7 +45,7 @@ fun HelpQuestAdaptiveResultLayout(
     primaryButton: (@Composable () -> Unit)? = null,
     secondaryButton: @Composable (() -> Unit)? = null,
     secondaryError: String? = null,
-    brandLogo: @Composable () -> Unit = { HelpQuestBrandLogo() },
+    brandLogo: @Composable () -> Unit = { BrandLogo() },
     resultLogo: @Composable ColumnScope.() -> Unit,
     isLoadings: Boolean = false,
     modifier: Modifier = Modifier,

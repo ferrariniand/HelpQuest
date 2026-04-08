@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButtonStyle
 import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAdaptiveFormLayout
@@ -83,7 +83,7 @@ fun LoginScreen(
             headerText = stringResource(Res.string.help_quest),
             errorText = state.error?.asString(),
             logo = {
-                HelpQuestBrandLogo()
+                BrandLogo()
             },
             modifier = Modifier
                 .fillMaxSize(),

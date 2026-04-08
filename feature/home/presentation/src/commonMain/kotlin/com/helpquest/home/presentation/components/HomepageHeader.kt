@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.components.buttons.HelpQuestIconButton
 import com.helpquest.core.designsystem.components.dropdown.DropDownItem
 import com.helpquest.core.designsystem.components.dropdown.HelpQuestDropDownMenu
@@ -53,7 +53,7 @@ fun HomepageHeader(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            HelpQuestBrandLogo(
+            BrandLogo(
                 tintColor = MaterialTheme.colorScheme.tertiary
             )
             Text(

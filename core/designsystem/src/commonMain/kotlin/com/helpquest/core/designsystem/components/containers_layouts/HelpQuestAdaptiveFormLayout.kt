@@ -31,7 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.auth.AuthPageHeaderSection
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.util.DeviceConfiguration
@@ -46,7 +46,7 @@ fun HelpQuestAdaptiveFormLayout(
     headerText: String,
     errorText: String? = null,
     successText: String? = null,
-    logo: @Composable () -> Unit = { HelpQuestBrandLogo() },
+    logo: @Composable () -> Unit = { BrandLogo() },
     modifier: Modifier = Modifier,
     formContent: @Composable ColumnScope.() -> Unit,
     buttonsContent: @Composable ColumnScope.() -> Unit,
@@ -212,7 +212,7 @@ fun HelpQuestAdaptiveFormLayoutLightPreview() {
             topHeaderText = "Welcome to",
             headerText = "Help Quest!",
             errorText = "Login failed!",
-            logo = { HelpQuestBrandLogo() },
+            logo = { BrandLogo() },
             formContent = {
                 Text(
                     text = "Sample form title",
@@ -243,7 +243,7 @@ fun HelpQuestAdaptiveFormLayoutDarkPreview() {
             topHeaderText = "Welcome to",
             headerText = "Help Quest!",
             errorText = "Login failed!",
-            logo = { HelpQuestBrandLogo() },
+            logo = { BrandLogo() },
             formContent = {
                 Text(
                     text = "Sample form title",

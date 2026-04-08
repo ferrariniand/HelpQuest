@@ -1,78 +1,10 @@
 package com.helpquest.core.designsystem.theme
 
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 
-val LocalExtendedColors = staticCompositionLocalOf { LightExtendedColors }
 
-val ColorScheme.extended: ExtendedColors
-    @ReadOnlyComposable
-    @Composable
-    get() = LocalExtendedColors.current
-
-@Immutable
-data class ExtendedColors(
-    // Button states
-    val primaryHover: Color,
-    val destructiveHover: Color,
-    val destructiveSecondaryOutline: Color,
-    val disabledOutline: Color,
-    val disabledFill: Color,
-    val successOutline: Color,
-    val success: Color,
-    val onSuccess: Color,
-    val secondaryFill: Color,
-
-    // Text variants
-    val textPrimary: Color,
-    val textTertiary: Color,
-    val textSecondary: Color,
-    val textPlaceholder: Color,
-    val textDisabled: Color,
-
-    // Surface variants
-    val surfaceLower: Color,
-    val surfaceHigher: Color,
-    val surfaceOutline: Color,
-    val overlay: Color,
-
-    // Warning colors
-    val warning: Color,
-
-    // Accent colors
-    val accentBlue: Color,
-    val accentPurple: Color,
-    val accentViolet: Color,
-    val accentPink: Color,
-    val accentOrange: Color,
-    val accentYellow: Color,
-    val accentGreen: Color,
-    val accentTeal: Color,
-    val accentLightBlue: Color,
-    val accentGrey: Color,
-
-    // Cake colors for chat bubbles
-    val cakeViolet: Color,
-    val cakeGreen: Color,
-    val cakeBlue: Color,
-    val cakePink: Color,
-    val cakeOrange: Color,
-    val cakeYellow: Color,
-    val cakeTeal: Color,
-    val cakePurple: Color,
-    val cakeRed: Color,
-    val cakeMint: Color,
-)
-
-//TODO: replace colors (at the moment are used the colors taken from PL Chirp Project)
-
-val LightExtendedColors = ExtendedColors(
+val LightExtendedColorsMock = ExtendedColors(
     primaryHover = HelpQuestBrand600,
     destructiveHover = HelpQuestRed600,
     destructiveSecondaryOutline = HelpQuestRed200,
@@ -119,7 +51,7 @@ val LightExtendedColors = ExtendedColors(
     cakeMint = HelpQuestCakeLightMint,
 )
 
-val DarkExtendedColors = ExtendedColors(
+val DarkExtendedColorsMock = ExtendedColors(
     primaryHover = HelpQuestBrand600,
     destructiveHover = HelpQuestRed600,
     destructiveSecondaryOutline = HelpQuestRed200,
@@ -166,28 +98,28 @@ val DarkExtendedColors = ExtendedColors(
     cakeMint = HelpQuestCakeDarkMint,
 )
 
-val LightColorScheme = lightColorScheme(
-    primary = HelpQuestBrand500Stage,
-    onPrimary = HelpQuestBrand1000Stage,
+val LightColorSchemeMock = lightColorScheme(
+    primary = HelpQuestBrand500Mock,
+    onPrimary = HelpQuestBrand1000Mock,
     primaryContainer = HelpQuestBrand100,
-    onPrimaryContainer = HelpQuestBrand900Stage,
+    onPrimaryContainer = HelpQuestBrand900Mock,
 
     secondary = HelpQuestBase700,
     onSecondary = HelpQuestBase0,
     secondaryContainer = HelpQuestBase100,
     onSecondaryContainer = HelpQuestBase900,
 
-    tertiary = HelpQuestBrand900Stage,
+    tertiary = HelpQuestBrand900Mock,
     onTertiary = HelpQuestBase0,
     tertiaryContainer = HelpQuestBrand100,
-    onTertiaryContainer = HelpQuestBrand1000Stage,
+    onTertiaryContainer = HelpQuestBrand1000Mock,
 
     error = HelpQuestRed500,
     onError = HelpQuestBase0,
     errorContainer = HelpQuestRed200,
     onErrorContainer = HelpQuestRed600,
 
-    background = HelpQuestBrand1000Stage,
+    background = HelpQuestBrand1000Mock,
     onBackground = HelpQuestBase0,
     surface = HelpQuestBase0,
     onSurface = HelpQuestBase1000,
@@ -198,10 +130,10 @@ val LightColorScheme = lightColorScheme(
     outlineVariant = HelpQuestBase200,
 )
 
-val DarkColorScheme = darkColorScheme(
-    primary = HelpQuestBrand500Stage,
-    onPrimary = HelpQuestBrand1000Stage,
-    primaryContainer = HelpQuestBrand900Stage,
+val DarkColorSchemeMock = darkColorScheme(
+    primary = HelpQuestBrand500Mock,
+    onPrimary = HelpQuestBrand1000Mock,
+    primaryContainer = HelpQuestBrand900Mock,
     onPrimaryContainer = HelpQuestBrand500,
 
     secondary = HelpQuestBase400,
@@ -209,10 +141,10 @@ val DarkColorScheme = darkColorScheme(
     secondaryContainer = HelpQuestBase900,
     onSecondaryContainer = HelpQuestBase150,
 
-    tertiary = HelpQuestBrand500Stage,
+    tertiary = HelpQuestBrand500Mock,
     onTertiary = HelpQuestBase1000,
-    tertiaryContainer = HelpQuestBrand900Stage,
-    onTertiaryContainer = HelpQuestBrand500Stage,
+    tertiaryContainer = HelpQuestBrand900Mock,
+    onTertiaryContainer = HelpQuestBrand500Mock,
 
     error = HelpQuestRed500,
     onError = HelpQuestBase0,

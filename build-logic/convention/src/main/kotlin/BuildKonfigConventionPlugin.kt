@@ -28,18 +28,27 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
                             "Missing API_KEY property in local.properties"
                         )
                     buildConfigField(Type.STRING, "API_KEY", apiKey)
-                    buildConfigField(Type.BOOLEAN, "useMockServer", "false")
+                    buildConfigField(Type.STRING, "BUILD_TYPE", Flavors.BuildType.RELEASE.value)
+                    buildConfigField(Type.BOOLEAN, "IS_DEBUG", "false")
+                    buildConfigField(Type.BOOLEAN, "USE_MOCK_SERVER", "false")
 
                 }
                 defaultConfigs(Flavors.Environment.MOCK.id) {
                     buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.MOCK.id)
-                    buildConfigField(Type.BOOLEAN, "useMockServer", "true")
+                    buildConfigField(Type.STRING, "BUILD_TYPE", Flavors.BuildType.DEBUG.value)
+                    buildConfigField(Type.BOOLEAN, "IS_DEBUG", "true")
+                    buildConfigField(Type.BOOLEAN, "USE_MOCK_SERVER", "true")
                 }
                 defaultConfigs(Flavors.Environment.DEV.id) {
                     buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.DEV.id)
+                    buildConfigField(Type.STRING, "BUILD_TYPE", Flavors.BuildType.DEBUG.value)
+                    buildConfigField(Type.BOOLEAN, "IS_DEBUG", "true")
+
                 }
                 defaultConfigs(Flavors.Environment.STAGE.id) {
                     buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.STAGE.id)
+                    buildConfigField(Type.STRING, "BUILD_TYPE", Flavors.BuildType.DEBUG.value)
+                    buildConfigField(Type.BOOLEAN, "IS_DEBUG", "true")
                 }
                 defaultConfigs(Flavors.Environment.PROD.id) {
                     buildConfigField(Type.STRING, "FLAVOR_ENV", Flavors.Environment.PROD.id)

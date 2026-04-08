@@ -28,7 +28,7 @@ object ConfigurationHelper {
     //TODO: MAYBE CAN BE REMOVED BECAUSE THE BUILD TYPE IS NOT USED
     data class FlavorConfig(
         val env: String = "",
-        val buildType: String = "release",
+        val buildType: String = Flavors.BuildType.RELEASE.value,
     ) {
         fun isDebugEnv() = arrayOf(
             Flavors.Environment.MOCK.id,
@@ -41,8 +41,8 @@ object ConfigurationHelper {
         ).contains(env.lowercase())
 
         fun filterValidConfig(): Boolean =
-            (isDebugEnv() && "debug" == buildType)
-                    || (isReleaseEnv() && "release" == buildType)
+            (isDebugEnv() && Flavors.BuildType.DEBUG.value == buildType)
+                    || (isReleaseEnv() && Flavors.BuildType.RELEASE.value == buildType)
     }
 
     /**

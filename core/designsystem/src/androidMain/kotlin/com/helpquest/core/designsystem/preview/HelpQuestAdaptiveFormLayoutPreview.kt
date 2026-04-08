@@ -5,20 +5,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import com.helpquest.core.designsystem.components.brand.HelpQuestBrandLogo
+import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.components.containers_layouts.HelpQuestAdaptiveFormLayout
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 
 @Composable
 @PreviewLightDark
 @PreviewScreenSizes
-fun HelpQuestAdaptiveFormLayoutPreview() {
+fun AdaptiveFormLayoutPreview() {
     HelpQuestTheme {
         HelpQuestAdaptiveFormLayout(
             topHeaderText = "Welcome to",
             headerText = "Help Quest!",
             errorText = "Login failed!",
-            logo = { HelpQuestBrandLogo() },
+            logo = { BrandLogo() },
             formContent = {
                 Text(
                     text = "Sample form title",
