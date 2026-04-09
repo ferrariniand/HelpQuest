@@ -36,6 +36,4 @@ dependencies {
     api(libs.play.asset.delivery)
     api(libs.play.asset.delivery.ktx)
 
-    //Test
-    implementation(libs.mockk)
 }

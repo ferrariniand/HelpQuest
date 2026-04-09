@@ -74,10 +74,8 @@ assertK = "0.28.1"
 turbine = "1.2.1"
 kotlinxCoroutinesTest = "1.10.2"
 testCoreKtx = "1.7.0"
-composeTest = "1.9.4"
-mockk = "1.14.6"
-mockkCommon = "1.12.5"
-kover = "0.9.6"
+composeTest = "1.10.6"
+kover = "0.9.8"
 
 
 #TODO: Are Necessary?
@@ -87,9 +85,9 @@ playReview = "2.0.2"
 playAppUpdate = "2.1.0"
 playAssetDelivery = "2.3.0"
 materialIconsExtended = "1.6.3"
-ktorServerCallLogging = "2.3.7"
-bson = "4.11.1"
-annotation = "1.9.1"
+ktorServerCallLogging = "3.4.2"
+bson = "5.6.4"
+annotation = "1.10.0"
 material = "1.13.0"
 
 [libraries]
@@ -219,9 +217,6 @@ kotlin-test-annotations-common = { module = "org.jetbrains.kotlin:kotlin-test-an
 test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertK" }
 test-rule = { group = "androidx.test", name = "rules", version.ref = "rules" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockkCommon" }
-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
@@ -255,6 +250,7 @@ convention-cmp-library = { id = "com.helpquest.convention.cmp.library", version 
 convention-cmp-feature = { id = "com.helpquest.convention.cmp.feature", version = "unspecified" }
 convention-buildkonfig = { id = "com.helpquest.convention.buildkonfig", version = "unspecified" }
 convention-room = { id = "com.helpquest.convention.room", version = "unspecified" }
+convention-hierarchy-template = { id = "com.helpquest.convention.hierarchy.template", version = "unspecified" }
 
 
 # Android

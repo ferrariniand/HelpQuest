@@ -4,29 +4,6 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
-        namespace = "com.helpquest.feature.notification.data"
-        compileSdk {
-            version = release(36) {
-                minorApiLevel = 1
-            }
-        }
-        minSdk = 26
-
-        withHostTestBuilder {
-        }
-
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
-            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
-        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
-
-        androidResources {
-            enable = true
-        }
-    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the

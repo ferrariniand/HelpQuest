@@ -1,18 +1,59 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
-    kover {
-        reports {
-            filters {
-                excludes {
-                    packages(
-                        "com.helpquest.core.test",
-                    )
+
+    androidLibrary {
+        namespace = "com.helpquest.core.test"
+        compileSdk {
+            version = release(36) {
+                minorApiLevel = 1
+            }
+        }
+        minSdk = 26
+
+        withHostTestBuilder {
+        }
+
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+
+        androidResources {
+            enable = true
+        }
+    }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "CoreTest"
+        }
+    }
+    jvm("desktop") {
+        compilations.all {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    // Set up the Kotlin compiler options for the 'main' compilation:
+                    jvmTarget.set(JvmTarget.JVM_21)
                 }
             }
         }
+    }
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
     }
 
     // Source set declarations.
@@ -31,6 +72,18 @@ kotlin {
             }
         }
 
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlin.test.annotations.common)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.assertk)
+                implementation(libs.koin.test)
+                implementation(libs.turbine)
+
+            }
+        }
+
         androidMain {
             dependencies {
                 // Add Android-specific dependencies here. Note that this source set depends on
@@ -46,11 +99,6 @@ kotlin {
                 // part of KMP’s default source set hierarchy. Note that this source set depends
                 // on common by default and will correctly pull the iOS artifacts of any
                 // KMP dependencies declared in commonMain.
-            }
-        }
-
-        desktopMain {
-            dependencies {
             }
         }
     }

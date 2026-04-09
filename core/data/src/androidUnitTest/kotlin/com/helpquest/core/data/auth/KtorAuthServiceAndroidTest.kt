@@ -1,13 +1,11 @@
 package com.helpquest.core.data.auth
 
 import io.ktor.client.HttpClient
-import io.mockk.mockk
 
 class KtorAuthServiceAndroidTest {
 
-    val mockHttpClient = mockk<HttpClient>(relaxed = true)
 
-//TODO infinite run for the tests. Maybe configuration problem related to mockk
+//TODO
 //    @Test
 //    fun `Successful registration with valid inputs`() = runBlocking {
 //        // Test the happy path where a user provides a valid, unique email, a valid username, and a strong password.

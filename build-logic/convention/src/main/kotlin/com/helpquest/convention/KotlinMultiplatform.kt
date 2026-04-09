@@ -16,6 +16,16 @@ internal fun Project.configureKotlinMultiplatform() {
             compileSdk = 36
             minSdk = 26
             namespace = pathToPackageName()
+
+            withHostTestBuilder {
+            }
+
+            withDeviceTestBuilder {
+                sourceSetTreeName = "test"
+            }.configure {
+                instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            }
+
             experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
             androidResources.enable = true
         }
