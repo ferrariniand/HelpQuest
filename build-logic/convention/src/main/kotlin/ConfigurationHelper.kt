@@ -1,19 +1,15 @@
 import com.android.build.api.dsl.AndroidSourceSet
+import com.helpquest.convention.capitalize
 import org.gradle.api.NamedDomainObjectContainer
 import java.io.File
-import java.util.Locale
 
 object ConfigurationHelper {
 
     val FLAVORS_ENVIRONMENT = Flavors.ALL_ENVIRONMENTS.map { env ->
-        env.id.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-        }
+        env.id.capitalize()
     }
     val FLAVORS_BUILD_TYPE = Flavors.BuildType.values().map { buildType ->
-        buildType.value.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-        }
+        buildType.value.capitalize()
     }
 
     /**

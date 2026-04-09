@@ -1,53 +1,10 @@
 package com.helpquest.convention
 
+import Flavors
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import java.util.regex.Pattern
 
-enum class BuildVariants(val value: String) {
-    MOCK("mock"),
-    DEV("dev"),
-    STAGE("stage"),
-    PROD("prod"),
-}
-
-fun Project.configureBuildVariants(shouldCreateAllVariants: Boolean = false) {
-    extensions.configure<KotlinMultiplatformExtension> {
-        val variantCapitalized = getBuildVariantCapitalizedString(shouldCreateAllVariants)
-        sourceSets.apply {
-            androidMain {
-                kotlin.srcDir("src/androidMain$variantCapitalized/kotlin")
-                resources.srcDir("src/androidMain$variantCapitalized/res")
-            }
-            commonMain {
-                kotlin.srcDir("src/commonMain$variantCapitalized/kotlin")
-                resources.srcDir("src/commonMain$variantCapitalized/composeResources")
-            }
-            iosMain {
-                kotlin.srcDir("src/iosMain$variantCapitalized/kotlin")
-            }
-
-//            getByName("commonMain").apply {
-//                val variantDir = "src/commonMain$variantCapitalized/kotlin"
-//                kotlin.srcDir("src/commonMain$variantCapitalized/kotlin")
-//                resources.srcDir("src/commonMain$variantCapitalized/composeResources")
-//
-//                println("Configuring Build Variant: $variantCapitalized -> Added $variantDir to commonMain")
-//            }
-//            //            androidMain {
-//            findByName("androidMain")?.apply {
-//                kotlin.srcDir("src/androidMain$variantCapitalized/kotlin")
-//                resources.srcDir("src/androidMain$variantCapitalized/res")
-//            }
-//            findByName("iosMain")?.apply {
-//                kotlin.srcDir("src/iosMain$variantCapitalized/kotlin")
-//            }
-        }
-    }
-}
-
-private fun Project.getAndroidBuildVariantOrNull(): BuildVariants? {
+private fun Project.getAndroidBuildVariantOrNull(): Flavors.Environment? {
     val taskRequestsList = gradle.startParameter.taskRequests.flatMap { request ->
         request.args
     }
@@ -59,7 +16,7 @@ private fun Project.getAndroidBuildVariantOrNull(): BuildVariants? {
     val matcher = pattern.matcher(taskRequestsStr)
     if (matcher.find()) {
         val fullVariantName = matcher.group(1).lowercase()
-        val variant = BuildVariants.values().find { fullVariantName.contains(it.value) }
+        val variant = Flavors.Environment.values().find { fullVariantName.contains(it.id) }
         println("getAndroidBuildVariantOrNull return ${variant?.name}")
         return variant
     }
@@ -68,21 +25,7 @@ private fun Project.getAndroidBuildVariantOrNull(): BuildVariants? {
     return null
 }
 
-private fun Project.getEnvBuildVariantOrNull(): BuildVariants? {
-//    val variants = BuildVariants.values().map { it.value }.toSet()
-
-//
-//
-//    // 2. If no tasks are running (we are just Syncing),
-//    // Android Studio often passes the variant in a system property
-//    val activeVariant = if (taskNames.isEmpty()) {
-//        // This is a special property Android Studio sets during Sync
-//        System.getProperty("android.package.name.variant")
-//    } else {
-//        taskNames.firstOrNull()
-//    } ?: return null
-//    println("[getEnvBuildVariantOrNull] activeVariant=$activeVariant")
-//
+private fun Project.getEnvBuildVariantOrNull(): Flavors.Environment? {
     // 1. Check for Gradle "variant" Property (e.g., ./gradlew -Pvariant=dev)
     val propertyVariant = findProperty("variant")?.toString()?.lowercase()
     println("[getEnvBuildVariantOrNull] propertyVariant=$propertyVariant")
@@ -93,29 +36,63 @@ private fun Project.getEnvBuildVariantOrNull(): BuildVariants? {
 //
     val variantName = propertyVariant ?: envVariant
 
-    val variant = BuildVariants.values().find { it.value == variantName }
+    val variant = Flavors.Environment.values().find { it.id == variantName }
     println("getEnvBuildVariantOrNull return ${variant?.name}")
     return variant
 }
 
-fun Project.currentBuildVariant(): BuildVariants =
+fun Project.currentBuildVariant(): Flavors.Environment =
     getAndroidBuildVariantOrNull()
         ?: getEnvBuildVariantOrNull()
-        ?: BuildVariants.DEV
+        ?: Flavors.Environment.PROD
 
-fun Project.getBuildVariantCapitalizedString(shouldCreateAllVariants: Boolean): String {
-    val currentBuildVariant = currentBuildVariant()
-    //if shouldCreateAllVariants, use the current build variant;
-    // else use "mock" for MOCK and "dev" for all the other build variants
-    val buildVariant = when {
-        shouldCreateAllVariants || (currentBuildVariant == BuildVariants.MOCK) -> {
-            currentBuildVariant
-        }
+//TODO: ADD BACK WHEN IT WILL BE POSSIBLE TO IMPLEMENT BUILD VARIANTS AT MODULE LEVEL (CommonMainMock, CommonMainDev ...)
+//fun Project.configureBuildVariants(shouldCreateAllVariants: Boolean = false) {
+//    extensions.configure<KotlinMultiplatformExtension> {
+//        val variant = getBuildVariant(shouldCreateAllVariants)
+//        val variantCapitalized = variant.capitalize()
+//        sourceSets.apply {
+//            androidMain {
+//                kotlin.srcDir("src/androidMain$variantCapitalized/kotlin")
+//                resources.srcDir("src/androidMain$variantCapitalized/res")
+//            }
+//            commonMain {
+//                kotlin.srcDir("src/commonMain$variantCapitalized/kotlin")
+//                resources.srcDir("src/commonMain$variantCapitalized/composeResources")
+//            }
+//            iosMain {
+//                kotlin.srcDir("src/iosMain$variantCapitalized/kotlin")
+//            }
+//        }
+//    }
+//}
 
-        else -> BuildVariants.DEV
-    }
-    return buildVariant.value.replaceFirstChar { it.uppercaseChar() }
-}
+//fun Project.getBuildVariant(shouldCreateAllVariants: Boolean): String {
+//    val currentBuildVariant = currentBuildVariant()
+//    //if shouldCreateAllVariants, use the current build variant;
+//    // else use "mock" for MOCK and "dev" for all the other build variants
+//    val buildVariant = when {
+//        shouldCreateAllVariants || (currentBuildVariant == Flavors.Environment.MOCK) -> {
+//            currentBuildVariant
+//        }
+//
+//        else -> Flavors.Environment.DEV
+//    }
+//    return buildVariant.id
+//}
 
-fun Project.getManifestVariantString(): String =
-    currentBuildVariant().value.replaceFirstChar { it.uppercaseChar() }
+//TODO: NOT USED!! TO BE REMOVED??
+//internal fun Project.configureAndroidManifest(
+//    applicationExtension: ApplicationExtension
+//) {
+//    with(applicationExtension) {
+//        val variant = getManifestVariantString()
+//        sourceSets.getByName("main") {
+//            manifest.srcFile("src/$variant/AndroidManifest.xml")
+//            res.srcDirs("src/$variant/res")
+//        }
+//    }
+//}
+
+//fun Project.getManifestVariantString(): String =
+//    currentBuildVariant().id.capitalize()

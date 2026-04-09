@@ -47,10 +47,6 @@ gradlePlugin {
             id = "$packageName.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
-        register("cmpApplication") {
-            id = "$packageName.cmp.application"
-            implementationClass = "CmpApplicationConventionPlugin"
-        }
         register("kmpLibrary") {
             id = "$packageName.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"

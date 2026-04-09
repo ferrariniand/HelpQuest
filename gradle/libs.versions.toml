@@ -249,7 +249,6 @@ material = { group = "com.google.android.material", name = "material", version.r
 [plugins]
 convention-android-application = { id = "com.helpquest.convention.android.application", version = "unspecified" }
 convention-android-application-compose = { id = "com.helpquest.convention.android.application.compose", version = "unspecified" }
-convention-cmp-application = { id = "com.helpquest.convention.cmp.application", version = "unspecified" }
 convention-kmp-library = { id = "com.helpquest.convention.kmp.library", version = "unspecified" }
 convention-kmp-feature-data = { id = "com.helpquest.convention.kmp.feature.data", version = "unspecified" }
 convention-cmp-library = { id = "com.helpquest.convention.cmp.library", version = "unspecified" }

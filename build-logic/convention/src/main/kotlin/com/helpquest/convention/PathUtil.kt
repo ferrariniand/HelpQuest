@@ -1,7 +1,6 @@
 package com.helpquest.convention
 
 import org.gradle.api.Project
-import java.util.Locale
 
 fun Project.pathToPackageName(): String {
     val relativePackageName = path
@@ -20,9 +19,9 @@ fun Project.pathToResourcePrefix(): String {
 fun Project.pathToFrameworkName(): String {
     val parts = this.path.split(":", "-", "_", " ")
     val fn = parts.joinToString("") { part ->
-        part.replaceFirstChar {
-            it.titlecase(Locale.ROOT)
-        }
+        part.capitalize()
     }
     return fn
 }
+
+fun String.capitalize() = this.replaceFirstChar { it.uppercaseChar() }
