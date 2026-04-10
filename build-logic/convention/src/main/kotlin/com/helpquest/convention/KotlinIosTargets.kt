@@ -12,8 +12,7 @@ internal fun Project.configureIosTargets() {
             iosSimulatorArm64()
         ).forEach { iosTarget ->
             iosTarget.binaries.framework {
-                baseName = "HelpQuest"
-                isStatic = true
+                baseName = this@configureIosTargets.pathToFrameworkName()
             }
         }
     }
