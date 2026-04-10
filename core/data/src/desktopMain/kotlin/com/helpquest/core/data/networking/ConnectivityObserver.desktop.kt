@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import java.net.InetSocketAddress
 import java.net.NetworkInterface
 import java.net.Socket
-import kotlin.coroutines.coroutineContext
 
 actual class ConnectivityObserver(
     private val hqLogger: HelpQuestLogger
@@ -30,24 +29,24 @@ actual class ConnectivityObserver(
     )
 
     private suspend fun isConnected(): Boolean {
-        val hasInterface = try {
-            NetworkInterface.getNetworkInterfaces()
-                .asSequence()
-                .any { networkInterface ->
-                    !networkInterface.isLoopback &&
-                            networkInterface.isUp &&
-                            networkInterface.inetAddresses.hasMoreElements()
-                }
-        } catch (_: Exception) {
-            coroutineContext.ensureActive()
-            false
-        }
-
-        if (!hasInterface) {
-            return false
-        }
-
         return withContext(Dispatchers.IO) {
+            val hasInterface = try {
+                NetworkInterface.getNetworkInterfaces()
+                    .asSequence()
+                    .any { networkInterface ->
+                        !networkInterface.isLoopback &&
+                                networkInterface.isUp &&
+                                networkInterface.inetAddresses.hasMoreElements()
+                    }
+            } catch (_: Exception) {
+                coroutineContext.ensureActive()
+                false
+            }
+
+            if (!hasInterface) {
+                return@withContext false
+            }
+
             connectivityTargets.any { target ->
                 try {
                     Socket().use {
