@@ -16,12 +16,10 @@ import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.brand.BrandLogo
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.designsystem.theme.appName
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
-import helpquest.core.designsystem.generated.resources.app_name
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun ChatListHeader(
@@ -41,7 +39,7 @@ fun ChatListHeader(
                 tintColor = MaterialTheme.colorScheme.tertiary
             )
             Text(
-                text = stringResource(DesignSystemRes.string.app_name),
+                text = appName(),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.extended.textPrimary
             )

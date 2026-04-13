@@ -21,9 +21,9 @@ import com.helpquest.core.designsystem.components.dropdown.DropDownItem
 import com.helpquest.core.designsystem.components.dropdown.HelpQuestDropDownMenu
 import com.helpquest.core.designsystem.components.generic.GenericPageHeaderSection
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
+import com.helpquest.core.designsystem.theme.appName
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
-import helpquest.core.designsystem.generated.resources.app_name
 import helpquest.core.designsystem.generated.resources.ic_hamburger_menu
 import helpquest.core.designsystem.generated.resources.log_out_icon
 import helpquest.core.designsystem.generated.resources.profile_settings
@@ -57,7 +57,7 @@ fun HomepageHeader(
                 tintColor = MaterialTheme.colorScheme.tertiary
             )
             Text(
-                text = stringResource(DesignSystemRes.string.app_name),
+                text = appName(),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.extended.textPrimary
             )

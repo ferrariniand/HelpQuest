@@ -14,8 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.helpquest.core.designsystem.BuildKonfig
+import com.helpquest.core.designsystem.theme.appName
 import helpquest.core.designsystem.generated.resources.Res
-import helpquest.core.designsystem.generated.resources.app_name
 import helpquest.core.designsystem.generated.resources.content_description_enable_debug_mode
 import org.jetbrains.compose.resources.stringResource
 
@@ -25,7 +25,7 @@ fun BrandLogo(
     tintColor: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
 ) {
-    var logoContentDescription = stringResource(Res.string.app_name)
+    var logoContentDescription = appName()
     var logoModifier = modifier
     var logoTint = tintColor
 
