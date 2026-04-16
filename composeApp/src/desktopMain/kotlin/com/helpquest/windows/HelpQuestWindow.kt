@@ -34,6 +34,10 @@ fun HelpQuestWindow(
         title = appName(),
         icon = painterResource(DesignSystemRes.drawable.compose_multiplatform)
     ) {
+        FocusObserver(
+            onFocusChanged = onFocusChanged
+        )
+
         MenuBar {
             Menu(
                 text = stringResource(DesignSystemRes.string.file),
