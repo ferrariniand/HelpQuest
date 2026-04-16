@@ -24,6 +24,7 @@
     <string name="drop_picture_info">Drop your image here to upload as your new profile picture</string>
     <string name="file">File</string>
     <string name="new_window">New window</string>
+    <string name="app_theme">App theme</string>
     <string name="error_content_unavailable">Content unavailable</string>
     <string name="error_user_image_unavailable">User image unavailable</string>
     <string name="error_item_not_found">No item found</string>

@@ -3,11 +3,14 @@ package com.helpquest.core.data.di
 import com.helpquest.core.data.lifecycle.AppLifecycleObserver
 import com.helpquest.core.data.networking.ConnectionErrorHandler
 import com.helpquest.core.data.networking.ConnectivityObserver
+import com.helpquest.core.data.preferences.KSafeThemePreferences
 import com.helpquest.core.database.DatabaseFactory
+import com.helpquest.core.domain.preferences.ThemePreferences
 import eu.anifantakis.lib.ksafe.KSafe
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 actual val platformCoreDataModule = module {
@@ -17,4 +20,5 @@ actual val platformCoreDataModule = module {
     singleOf(::AppLifecycleObserver)
     singleOf(::ConnectivityObserver)
     singleOf(::ConnectionErrorHandler)
+    singleOf(::KSafeThemePreferences) bind ThemePreferences::class
 }

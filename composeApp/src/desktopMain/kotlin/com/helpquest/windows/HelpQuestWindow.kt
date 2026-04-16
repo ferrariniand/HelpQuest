@@ -9,6 +9,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import com.helpquest.App
 import com.helpquest.core.designsystem.theme.appName
+import com.helpquest.theme.AppTheme
 import helpquest.core.designsystem.generated.resources.compose_multiplatform
 import helpquest.core.designsystem.generated.resources.file
 import helpquest.core.designsystem.generated.resources.new_window
@@ -18,6 +19,7 @@ import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable
 fun HelpQuestWindow(
+    appTheme: AppTheme,
     onCloseRequest: () -> Unit,
     onAddWindowClick: () -> Unit,
     onFocusChanged: (Boolean) -> Unit
@@ -50,6 +52,8 @@ fun HelpQuestWindow(
             }
         }
 
-        App()
+        App(
+            isDarkTheme = appTheme == AppTheme.DARK
+        )
     }
 }

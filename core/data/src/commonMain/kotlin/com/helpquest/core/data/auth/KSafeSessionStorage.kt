@@ -12,10 +12,9 @@ class KSafeSessionStorage(
     private val authInfoKey = "authInfo"
 
     override fun observeAuthInfo(): Flow<AuthInfo?> {
-        return ksafe.getFlow<AuthInfo?>(
+        return ksafe.getFlow(
             key = authInfoKey,
-            defaultValue = null,
-            encrypted = true
+            defaultValue = null
         )
     }
 
