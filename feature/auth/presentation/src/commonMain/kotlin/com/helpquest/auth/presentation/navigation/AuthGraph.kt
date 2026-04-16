@@ -11,6 +11,7 @@ import com.helpquest.auth.presentation.login.LoginRoot
 import com.helpquest.auth.presentation.register.RegisterRoot
 import com.helpquest.auth.presentation.register_success.RegisterSuccessRoot
 import com.helpquest.auth.presentation.reset_password.ResetPasswordRoot
+import com.helpquest.core.designsystem.theme.deepLinkUrl
 
 fun NavGraphBuilder.authGraph(
     navController: NavController,
@@ -19,6 +20,8 @@ fun NavGraphBuilder.authGraph(
     navigation<AuthGraphRoutes.Graph>(
         startDestination = AuthGraphRoutes.Login
     ) {
+        val deepLinkUrl = deepLinkUrl()
+
         composable<AuthGraphRoutes.Login> {
             LoginRoot(
                 onLoginSuccess = onLoginSuccess,
@@ -91,7 +94,6 @@ fun NavGraphBuilder.authGraph(
                 }
             )
         }
-        val deepLinkUrl = "hq.com"
         composable<AuthGraphRoutes.EmailVerification>(
             deepLinks = listOf(
                 navDeepLink {

@@ -29,7 +29,7 @@
 
                 <!-- TODO: add host!!! -->
                 <data android:scheme="https" />
-                <data android:host="hq.com" />
+                <data android:host="mock.hq.com" />
                 <data android:pathPrefix="/api/auth/verify" />
                 <data android:pathPrefix="/api/auth/reset-password" />
             </intent-filter>
@@ -42,7 +42,7 @@
 
                 <!-- TODO: add host!!! -->
                 <data android:scheme="helpquest" />
-                <data android:host="hq.com" />
+                <data android:host="mock.hq.com" />
                 <data android:pathPrefix="/api/auth/verify" />
                 <data android:pathPrefix="/api/auth/reset-password" />
             </intent-filter>
