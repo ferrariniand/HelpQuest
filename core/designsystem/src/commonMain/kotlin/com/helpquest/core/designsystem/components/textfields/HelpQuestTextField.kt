@@ -21,11 +21,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.result_layouts.Loader
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestTextField(

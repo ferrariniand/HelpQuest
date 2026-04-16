@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.chat.presentation.chat_list.components.ChatListHeader
@@ -33,7 +34,6 @@ import com.helpquest.core.designsystem.components.for_scrollables.EmptyListSecti
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDivider
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
-import com.helpquest.core.presentation.util.ObserveAsEvents
 import helpquest.core.designsystem.generated.resources.empty_list
 import helpquest.feature.chat.presentation.generated.resources.Res
 import helpquest.feature.chat.presentation.generated.resources.create_chat
@@ -41,7 +41,6 @@ import helpquest.feature.chat.presentation.generated.resources.no_chats
 import helpquest.feature.chat.presentation.generated.resources.no_chats_subtitle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
@@ -54,12 +53,6 @@ fun ChatListRoot(
     viewModel: ChatListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            else -> Unit
-        }
-    }
 
     val snackbarHostState = remember { SnackbarHostState() }
 

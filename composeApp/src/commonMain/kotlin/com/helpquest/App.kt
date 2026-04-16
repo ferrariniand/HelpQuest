@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.helpquest.auth.presentation.navigation.AuthGraphRoutes
@@ -12,7 +13,6 @@ import com.helpquest.core.presentation.util.ObserveAsEvents
 import com.helpquest.home.presentation.navigation.HomepageGraphRoutes
 import com.helpquest.navigation.DeepLinkListener
 import com.helpquest.navigation.NavigationRoot
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

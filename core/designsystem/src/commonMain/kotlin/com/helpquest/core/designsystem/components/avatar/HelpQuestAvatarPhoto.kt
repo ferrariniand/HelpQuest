@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
@@ -26,7 +27,6 @@ import com.helpquest.core.designsystem.theme.extended
 import helpquest.core.designsystem.generated.resources.Res
 import helpquest.core.designsystem.generated.resources.error_user_image_unavailable
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 //User image (or initials)
 @Composable

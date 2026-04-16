@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
@@ -36,10 +37,8 @@ import helpquest.feature.chat.presentation.generated.resources.chat_members
 import helpquest.feature.chat.presentation.generated.resources.go_back
 import helpquest.feature.chat.presentation.generated.resources.leave_chat
 import helpquest.feature.chat.presentation.generated.resources.open_chat_options_menu
-
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 

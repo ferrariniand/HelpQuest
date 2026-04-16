@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.containers_layouts.DynamicRoundedCornerColumn
@@ -37,7 +38,6 @@ import com.helpquest.quests.domain.models.QuestActivityStatus
 import com.helpquest.quests.domain.models.QuestStatus
 import com.helpquest.quests.presentation.model.ActivityListUiElement
 import com.helpquest.quests.presentation.model.QuestUi
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime

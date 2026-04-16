@@ -10,11 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.containers_layouts.SnackbarScaffold
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.util.ObserveAsEvents
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -35,7 +35,6 @@ fun AddQuestActivityRoot(
                 )
             }
 
-            else -> Unit
         }
     }
 

@@ -33,6 +33,7 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(compose.preview)
 
                 implementation(projects.feature.auth.domain)
             }

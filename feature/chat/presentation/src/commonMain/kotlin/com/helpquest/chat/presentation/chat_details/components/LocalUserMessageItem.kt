@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.presentation.model.MessageListUiElement
@@ -30,7 +31,6 @@ import helpquest.feature.chat.presentation.generated.resources.retry
 import helpquest.feature.chat.presentation.generated.resources.you
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LocalUserMessageItem(

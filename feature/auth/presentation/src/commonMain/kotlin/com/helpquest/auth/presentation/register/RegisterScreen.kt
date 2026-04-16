@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
@@ -32,7 +33,6 @@ import helpquest.feature.auth.presentation.generated.resources.username_hint
 import helpquest.feature.auth.presentation.generated.resources.username_placeholder
 import helpquest.feature.auth.presentation.generated.resources.welcome_to
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 

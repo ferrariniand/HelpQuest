@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
@@ -27,7 +28,6 @@ import com.helpquest.core.designsystem.theme.extended
 import helpquest.core.designsystem.generated.resources.Res
 import helpquest.core.designsystem.generated.resources.you
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestChatBubble(
@@ -113,7 +113,7 @@ fun HelpQuestChatBubbleLeftLightPreview() {
     HelpQuestTheme {
         HelpQuestChatBubble(
             messageContent = "Hello world, this is a longer message that hopefully spans" +
-                    "over multiple lines so we can see how the preview would look like for that as well.",
+                    " over multiple lines so we can see how the preview would look like for that as well.",
             sender = "Philipp",
             formattedDateTime = "Friday 2:20pm",
             trianglePosition = TrianglePosition.LEFT,
@@ -133,7 +133,7 @@ fun HelpQuestChatBubbleLeftDarkPreview() {
     ) {
         HelpQuestChatBubble(
             messageContent = "Hello world, this is a longer message that hopefully spans" +
-                    "over multiple lines so we can see how the preview would look like for that as well.",
+                    " over multiple lines so we can see how the preview would look like for that as well.",
             sender = "Philipp",
             formattedDateTime = "Friday 2:20pm",
             trianglePosition = TrianglePosition.LEFT,
@@ -150,7 +150,7 @@ fun HelpQuestChatBubbleRightLightPreview() {
     HelpQuestTheme {
         HelpQuestChatBubble(
             messageContent = "Hello world, this is a longer message that hopefully spans" +
-                    "over multiple lines so we can see how the preview would look like for that as well.",
+                    " over multiple lines so we can see how the preview would look like for that as well.",
             formattedDateTime = "Friday 2:20pm",
             trianglePosition = TrianglePosition.RIGHT,
         )
@@ -168,7 +168,7 @@ fun HelpQuestChatBubbleRightDarkPreview() {
     ) {
         HelpQuestChatBubble(
             messageContent = "Hello world, this is a longer message that hopefully spans" +
-                    "over multiple lines so we can see how the preview would look like for that as well.",
+                    " over multiple lines so we can see how the preview would look like for that as well.",
             formattedDateTime = "Friday 2:20pm",
             trianglePosition = TrianglePosition.RIGHT,
         )

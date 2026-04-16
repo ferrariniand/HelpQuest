@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.brand.BrandLogo
@@ -32,7 +33,6 @@ import helpquest.feature.home.presentation.generated.resources.Res
 import helpquest.feature.home.presentation.generated.resources.logout
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 
 @Composable

@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.brand.BrandLogo
@@ -35,7 +36,6 @@ import helpquest.feature.auth.presentation.generated.resources.login
 import helpquest.feature.auth.presentation.generated.resources.resend_verification_email
 import helpquest.feature.auth.presentation.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 

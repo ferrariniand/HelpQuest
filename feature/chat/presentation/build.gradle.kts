@@ -15,6 +15,7 @@ kotlin {
                 // Add KMP dependencies here
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(compose.preview)
 
                 implementation(libs.material3.adaptive)
                 implementation(libs.material3.adaptive.layout)

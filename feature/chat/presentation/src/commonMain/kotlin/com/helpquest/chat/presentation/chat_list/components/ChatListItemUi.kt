@@ -23,6 +23,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessage
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
@@ -32,7 +33,6 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 

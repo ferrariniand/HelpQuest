@@ -7,11 +7,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.extended
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 enum class AvatarSize(val dp: Dp) {
     SMALL(40.dp), LARGE(60.dp)

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestStackedAvatars
 import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDividerWithTitle
@@ -32,7 +33,6 @@ import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.quests.domain.models.QuestStatus
 import com.helpquest.quests.presentation.model.QuestListUiElement
 import com.helpquest.quests.presentation.model.QuestUi
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 
 

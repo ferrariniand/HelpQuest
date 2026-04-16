@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
 import com.helpquest.core.designsystem.components.brand.BrandLogo
@@ -19,7 +20,6 @@ import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.designsystem.theme.appName
 import com.helpquest.core.designsystem.theme.extended
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChatListHeader(

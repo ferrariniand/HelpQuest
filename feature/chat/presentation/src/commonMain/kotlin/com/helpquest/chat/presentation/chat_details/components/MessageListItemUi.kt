@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.domain.models.ChatMessageDeliveryStatus
 import com.helpquest.chat.presentation.model.MessageListUiElement
@@ -12,7 +13,6 @@ import com.helpquest.core.designsystem.components.generic.HelpQuestHorizontalDiv
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.UiText
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MessageListItemUi(

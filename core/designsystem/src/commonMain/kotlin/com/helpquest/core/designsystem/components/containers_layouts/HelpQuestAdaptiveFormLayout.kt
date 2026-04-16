@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.core.designsystem.components.auth.AuthPageHeaderSection
 import com.helpquest.core.designsystem.components.brand.BrandLogo
@@ -38,7 +39,6 @@ import com.helpquest.core.presentation.util.DeviceConfiguration
 import com.helpquest.core.presentation.util.clearFocusOnTap
 import com.helpquest.core.presentation.util.currentDeviceConfiguration
 import com.helpquest.core.presentation.util.isKeyboardOpen
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpQuestAdaptiveFormLayout(

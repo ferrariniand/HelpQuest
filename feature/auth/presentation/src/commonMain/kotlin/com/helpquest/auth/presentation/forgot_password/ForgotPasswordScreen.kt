@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.helpquest.core.designsystem.components.buttons.HelpQuestButton
@@ -24,7 +25,6 @@ import helpquest.feature.auth.presentation.generated.resources.forgot_password
 import helpquest.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
 import helpquest.feature.auth.presentation.generated.resources.submit
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import helpquest.core.designsystem.generated.resources.Res as DesignSystemRes
 

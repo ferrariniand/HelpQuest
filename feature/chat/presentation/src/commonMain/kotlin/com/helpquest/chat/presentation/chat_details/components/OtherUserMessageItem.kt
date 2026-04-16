@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.helpquest.chat.presentation.model.MessageListUiElement
 import com.helpquest.core.designsystem.components.avatar.HelpQuestAvatar
@@ -15,7 +16,6 @@ import com.helpquest.core.designsystem.components.chat.getChatBubbleColorForUser
 import com.helpquest.core.designsystem.theme.HelpQuestTheme
 import com.helpquest.core.presentation.modelsUi.ParticipantUi
 import com.helpquest.core.presentation.util.UiText
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
 @Composable
