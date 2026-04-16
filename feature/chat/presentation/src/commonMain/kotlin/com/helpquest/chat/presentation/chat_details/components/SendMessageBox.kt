@@ -21,6 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isMetaPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,6 +61,17 @@ fun SendMessageBox(
     HelpQuestMultiLineTextField(
         state = messageTextFieldState,
         modifier = modifier
+            .onPreviewKeyEvent { keyEvent ->
+                val isModifierKeyPressed = keyEvent.isMetaPressed || keyEvent.isCtrlPressed
+                val isSendShortcutPressed = isModifierKeyPressed
+                        && keyEvent.key == Key.Enter
+                        && keyEvent.type == KeyEventType.KeyDown
+
+                if (isSendShortcutPressed) {
+                    onSendClick()
+                    true
+                } else false
+            }
             .focusRestorer(focusRequester)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
