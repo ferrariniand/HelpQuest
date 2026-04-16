@@ -10,11 +10,11 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
-import com.helpquest.quests.domain.models.Quest
-import com.helpquest.quests.domain.models.QuestActivity
-import com.helpquest.quests.domain.models.QuestActivityStatus
-import com.helpquest.quests.domain.models.QuestStatus
-import com.helpquest.quests.domain.service.QuestService
+import com.helpquest.quest.domain.models.Quest
+import com.helpquest.quest.domain.models.QuestActivity
+import com.helpquest.quest.domain.models.QuestActivityStatus
+import com.helpquest.quest.domain.models.QuestStatus
+import com.helpquest.quest.domain.service.QuestService
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime

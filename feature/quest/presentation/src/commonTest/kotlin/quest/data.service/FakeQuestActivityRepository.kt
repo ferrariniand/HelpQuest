@@ -7,11 +7,11 @@ import com.helpquest.core.domain.util.DataError
 import com.helpquest.core.domain.util.EmptyResult
 import com.helpquest.core.domain.util.Result
 import com.helpquest.core.domain.util.asEmptyResult
-import com.helpquest.quests.domain.models.ActivityWithCreator
-import com.helpquest.quests.domain.models.OutgoingNewActivity
-import com.helpquest.quests.domain.models.QuestActivity
-import com.helpquest.quests.domain.models.QuestActivityStatus
-import com.helpquest.quests.domain.service.ActivityRepository
+import com.helpquest.quest.domain.models.ActivityWithCreator
+import com.helpquest.quest.domain.models.OutgoingNewActivity
+import com.helpquest.quest.domain.models.QuestActivity
+import com.helpquest.quest.domain.models.QuestActivityStatus
+import com.helpquest.quest.domain.service.ActivityRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.random.Random

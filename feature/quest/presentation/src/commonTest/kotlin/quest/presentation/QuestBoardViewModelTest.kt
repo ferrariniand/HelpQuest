@@ -6,10 +6,10 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.helpquest.core.domain.service.ConnectionClient
-import com.helpquest.quests.domain.service.QuestRepository
-import com.helpquest.quests.presentation.di.questPresentationModule
-import com.helpquest.quests.presentation.quest_board.QuestBoardAction
-import com.helpquest.quests.presentation.quest_board.QuestBoardViewModel
+import com.helpquest.quest.domain.service.QuestRepository
+import com.helpquest.quest.presentation.di.questPresentationModule
+import com.helpquest.quest.presentation.quest_board.QuestBoardAction
+import com.helpquest.quest.presentation.quest_board.QuestBoardViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
