@@ -53,8 +53,11 @@ class FakeQuestService : QuestService {
             content = "test activity content",
             activityStatus = QuestActivityStatus.IN_PROGRESS,
             startActivityAt = Clock.System.now(),
+            lastActivityUpdateAt = Clock.System.now(),
             endActivityAt = null
-        )
+        ),
+        lastActivityActorUsername = participant2.username,
+        lastUpdateAt = Clock.System.now(),
     )
 
     val quest2 = Quest(
@@ -69,7 +72,9 @@ class FakeQuestService : QuestService {
             participant,
         ),
         questStatus = QuestStatus.OPEN,
-        lastActivity = null
+        lastActivity = null,
+        lastActivityActorUsername = null,
+        lastUpdateAt = Clock.System.now(),
     )
 
     val questList = mutableListOf(quest, quest2)

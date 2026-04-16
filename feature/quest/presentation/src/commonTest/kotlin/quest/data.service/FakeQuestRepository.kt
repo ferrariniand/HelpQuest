@@ -50,6 +50,7 @@ class FakeQuestRepository : QuestRepository {
         content = "test activity content",
         activityStatus = QuestActivityStatus.IN_PROGRESS,
         startActivityAt = Clock.System.now(),
+        lastActivityUpdateAt = Clock.System.now(),
         endActivityAt = null
     )
 
@@ -68,7 +69,9 @@ class FakeQuestRepository : QuestRepository {
         questCategory = Category.GENERIC,
         participants = listOf(participant, participant2),
         questStatus = QuestStatus.IN_PROGRESS,
-        lastActivity = activity
+        lastActivity = activity,
+        lastActivityActorUsername = participant2.username,
+        lastUpdateAt = Clock.System.now(),
     )
 
     val questInfo = QuestInfo(
@@ -88,7 +91,9 @@ class FakeQuestRepository : QuestRepository {
             participant,
         ),
         questStatus = QuestStatus.OPEN,
-        lastActivity = null
+        lastActivity = null,
+        lastActivityActorUsername = null,
+        lastUpdateAt = Clock.System.now(),
     )
 
     val questInfo2 = QuestInfo(

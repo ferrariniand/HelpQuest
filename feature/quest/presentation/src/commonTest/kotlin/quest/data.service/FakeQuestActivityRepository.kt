@@ -50,6 +50,7 @@ class FakeQuestActivityRepository : ActivityRepository {
         content = "test first activity content",
         activityStatus = QuestActivityStatus.IN_PROGRESS,
         startActivityAt = Clock.System.now(),
+        lastActivityUpdateAt = Clock.System.now(),
         endActivityAt = null
     )
     val activity2 = QuestActivity(
@@ -60,6 +61,7 @@ class FakeQuestActivityRepository : ActivityRepository {
         content = "test second activity content",
         activityStatus = QuestActivityStatus.OPEN,
         startActivityAt = Clock.System.now(),
+        lastActivityUpdateAt = Clock.System.now(),
         endActivityAt = null
     )
 

@@ -8,8 +8,8 @@ import com.helpquest.core.presentation.di.corePresentationModule
 import com.helpquest.home.presentation.di.homepagePresentationModule
 import com.helpquest.notification.data.di.notificationDataModule
 import com.helpquest.profile.presentation.di.profilePresentationModule
-import com.helpquest.quests.data.di.questDataModule
-import com.helpquest.quests.presentation.di.questPresentationModule
+import com.helpquest.quest.data.di.questDataModule
+import com.helpquest.quest.presentation.di.questPresentationModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 

@@ -117,6 +117,8 @@ class QuestLogViewModelTest : KoinTest {
                                     "and goes over multiple lines to showcase the ellipsis",
                             activityStatus = QuestActivityStatus.IN_PROGRESS,
                             startActivityAt = Clock.System.now(),
+                            lastActivityUpdateAt = Clock.System.now(),
+                            endActivityAt = null
                         ),
                         location = Location(0.0, 0.0),
                         createdAt = Clock.System.now(),
@@ -169,6 +171,8 @@ class QuestLogViewModelTest : KoinTest {
                                 "and goes over multiple lines to showcase the ellipsis",
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
+                        lastActivityUpdateAt = Clock.System.now(),
+                        endActivityAt = null
                     ),
                     location = Location(0.0, 0.0),
                     createdAt = Clock.System.now(),
@@ -217,6 +221,8 @@ class QuestLogViewModelTest : KoinTest {
                                         "and goes over multiple lines to showcase the ellipsis",
                                 activityStatus = QuestActivityStatus.IN_PROGRESS,
                                 startActivityAt = Clock.System.now(),
+                                lastActivityUpdateAt = Clock.System.now(),
+                                endActivityAt = null
                             ),
                             location = Location(0.0, 0.0),
                             createdAt = Clock.System.now(),
@@ -280,6 +286,8 @@ class QuestLogViewModelTest : KoinTest {
                                 "and goes over multiple lines to showcase the ellipsis",
                         activityStatus = QuestActivityStatus.IN_PROGRESS,
                         startActivityAt = Clock.System.now(),
+                        lastActivityUpdateAt = Clock.System.now(),
+                        endActivityAt = null
                     ),
                     location = Location(0.0, 0.0),
                     createdAt = Clock.System.now(),
@@ -329,6 +337,8 @@ class QuestLogViewModelTest : KoinTest {
                                         "and goes over multiple lines to showcase the ellipsis",
                                 activityStatus = QuestActivityStatus.IN_PROGRESS,
                                 startActivityAt = Clock.System.now(),
+                                lastActivityUpdateAt = Clock.System.now(),
+                                endActivityAt = null
                             ),
                             location = Location(0.0, 0.0),
                             createdAt = Clock.System.now(),
